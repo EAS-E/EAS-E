@@ -1,0 +1,42 @@
+Testing RANKED set filing by PRIORITY, then VALUE
+     1   200  BigJob
+     1   150  AnotherJob
+     4   100  RushJob
+     2   400  LastJob
+Listing RANKED set contents:
+SEQ   PRI   VAL
+  1     4   100  RushJob
+  2     2   400  LastJob
+  3     1   200  BigJob
+  4     1   150  AnotherJob
+TOTAL JOBS:   4
+Testing FOR EACH in set 
+JOB: RushJob       /drill/  /turn/  /mill/  /grind/    
+JOB: LastJob       /pack/  /paint/  /shape/    
+JOB: BigJob        /dry/  /cut/    
+JOB: AnotherJob    /finish/  /polish/  /start/    
+Testing cascaded set attribute refs: 1st & 2nd step names of 1st, then 1st of 2nd job
+/drill/
+/turn/
+/pack/
+Testing FIND - look for PRIORITY > 2 
+JOB: RushJob has priority  4 - REMOVE specific
+ removed - you won't see this name again
+Testing for S.set - passed
+INBUFFER set count is now =    3
+Removed JOB called LastJob
+Cleared step /pack/
+Cleared step /paint/
+Cleared step /shape/
+Cleared step 
+Removed JOB called BigJob
+Cleared step /dry/
+Cleared step /cut/
+Cleared step 
+Removed JOB called AnotherJob
+Cleared step /finish/
+Cleared step /polish/
+Cleared step /start/
+Cleared step 
+Testing PRINT THUS
+INBUFFER IS EMPTY - THERE ARE NO JOBS WAITING

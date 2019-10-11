@@ -1,0 +1,765 @@
+<?xml version="1.0"?>
+<EASE-Database ID="3001" genname="EASEmain">
+<ENTITIES>
+
+<entityType ID="101" isProcedure="Y">
+<entityTypeName>EASECOMPILE</entityTypeName>
+<Body><![CDATA[
+RESERVE LOGICOPS AS 6		'' do this somewhere else... **********
+LET LOGICOPS(1) = " == "
+LET LOGICOPS(2) = " != "
+LET LOGICOPS(3) = " <= "
+LET LOGICOPS(4) = " >= "
+LET LOGICOPS(5) = " < "
+LET LOGICOPS(6) = " > "
+CALL INITLEX
+CALL INITERRS
+RESERVE CTLSTATES AS 2 BY 4
+'' state 2 = collecting control phrases; state table used by parser
+'' stmt types: 1 executable; 2 control; 3 declaration; 4 DO/FIND
+LET CTLSTATES(1, 1) = 1
+LET CTLSTATES(1, 2) = 2
+LET CTLSTATES(1, 3) = 1
+LET CTLSTATES(1, 4) = 1
+LET CTLSTATES(2, 1) = 4
+LET CTLSTATES(2, 2) = 2
+LET CTLSTATES(2, 3) = 2
+LET CTLSTATES(2, 4) = 1
+CALL READSYNTAX("..\\sysdata\\syntaxrules.txt")
+'' CALL LISTSYNTAX
+CALL READSCRIPTS("..\\sysdata\\scriptrules.txt")
+'' CALL READSOURCE
+
+CALL READXML("..\\sysdata\\easetypes.xml", 0)
+CALL READXML("..\\sysdata\\easelibsys.xml", 0)
+
+OPEN 5 FOR INPUT, NAME IS CONCAT.F(PROJDIR, "\\project.eas")
+USE 5 FOR INPUT
+IF ROPENERR.V NE 0
+	RETURN WITH -1
+ENDIF
+LET EOF.V = 1
+READ GENDIR AS T RRECLEN.V, /
+WHILE EOF.V NE 2
+DO
+	READ ALINE
+	READ AS /
+	IF ALINE NE ""
+		CALL READXML(PROJDIR, ALINE)
+	ENDIF
+LOOP
+CLOSE 5
+OPEN 98 FOR OUTPUT, NAME IS CONCAT.F(GENDIR, "XLISTING.txt")
+CALL FIXUPSCHEMAS
+CALL LISTENTITIES
+CALL TRANSLATEPROCS
+''CALL LISTING
+CLOSE 98
+IF F.ERRORRECS NE 0
+	OPEN 99 FOR OUTPUT, NAME IS CONCAT.F(GENDIR, "XERRORS.txt")
+	USE 99 FOR OUTPUT
+	LET ANERR = F.ERRORRECS
+	WHILE ANERR NE 0
+	DO
+		LET ERR = ERRNUM(ANERR)
+		IF ERR GT 0
+			WRITE AS "Error "
+		ELSE
+			LET ERR = -ERR
+			WRITE AS "Warning "
+		ENDIF
+		WRITE ERR AS I 5
+		IF INPROC(ANERR) NE 0
+		WRITE LEXEME(PDICTREF(INPROC(ANERR))), LINENUM(ANERR)
+			AS " in procedure ", T *, " line ", I 4
+		ENDIF
+		WRITE ERRMSGS(ERR-1000) AS S 2, T *, /
+		LET ANERR = S.ERRORRECS(ANERR)
+	LOOP
+	CLOSE 99
+	RETURN WITH 1
+ENDIF
+RETURN WITH 0 
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>E</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>PROJDIR</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALINE</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANERR</attrName>
+<attrTypeName>ERRORREC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ERR</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="101" isProcedure="Y">
+<entityTypeName>LISTSYNTAX</entityTypeName>
+<Body><![CDATA[
+OPEN 6 FOR OUTPUT, NAME IS "..\\sysdata\\listrules.txt"
+USE 6 FOR OUTPUT
+FOR I = 1 TO 128
+DO
+	WRITE I AS I 3
+	IF F_DICT(I) NE 0
+		LET ENTRY = F_DICT(I)
+		WHILE ENTRY NE 0
+		DO
+			WRITE LEXEME(ENTRY) AS B 6, T *
+			LET RULE = F_ENTRULES(ENTRY)
+			WHILE RULE NE 0
+			DO
+				WRITE RULENAME(RULE) AS B 20, T *
+				WRITE LEXEME(DICTENT(F_ALTS(F_PARTS(RULE)))) AS B 36, T *, /
+				LET RULE = S_ENTRULES(RULE)
+			LOOP
+			WRITE AS /
+			ENTRY = S_DICT(ENTRY)
+		LOOP
+	ELSE
+		WRITE "None" AS B 6, T *, /
+	ENDIF
+LOOP
+]]></Body>
+<attrDef embedded="Y">
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTRY</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>READSOURCE</entityTypeName>
+<Body><![CDATA[
+OPEN 5 FOR INPUT, NAME IS "..\\sysdata\\source.txt"
+USE 5 FOR INPUT
+LET EOF.V = 1
+WHILE EOF.V NE 2
+DO
+	READ ALINE AS T RRECLEN.V
+	CREATE A SRCLINE 
+	IF F.SRCLINES EQ 0
+		LET F.SRCLINES = SRCLINE
+	ELSE
+		LET S.SRCLINES(LASTLINE) = SRCLINE
+	ENDIF
+	LET LASTLINE = SRCLINE
+	LET LTXT(SRCLINE) = ALINE
+	READ AS /
+LOOP
+CLOSE 5
+]]></Body>
+<attrDef>
+<attrName>ALINE</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LASTLINE</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MAKELCLSFROMXML</entityTypeName>
+<Body><![CDATA[
+LET AUSE = FINDSPECUSE_F(PDICTREF(APROC), .USE.PROC)
+LET PROCENT = USEENTITY(AUSE)
+LET ATT = F.ATTRDEFS(PROCENT)
+WHILE ATT NE 0
+DO
+	LET DREF = FINDDICTENTRY.F(ATTRNAME(ATT))
+	LET AUSE = MAKEUSE_F(DREF, .USE.LCL)
+	IF ATTRTYPE(ATT) EQ 0
+		CALL EASERR(-1002, ATTRNAME(ATT))		'' undefined
+		LET ATTRTYPE(ATT) = E.BUILTINS(1)
+	ENDIF
+	LET USEENTITY(AUSE) = ATTRTYPE(ATT)
+	LET USEMODE(AUSE) = FINDMODE.F(ATTRTYPE(ATT))
+	LET USESUBS(AUSE) = SUBSCRIPTS(ATT)
+	LET ATT = S.ATTRDEFS(ATT)
+LOOP
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PROCENT</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MAKELCLS</entityTypeName>
+<Body>
+    <![CDATA[
+LET AUSE = FINDSPECUSE_F(PDICTREF(APROC), .USE.PROC)
+LET PROCENT = USEENTITY(AUSE)
+LET ATT = F.ATTRDEFS(PROCENT)
+IF F.LCLDEFS(APROC) NE 0
+	IF ATT NE 0						'' some possibly defined by XML - (deprecated)
+		WHILE S.ATTRDEFS(ATT) NE 0
+		DO
+			LET ATT = S.ATTRDEFS(ATT)
+		LOOP
+	ENDIF
+	LET ALCL = F.LCLDEFS(APROC)		'' definitions from source code / scripting
+	WHILE ALCL NE 0
+	DO
+		CREATE AN ATTRDEF CALLED NEWATT
+		IF ATT NE 0
+			LET S.ATTRDEFS(ATT) = NEWATT
+		ELSE
+			LET F.ATTRDEFS(PROCENT) = NEWATT
+		ENDIF
+		LET ATT = NEWATT
+		LET ATTRNAME(NEWATT) = LDEFNAME(ALCL)
+		LET ATTRTYPE(NEWATT) = LDEFTYPE(ALCL)
+		IF ATTRTYPE(NEWATT) EQ 0
+			CALL EASERR(-1002, ATTRNAME(NEWATT))		'' undefined..
+			LET ATTRTYPE(NEWATT) = E.BUILTINS(1)		'' ..make Integer
+		ENDIF
+		LET ISPARAM(NEWATT) = LPARAM(ALCL)
+		LET ISYIELD(NEWATT) = LYLD(ALCL)
+		LET SUBSCRIPTS(NEWATT) = LDEFDIM(ALCL)
+		LET ISRETTYPE(NEWATT) = LRET(ALCL)
+		IF LRET(ALCL) NE 0
+			LET ISRETTYPE(NEWATT) = LRET(ALCL)
+			LET RETURNATT(APROC) = NEWATT
+		ENDIF
+		LET DREF = FINDDICTENTRY.F(ATTRNAME(NEWATT))
+		LET AUSE = MAKEUSE_F(DREF, .USE.LCL)
+		LET USEENTITY(AUSE) = ATTRTYPE(NEWATT)
+		LET USEMODE(AUSE) = FINDMODE.F(ATTRTYPE(NEWATT))
+		LET USESUBS(AUSE) = SUBSCRIPTS(NEWATT)
+		LET ALCL = S.LCLDEFS(ALCL)
+	LOOP
+ENDIF
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PROCENT</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>NEWATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALCL</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>DESTROYLCLS</entityTypeName>
+<Body><![CDATA[
+LET ATT = F.ATTRDEFS(PROCENT)
+WHILE ATT NE 0
+DO
+	LET DREF = FINDDICTENTRY_F(ATTRNAME(ATT))
+	LET DUSE = FINDSPECUSE_F(DREF, .USE.LCL)
+	LET AUSE = F.USAGE(DREF)
+	WHILE AUSE NE 0
+	DO
+		IF AUSE = DUSE
+			IF LUSE NE 0
+				LET S.USAGE(LUSE) = S.USAGE(AUSE)
+			ELSE
+				LET F.USAGE(DREF) = S.USAGE(AUSE)
+			ENDIF
+			DESTROY DICTUSE CALLED DUSE
+			LET AUSE = 0
+		ELSE
+			LET LUSE = AUSE
+			LET AUSE = S.USAGE(AUSE)
+		ENDIF
+		
+	LOOP
+	LET ATT = S.ATTRDEFS(ATT)
+LOOP
+]]></Body>
+<attrDef parameter="Y">
+<attrName>PROCENT</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="101" isProcedure="Y">
+<entityTypeName>PRINTSTARS</entityTypeName>
+<Body><![CDATA[
+WRITE LEXEME(PDICTREF(APROC)) AS /, "Procedure ", T *, /
+LET ASTMT = F.STMTS(APROC)
+WHILE ASTMT NE 0
+DO
+	LET ATOKEN = F.TOKENS(ASTMT)
+	LET I = SCRIPTDEPTH(ASTMT)
+	WHILE I GT 0
+	DO
+		WRITE "*" AS T 1
+		LET I = I - 1
+	LOOP
+	WRITE AS B 4
+	WHILE ATOKEN NE 0
+	DO
+		WRITE LEXEME(DICTREF(ATOKEN)) AS T *, S 1
+		LET ATOKEN = S.TOKENLIST(ATOKEN)
+	LOOP
+	WRITE AS /
+	LET ASTMT = S.STMTS(ASTMT)
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="101" isProcedure="Y">
+<entityTypeName>PRINTPROC</entityTypeName>
+<Body><![CDATA[
+WRITE LEXEME(PDICTREF(APROC)) AS "Procedure ", T *, /
+LET ASTMT = F.STMTS(APROC)
+WHILE ASTMT NE 0
+DO
+	LET ATOKEN = F.TOKENS(ASTMT)
+	LET I = SCRIPTDEPTH(ASTMT)
+	IF I EQ 0
+		WRITE AS B 4
+		WHILE ATOKEN NE 0
+		DO
+			WRITE LEXEME(DICTREF(ATOKEN)) AS T *, S 1
+			LET ATOKEN = S.TOKENLIST(ATOKEN)
+		LOOP
+		WRITE AS /
+	ENDIF
+	LET ASTMT = S.STMTS(ASTMT)
+LOOP
+WRITE AS /
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>LISTING</entityTypeName>
+<Body><![CDATA[
+OPEN 6 FOR OUTPUT, NAME IS CONCAT.F(GENDIR, "proj.lst")
+USE 6 FOR OUTPUT
+LET ASCHEMA = F.SCHEMAS
+WHILE ASCHEMA NE 0
+DO
+''  IF ISSYSDEF(ASCHEMA) EQ 0
+	LET APROC = F.PROCS(ASCHEMA)
+	WHILE APROC NE 0
+	DO
+''		CALL PRINTPROC(APROC)
+		CALL PRINTSTARS(APROC)
+		LET APROC = S.PROCS(APROC)
+	LOOP
+''  ENDIF
+  LET ASCHEMA = S_SCHEMAS(ASCHEMA)
+LOOP
+WRITE TOTLINES AS " DONE: LINES = ", I 6, /
+CLOSE 6
+RETURN END
+]]></Body>
+<attrDef>
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>PROCTITLE</entityTypeName>
+<Body><![CDATA[
+LET SAVW = WRITE.V
+USE 98 FOR OUTPUT
+IF RETURNATT(APROC) NE 0
+	WRITE AS "Function "
+ELSE
+	WRITE AS "Routine "
+ENDIF
+WRITE LEXEME(PDICTREF(APROC)) AS T *
+LET AUSE = FINDSPECUSE_F(PDICTREF(APROC), .USE.PROC)
+LET ATT = F.ATTRDEFS(USEENTITY(AUSE))
+WHILE ATT NE 0
+DO
+	WRITE ATTRNAME(ATT) AS S 1, T *
+	LET ATT = S.ATTRDEFS(ATT)
+LOOP
+WRITE AS /
+USE SAVW FOR OUTPUT
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SAVW</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>TRANSLATEPROCS</entityTypeName>
+<Body><![CDATA[
+LET ASCHEMA = F.SCHEMAS
+WHILE ASCHEMA NE 0
+DO
+  IF NOGEN(ASCHEMA) EQ 0
+
+    LET FILENAME = CONCAT.F(GENNAME(ASCHEMA), ".cpp")
+ 	OPEN 6 FOR OUTPUT, NAME IS CONCAT.F(GENDIR, FILENAME)
+	USE 6 FOR OUTPUT
+	CALL GENPROCINCL(ASCHEMA)
+''	CALL GENADDTYPES
+''	CALL GENINIT
+
+	LET APROC = F.PROCS(ASCHEMA)
+	WHILE APROC NE 0
+	DO
+		LET CURRPROC = APROC
+		LET AUSE = FINDSPECUSE_F(PDICTREF(APROC), .USE.PROC)
+		LET PROCENT = USEENTITY(AUSE)
+		LET BODYTEXT = PROCBODY(PROCENT)
+		IF BODYTEXT NE ""
+			CALL PROCTITLE(APROC)
+			CALL BUILDSOURCE(BODYTEXT)
+		ELSE
+			CALL CLEARSRCLINES 
+			LET F.TOKENLIST = F.SCRIPTTOKENS(APROC)
+			LET L.TOKENLIST = L.SCRIPTTOKENS(APROC)
+		ENDIF
+		LET CURRLOOPDEPTH = 0		'' reset these for scripting
+		LET LBL = 0
+		LET LV = 0
+		CALL MAKELCLSFROMXML(APROC)
+		CALL PARSE(APROC)
+		IF LEXEME(PDICTREF(APROC)) EQ "MAIN"
+			CALL GENINIT
+		ENDIF
+		IF ERRCOUNT(APROC) EQ 0
+			CALL MAKELCLS(APROC)
+			CALL GENPROC(APROC)
+			CALL DESTROYLCLS(PROCENT)	'' don't keep them!
+		ENDIF
+		LET APROC = S.PROCS(APROC)
+	LOOP
+	CLOSE 6
+  ENDIF
+  LET ASCHEMA = S_SCHEMAS(ASCHEMA)
+LOOP
+
+LET ASCHEMA = F.SCHEMAS
+WHILE ASCHEMA NE 0
+DO							'' gen headers after procedures - when entity types get USE
+  IF NOGEN(ASCHEMA) EQ 0
+    LET FILENAME = CONCAT.F(GENNAME(ASCHEMA), ".h")
+ 	OPEN 6 FOR OUTPUT, NAME IS CONCAT.F(GENDIR, FILENAME)
+	USE 6 FOR OUTPUT
+	CALL GENHEADER(ASCHEMA)
+	CLOSE 6
+  ENDIF
+  LET ASCHEMA = S_SCHEMAS(ASCHEMA)
+LOOP
+
+RETURN
+]]></Body>
+<attrDef>
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>FILENAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>BODYTEXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PROCENT</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>INIT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>EASERR</entityTypeName>
+<Body><![CDATA[
+CREATE AN ERRORREC
+LET ERRNUM(ERRORREC) = ERRNO
+LET INPROC(ERRORREC) = CURRPROC
+LET LINENUM(ERRORREC) = CURRLINE
+IF F.ERRORRECS EQ 0
+	LET F.ERRORRECS = ERRORREC
+ELSE
+	LET S.ERRORRECS(L.ERRORRECS) = ERRORREC
+ENDIF
+LET L.ERRORRECS = ERRORREC
+IF ERRNO GT 0
+	LET ERRCOUNT(CURRPROC) = ERRCOUNT(CURRPROC) + 1
+	WRITE AS "!!! Error " USING 98
+ELSE
+	LET ERRNO = - ERRNO
+	WRITE AS "--- Warning " USING 98
+ENDIF
+WRITE ERRNO AS I 4 USING 98
+IF TERM NE ""
+	WRITE TERM AS " involving ", T *, S 2 USING 98
+ENDIF
+IF CURRPROC NE 0
+WRITE LEXEME(PDICTREF(CURRPROC)), CURRLINE
+	AS " in ", T *, " at line ", I 4, S 2 USING 98
+ENDIF
+WRITE ERRMSGS(ERRNO - 1000)	AS T *, / USING 98
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ERRNO</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>TERM</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>INITERRS</entityTypeName>
+<Body><![CDATA[
+OPEN 1 FOR INPUT, NAME IS "..\\sysdata\\easeerrs.txt"
+USE 1 FOR INPUT
+LET EOF.V = 1
+READ N
+READ AS /
+RESERVE ERRMSGS AS N
+FOR I = 1 TO N
+ WHILE EOF.V NE 2
+DO
+	READ ERRMSGS(I) AS T RRECLEN.V, /
+LOOP
+CLOSE 1
+RETURN END
+]]></Body>
+<attrDef>
+<attrName>N</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MAIN</entityTypeName>
+<Body><![CDATA[
+MAIN
+IF PROJECTDIR NE 0
+	CALL EASECOMPILE(PROJECTDIR)
+ENDIF
+RETURN END
+]]></Body>
+</entityType>
+
+</ENTITIES>
+
+<SYSTEM>
+<entityType ID="0">
+<entityTypeName>SYSTEM</entityTypeName>
+<attrDef embedded="Y">
+<attrName>TOTLINES</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>GENDIR</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>CURRLINE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>CURRPROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>ERRMSGS</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PROJECTDIR</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+
+</entityType>
+</SYSTEM>
+
+
+<SUBST>
+<d2m term="_MODE_UNDEF">
+<substxt><![CDATA[0]]></substxt>
+</d2m>
+<d2m term="_MODE_INT">
+<substxt><![CDATA[1]]></substxt>
+</d2m>
+<d2m term="_MODE_NMBR">
+<substxt><![CDATA[2]]></substxt>
+</d2m>
+<d2m term="_MODE_TXT">
+<substxt><![CDATA[3]]></substxt>
+</d2m>
+<d2m term="_MODE_REF">
+<substxt><![CDATA[4]]></substxt>
+</d2m>
+<d2m term="_CH_SPC">
+<substxt><![CDATA[32]]></substxt>
+</d2m>
+<d2m term="_CH_USCORE">
+<substxt><![CDATA[95]]></substxt>
+</d2m>
+<d2m term="_CH_PERIOD">
+<substxt><![CDATA[46]]></substxt>
+</d2m>
+</SUBST>
+
+
+</EASE-Database>

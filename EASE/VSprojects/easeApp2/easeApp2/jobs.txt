@@ -1,0 +1,219 @@
+Persistent server connected: localhost
+Persistent entity types registered with: localhost
+Listing RANKED set contents:
+SEQ   PRI   VAL
+Iref at:   78
+
+Iref at:   94
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:   78
+
+Iref at:  112
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:  130
+
+  1     4   100  RushJob
+Iref at:   78
+
+Iref at:   94
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:   66
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:  130
+
+drill
+Iref at:   66
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:  130
+
+turn
+Iref at:   66
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+mill
+Iref at:   66
+
+grind
+Iref at:   78
+
+Iref at:  112
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:  130
+
+  2     2   400  LastJob
+Iref at:   78
+
+Iref at:   94
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:   66
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:  130
+
+pack
+Iref at:   66
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+paint
+Iref at:   66
+
+shape
+Iref at:   78
+
+Iref at:  112
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+  3     1   200  BigJob
+Iref at:   78
+
+Iref at:   94
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:   66
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+dry
+Iref at:   66
+
+cut
+Iref at:   78
+
+Iref at:  120
+
+  4     1   150  AnotherJob
+Iref at:   78
+
+Iref at:   94
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:   66
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+Iref at:  130
+
+finish
+Iref at:   66
+
+Iref at:   82
+
+Iref at:   98
+
+Iref at:  114
+
+polish
+Iref at:   66
+
+start
+TOTAL JOBS:   4
+Testing FOR EACH in set 
+JOB: RushJob       drill  turn  mill  grind  
+JOB: LastJob       pack  paint  shape  
+JOB: BigJob        dry  cut  
+JOB: AnotherJob    finish  polish  start  
+Implicit: JOBNAME.., FOR EACH JOBSTEP, STEPNAME
+RushJob   drill  turn  mill  grind  next job will be:  LastJob
+LastJob   pack  paint  shape  next job will be:  BigJob
+BigJob   dry  cut  next job will be:  AnotherJob
+AnotherJob   finish  polish  start  
+Testing cascaded set attribute refs: 1st & 2nd step names of 1st, then 1st of 2nd job
+drill
+Testing FIND - look for PRIORITY > 2 
+JOB: RushJob has priority  4 - REMOVE specific
+ removed - you won't see this name again
+INBUFFER set count is now =    3
+Removed JOB called LastJob
+Cleared step pack
+Cleared step paint
+Cleared step shape
+Removed JOB called BigJob
+Cleared step dry
+Cleared step cut
+Removed JOB called AnotherJob
+Cleared step finish
+Cleared step polish
+Cleared step start
+Testing PRINT THUS
+INBUFFER IS EMPTY - THERE ARE NO JOBS WAITING
+Persistent server disconnected: localhost

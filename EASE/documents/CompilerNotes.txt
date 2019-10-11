@@ -1,0 +1,35 @@
+The EAS-E translator code was mostly hand-developed in XML without use of the GUI tool. 
+It defines local variables directly in XML - this preceeded the addition of syntax for such.
+
+Source code lines ( line boundaries are important: see PRINT ..LINES THUS ) are passed to ANALYZE (Parser).
+Here they are converted to TOKENs, using the 14 x 7 matrix [current working, next character type].
+Tokens are filed in a list - STMT - (the compiler does not use sets: they did not exist at its inception).
+
+The syntax of EAS-E is defined by a set of rules - currently, syntaxrules.txt.
+Each rule starts with a keyword - the dictionary keeps a list of rules for each keyword.
+These rules define sequences of mandatory <>, optional () statement parts that may repeat *
+Within either mandatory or optional rule parts there may be alternatives.
+Alternatives within a rule part - and more than one rule for a keyword - imply possible mismatches.
+Mismatches are handled by backtracking: resetting the parse position and trying alternative matches.
+Three functions (MATCHRULE_F, MATCHRULEPART_F, MATCHPARTALT_F) match the token stream to rules.
+Unless marked with &, each rule part is represented by a NODE; these are 'structured' into a parse tree.
+Structuring means that a matched rule part, if not a single token, may be a sub-tree of NODE entities.
+Note: all parse tree data is saved in the NODE entities; backtracking merely discards nodes in error.
+
+Some parsed statements are rendered into one or more simpler EAS-E statements: this is termed scripting.
+Scripting uses script rules - currently, scriptrules.txt - to inject new tokens into the token list.
+Some rule parts are 'decorated' with codes; this is information guiding the scripting or code generation.
+
+Certain rules carry a code used by CTLARRAY to manage iteration control phrase usage
+
+At this time, the compiler does very lttle deletion of dynamically created entity instances.
+Because of this, when running in Debug, it takes a long time to shut down.
+
+The attribute-based realization of the SET concept is replaced by a SET-entity realization.
+However, the SET attributes are synthesized to conform to the familiar SIMSCRIPT usage.
+
+The array-based implementation of PERMANENT entities (inherited from FORTRAN?) is not supported.
+It is possible to declare arrays of REFERENCE variables and populate their elements with entity instances.
+The GUI appears to support definition of COMPOUND entities, but there is no underlying support.
+
+There is (currently) a limit of 2-dimensional arrays.

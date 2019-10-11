@@ -1,0 +1,33 @@
+Note: This guide assumes some knowledge of EAS-E concepts.
+
+Subdirectory EASE/tools contains two executables: EASEdevelop and EASEtranslate.
+
+The first provides a GUI which supports definition of entities and procedures.
+Project->Open offers a folder selection of examples (see config.dat).
+Output is saved in XML file(s), then 'translated' to C source code.
+Running tools/EASEtranslate on the selected folder accomplishes this.
+(EASEtranslate is silent - just wait for it to complete; it notifies of any errors.)
+A listing file and possible error file are generated in the target folder.
+
+Config.dat specifies the initial folder for project selection; this can be edited.
+It also specifies a link to a folder for system data.
+
+At this time, these C files are intended to be built in VisualStudio projects.
+Projects corresponding to the examples projects are located in EASE/VSprojects.
+
+A project.eas file exists in each EAS-E source folder.
+The first line specifies the target folder for the generated C files.
+The remaining line(s) list the XML file(s) which constitute the project.
+
+As delivered, each VS source code folder includes duplicated library .h and .cpp files.
+Running the included linklib.bat file will establish symbolic links to the master copies.
+
+Selecting Project->New in EASEdevelop creates a folder for the new project.
+This will contain a basic XML file, .eas project file and a default folder for C code.
+Edit the .eas file as needed to add project .XML files or change the target folder.
+A suitable VS project must be created for a new project - this is non-trivial.
+
+
+
+
+

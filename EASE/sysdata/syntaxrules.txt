@@ -1,0 +1,138 @@
+CREATE <"CREATE"& "NOTE"& > ("A"& "AN"&) <@IDENT #1> (CALLD&) (WATT) ! 
+CALLD~ <"CALLED"& "NAMED"&> <VAR #5> !
+WATT~ <"WITH"&> <WIDENT #9> (MORWATT)* !  
+WIDENT~ <@IDENT #3> <"="&> < EXP #4> !
+MORWATT~ <AND&>* ("WITH"&) <WIDENT #9> !
+DESTROY <"DESTROY"&> ("A"& "AN"& "THE"&) <@IDENT #1> (CALLD&) !
+ASSIGN <"LET"&> <VAR #1> <"="&> <EXP #2> !
+EXP~ <EXP1> (MOREXP)* ! 
+EXP1~ ( "+" "-") < @INT @FLOAT @STR VAR SUBEXP SUBPROG> !
+VAR~ <@IDENT> (SUBS) !
+SUBS~ <"("&> <SUB1&> (MORSUB&)*  <")"&> !
+SUB1~ <EXP "*"> !
+AND~ <","& "AND"&> !
+MORSUB~ <","&> <EXP "*">  !
+MOREXP~ < "**" "+" "-" "*" "/" > <EXP> !
+SUBEXP~ <"("&> < EXP > <")"&> !
+SUBPROG~ <"$"&> <@IDENT> (SUBS) !
+IF <"IF"&> < COND& ISA > !
+ISA~ < EXP #1> <"IS"&> <"A"& "AN"&> <@IDENT #2> !
+LOGICL~ < PARLOG LOGEXP > (TRUFALS) !
+PARLOG~ <"("> <COND&> <")"&> !
+LOGEXP~ <EXP> < EQ NE LE GE LT GT > <EXP> !
+EQ~ < "EQ"& "="& EQTXT& > !
+EQTXT~ < "EQUAL"& "EQUALS"& > !
+NE~ < "NE"& NE2& NETXT& > !
+NE2~ < "!"& > <"="& > !
+NETXT~ < "NOT"& > < EQTXT& > !
+LT~ < "<"& "LT"& > !
+GT~ < ">"& "GT"& > !
+LE~ <"LE"& LE2&> !
+LE2~ <"<"&> <"="&> !
+GE~ <"GE"& GE2&> !
+GE2~ <">"&> <"="&> !
+MORLOG~ <"AND" "OR"> < COND& > !
+TRUFALS~ <"IS"&> <"TRUE" "FALSE"> !
+ELSE <"ELSE"&> ! 
+ENDIF  <"ALWAYS"& "ENDIF"&> !
+WHILE 2 <"WHILE"&> <COND #1> !
+COND~ < LOGICL > (MORLOG)* !
+UNTIL 2 <"UNTIL"&> <COND #1> !
+WITH 2 <"WITH"& "WHEN"&> <COND #1 > !
+UNLESS 2 <"UNLESS"&> <COND #1 > !
+DEFVAR 3 <"DEFINE"&> <VARLIST> <"AS"&> ("A"& "AN"&) (VARTYP&)* ("SUBPROGRAM"#1) <"VARIABLE"& "VARIABLES"& > !
+VARLIST~ <@IDENT> (MORVAR&)* !
+MORVAR~ <AND&> <@IDENT> !
+VARTYP~ <VARDIM VARMODE> !
+VARMODE~ <"INTEGER" "REAL" "TEXT" EREF > !
+VARDIM~ <@INT> <"-"&> <"DIM"& "DIMENSIONAL"&> !
+EREF~ <REF& ANON&> !
+ANON~ <"REFERENCE"&> !
+REF~ <@IDENT> <"REFERENCE"&> !
+FOR 2 <"FOR"&> <FOREACH FORINDX > !
+FORINDX~ <VAR #1> <"="&> <EXP #2> <"TO"&> <EXP #3> !
+FOREACH~ <"EACH"&> <@IDENT #1>  <"IN"& "OF"&> <@IDENT #2> (SUBS #3) !
+DO 4 <"DO"> ! 
+LOOP <"LOOP"> !
+LEAVE <"LEAVE"> !
+CYCLE <"CYCLE"> !
+GOTO <"GO"&> <"TO"&> <QLBL& LBL&>  !
+QLBL~ <"'"&> <LBL> <"'"&> !
+LBL~ <@IDENT #1> !
+FILE <"FILE"&> <EXP #1> (  FF FL FB FA ) <"IN"&> ( THETHIS&) <VAR #2> !
+FF~ < "FIRST"& > !
+FL~ < "LAST"& > !
+FB~ < "BEFORE"& > < EXP #3 > !
+FA~ < "AFTER"& > < EXP #3 > !
+REMOV <"REMOVE"&> ( FVAR LVAR SPCFC ) <"FROM"&> ( THETHIS&) <VAR #2> !
+FVAR~ <"FIRST"&> <VAR #1> !
+LVAR~ <"LAST"&> <VAR #1> !
+SPCFC~ <EXP #1> !
+THETHIS~ < "THE"& "THIS"&> !
+LBL <"'"> <@IDENT> <"'"> !
+CALL <"CALL"&> <@IDENT> (GIVARGS) (YLDARGS) !
+GIVARGS~ <GIVS& PGIVS&> !
+GIVS~ <"GIVING"& "GIVEN"& "WITH"&> <GARGS&> !
+PGIVS~ <"("&> <GARGS&> <")"&> !
+GARGS~ <FIRSTGARG> (MORGARG)* !
+FIRSTGARG~ <GARG&> !
+GARG~ <EXP> !
+MORGARG~ <AND&> <GARG&> !
+YLDARGS~ <"YIELDING"&> <YARGS&> !
+YARGS~ <FIRSTYARG #9> (MORYARG)* !
+FIRSTYARG~ <YARG&> !
+MORYARG~ <AND&> <YARG&> !
+YARG~ <VAR> !
+MAIN <"MAIN"> !
+DCLRTN 3 <"ROUTINE"&> <@IDENT> (GIVARGS) (YLDARGS) !
+DCLFUNC 3 <"FUNCTION"&> <@IDENT> (GIVARGS) <RTYPE> !
+RTYPE~ <"RETURNING"&> <VARMODE> !
+RET <"RETURN"> (RETEXP) !
+RETEXP~ <"WITH"&> <EXP #1> !
+END <"END"> !
+OPEN <"OPEN"&> ("UNIT"&) <@INT #1> <"FOR"&> <"INPUT" "OUTPUT" "INOUT"> (OPENNAME>) !
+OPENNAME~ <","&> <"FILENAME"& "NAME"&> <"IS"& "="&> <EXP #2> !
+CLOSE <"CLOSE"&>  ("UNIT"&) <@INT #1 > !
+USE <"USE"&> <IOUNIT "THE BUFFER"> <"FOR"&> <"INPUT" "OUTPUT" "INOUT"> !
+IOUNIT~ ("UNIT"&) <@INT #1 VAR #1 > !
+READ <"READ"&> <ASCFMT EXPLFMT EXPLST> (USING) !
+WRITE <"WRITE"&> <ASCFMT EXPLFMT>  (USING) !
+USING~ <"USING"&> <IOUNIT "THE BUFFER"> !
+EXPLFMT~  <EXPLST> <"AS"&> <FMTLST> !
+ASCFMT~  <"AS"&> <CFMTLST> !
+EXPLST~ <EXPLST1> (MOREXPLST)* !
+EXPLST1~ <EXP> !
+MOREXPLST~ <","&> <EXP> !
+FMTLST~  <FMT1> (MOREFMT)* !
+FMT1~ <CTLFMT FMT> !
+MOREFMT~ <","&> <CTLFMT FMT> !
+CFMTLST~ <CTLFMT1> (MORCTLF)* !
+CTLFMT1~ <CTLFMT> !
+MORCTLF~ <","&> <CTLFMT> !
+CTLFMT~ <BGNFMT "/" SPCFMT  @STR> !
+BGNFMT~ <"B"&> <EXP> !
+SPCFMT~ <"S"&> <EXP> !
+FMT~ < IFMT TFMT PFMT DFMT> !
+IFMT~ <"I"&> <EXP> !
+TFMT~ <"T"&> <EXP "*"> !
+PFMT~ <"P"> !
+DFMT~ <"D"&> <"("&)> <EXP> <","&> <EXP> <")"&> !
+RESERVE <"RESERVE"&> <VAR #1> <"AS"&> <EXP> (BYEXP&)* !
+BYEXP~ <"BY"&> <EXP> !
+END <"END"&> !
+ERASE <"ERASE"&> <VAR #1> ! 
+PRINTN <"PRINT"&> < @INT #1  "ONE" #1 > <"LINE"& "LINES"& > ( WITHEXPS ) <"THUS"&> !
+WITHEXPS~ <"WITH"&> <EXPLST> ! 
+INFER <"INFER"> <@IDENT> <"|"> <"-"> <@IDENT> !
+PROP <"PROPOSITION"> <@IDENT> <INFOP> <@IDENT> !
+INFOP~ < IMPLY INFAND INFOR > !
+IMPLY~ <"="> <"^"> !
+INFAND~ <"/"> <"\"> !
+INFOR~ <"\"> <"/"> ! 
+FIND 4 <"FIND"&> <FNDLIST FNDCASE> (QFOUND) !
+QFOUND~ <"IF"&> <"FOUND" "NONE"> !
+FNDCASE~ <"THE"&> <"FIRST"&> <"CASE"&> !
+FNDLIST~ <VAR> <"="&> ("THE"&) ("FIRST"&) <EXP> !
+PSERVER <"CONNECT" "DISCONNECT"> ("PERSISTENT"&) <"SERVER"&> <"NAMED"&> <VAR #1> !
+RECUNL <"RECORD" "UNLOCK"> <"ALL"&> <"PERSISTENT"&> <"ENTITIES"&> !!
+

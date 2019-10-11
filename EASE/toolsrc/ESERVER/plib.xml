@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<EASE-Database ID="22" genname="plib">
+<ENTITIES>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>PUTDATA_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GETDATA_R</entityTypeName>
+<attrDef returntype="Y">
+<attrName>L</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>ALLOCNEWBLK_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>S</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>OPENDATA_R</entityTypeName>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>READBLK_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>S</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>WRITEBLK_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>S</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>LISTENERINIT_F</entityTypeName>
+</entityType>
+</ENTITIES>
+</EASE-Database>

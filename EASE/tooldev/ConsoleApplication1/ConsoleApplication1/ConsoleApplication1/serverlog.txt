@@ -1,0 +1,137 @@
+Registering new type:  2000    2
+Catalogued/verified:  2000    2
+Registering new type:  2000    3
+Catalogued/verified:  2000    3
+Registering new type:     1    9
+Catalogued/verified:     1    9
+Registering new type:     1   11
+Catalogued/verified:     1   11
+Registering new type:     1   13
+Catalogued/verified:     1   13
+New instance:     1   13    1    1
+New instance:  2000    2    1    1
+New instance:     1   13    2    1
+New instance:  2000    3    1    1
+New instance:     1   11    1    1
+New instance:  2000    3    2    1
+New instance:     1   11    2    1
+New instance:     1   11    3    1
+New instance:  2000    2    2    1
+New instance:     1   13    3    1
+New instance:  2000    3    3    1
+New instance:     1   11    4    1
+New instance:  2000    3    4    1
+New instance:     1   11    5    1
+New instance:  2000    3    5    1
+New instance:     1   11    6    1
+New instance:     1   11    7    1
+New instance:  2000    2    3    1
+New instance:     1   13    4    1
+New instance:  2000    3    6    1
+New instance:     1   11    8    1
+New instance:  2000    3    7    1
+New instance:     1   11    9    1
+New instance:  2000    3    8    1
+New instance:     1   11   10    1
+New instance:  2000    3    9    1
+New instance:     1   11   11    1
+New instance:     1   11   12    1
+New instance:  2000    2    4    1
+New instance:     1   13    5    1
+New instance:  2000    3   10    1
+New instance:     1   11   13    1
+New instance:  2000    3   11    1
+New instance:     1   11   14    1
+New instance:  2000    3   12    1
+New instance:     1   11   15    1
+New instance:     1   11   16    1
+Updating instance:  2000    2    4  1   82
+Allocate  2 segments at  1 block    1
+Updating instance:  2000    2    3  1   82
+Allocate  2 segments at  3 block    1
+Updating instance:  2000    2    2  1   90
+Allocate  2 segments at  1 block    2
+Updating instance:  2000    2    1  1   82
+Allocate  2 segments at  3 block    2
+Updating instance:  2000    3   12  1   50
+Allocate  1 segments at  1 block    3
+Updating instance:  2000    3   11  1   50
+Allocate  1 segments at  2 block    3
+Updating instance:  2000    3   10  1   50
+Allocate  1 segments at  3 block    3
+Updating instance:  2000    3    9  1   50
+Allocate  1 segments at  4 block    3
+Updating instance:  2000    3    8  1   50
+Allocate  1 segments at  1 block    4
+Updating instance:  2000    3    7  1   50
+Allocate  1 segments at  2 block    4
+Updating instance:  2000    3    6  1   50
+Allocate  1 segments at  3 block    4
+Updating instance:  2000    3    5  1   54
+Allocate  1 segments at  4 block    4
+Updating instance:  2000    3    4  1   54
+Allocate  1 segments at  1 block    5
+Updating instance:  2000    3    3  1   50
+Allocate  1 segments at  2 block    5
+Updating instance:  2000    3    2  1   46
+Allocate  1 segments at  3 block    5
+Updating instance:  2000    3    1  1   46
+Allocate  1 segments at  4 block    5
+Updating instance:     1   11   16  1  100
+Allocate  2 segments at  1 block    6
+Updating instance:     1   11   15  1   84
+Allocate  2 segments at  3 block    6
+Updating instance:     1   11   14  1  100
+Allocate  2 segments at  1 block    7
+Updating instance:     1   11   13  1   84
+Allocate  2 segments at  3 block    7
+Updating instance:     1   11   12  1   84
+Allocate  2 segments at  1 block    8
+Updating instance:     1   11   11  1   84
+Allocate  2 segments at  3 block    8
+Updating instance:     1   11   10  1  100
+Allocate  2 segments at  1 block    9
+Updating instance:     1   11    9  1  100
+Allocate  2 segments at  3 block    9
+Updating instance:     1   11    8  1   84
+Allocate  2 segments at  1 block   10
+Updating instance:     1   11    7  1   84
+Allocate  2 segments at  3 block   10
+Updating instance:     1   11    6  1   84
+Allocate  2 segments at  1 block   11
+Updating instance:     1   11    5  1  100
+Allocate  2 segments at  3 block   11
+Updating instance:     1   11    4  1   84
+Allocate  2 segments at  1 block   12
+Updating instance:     1   11    3  1  100
+Allocate  2 segments at  3 block   12
+Updating instance:     1   11    2  1   84
+Allocate  2 segments at  1 block   13
+Updating instance:     1   11    1  1   84
+Allocate  2 segments at  3 block   13
+Updating instance:     1   13    5  1   82
+Allocate  2 segments at  1 block   14
+Updating instance:     1   13    4  1   82
+Allocate  2 segments at  3 block   14
+Updating instance:     1   13    3  1   82
+Allocate  2 segments at  1 block   15
+Updating instance:     1   13    2  1   82
+Allocate  2 segments at  3 block   15
+Updating instance:     1   13    1  1   86
+Allocate  2 segments at  1 block   16
+Block    1 written at      0
+Block    2 written at    256
+Block    3 written at    512
+Block    4 written at    768
+Block    5 written at   1024
+Block    6 written at   1280
+Block    7 written at   1536
+Block    8 written at   1792
+Block    9 written at   2048
+Block   10 written at   2304
+Block   11 written at   2560
+Block   12 written at   2816
+Block   13 written at   3072
+Block   14 written at   3328
+Block   15 written at   3584
+Block   16 written at   3840

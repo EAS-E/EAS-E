@@ -1,0 +1,1568 @@
+<?xml version="1.0"?>
+<EASE-Database ID="3007" genname="EASEents">
+<ENTITIES>
+<entityType ID="101">
+<entityTypeName>SCHEMA</entityTypeName>
+<attrDef>
+<attrName>GENNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_ETYPES</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_SCHEMAS</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>THESYSTEM</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_PROCS</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SCHEMAID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LASTETYPEID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>NOGEN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>NOHDR</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="102">
+<entityTypeName>ENTITYTYPE</entityTypeName>
+<attrDef embedded="Y">
+<attrName>ETYPEID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPENAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_ETYPES</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_ATTRDEFS</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_OWNDSETREFS</attrName>
+<attrTypeName>SETATTDEFREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_MMBRSETATTREFS</attrName>
+<attrTypeName>SETATTDEFREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PROCBODY</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SCHEMAREF</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISHIDDEN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISSETTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISPROC</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISPERSISTENT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISUSEDTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TARGETNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="103">
+<entityTypeName>ATTRDEF</entityTypeName>
+<attrDef>
+<attrName>ATTRNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_ATTRDEFS</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>OWNERTYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATTRTYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISEMBED</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISPARAM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISYIELD</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISRETTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SUBSCRIPTS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SETMMBRREFS</attrName>
+<attrTypeName>SETMMBRREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SETATTRSETDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="106">
+<entityTypeName>SETMMBRREF</entityTypeName>
+<attrDef>
+<attrName>S_SETMMBRREFS</attrName>
+<attrTypeName>SETMMBRREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MMBRENT</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="107">
+<entityTypeName>SETATTDEFREF</entityTypeName>
+<attrDef>
+<attrName>S_SETATTDEFREFS</attrName>
+<attrTypeName>SETATTDEFREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATTREF</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>DBID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SETATTNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="108">
+<entityTypeName>SETDEF</entityTypeName>
+<attrDef>
+<attrName>S_SETDEFS</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SSID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SETNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SETDISCIPLINE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISPERSISTENT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_RANKATTRS</attrName>
+<attrTypeName>RANKATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SETMMBRREFS</attrName>
+<attrTypeName>SETMMBRREF</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="104">
+<entityTypeName>FIXUP</entityTypeName>
+<attrDef>
+<attrName>ENTREFNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATTREF</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>FIXMMBRENTREF</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SETATTREF</attrName>
+<attrTypeName>SETATTDEFREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>FIXSETDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>DBID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_FIXUPS</attrName>
+<attrTypeName>FIXUP</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="109">
+<entityTypeName>RANKATTRDEF</entityTypeName>
+<attrDef>
+<attrName>S_RANKATTRS</attrName>
+<attrTypeName>RANKATTRDEF</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LO</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RATTRNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="110">
+<entityTypeName>ERRORREC</entityTypeName>
+<attrDef>
+<attrName>S_ERRORRECS</attrName>
+<attrTypeName>ERRORREC</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ERRNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>INPROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LINENUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>READXML</entityTypeName>
+<Body>  <![CDATA[
+LET XMLFILE = PATH
+IF FNAME NE 0					'' path is not a complete filename
+	LET XMLFILE = CONCAT.F(PATH, FNAME)
+	LET XMLFILE = CONCAT.F(XMLFILE, ".xml")
+ENDIF	
+LET OK = XMLOPEN.F(XMLFILE)
+LET OK = XMLFINDELEM.F("EASE-Database")
+CREATE A SCHEMA CALLED ASCHEMA
+LET GENNAME(ASCHEMA) = FNAME
+IF F.SCHEMAS EQ 0
+	LET F.SCHEMAS = ASCHEMA
+ELSE
+	LET LSCHEMA = F.SCHEMAS
+	WHILE S.SCHEMAS(LSCHEMA) NE 0
+	DO
+		LET LSCHEMA = S.SCHEMAS(LSCHEMA)
+	LOOP
+	LET S.SCHEMAS(LSCHEMA) = ASCHEMA
+ENDIF
+LET SCHEMAID(ASCHEMA) = XMLIATTR.F("ID")
+IF XMLTATTR.F("noGen") NE ""
+	LET NOGEN(ASCHEMA) = 1
+ENDIF
+IF XMLTATTR.F("noHdr") NE ""
+	LET NOHDR(ASCHEMA) = 1
+ENDIF
+LET ATXT = XMLTATTR.F("genname")	'' generated name override?
+IF ATXT NE 0
+	LET GENNAME(ASCHEMA) = ATXT
+ENDIF
+CALL XMLINTO
+
+IF XMLFINDELEM.F("ENTITIES") NE 0
+	CALL XMLINTO
+	WHILE XMLFINDELEM.F("entityType") NE 0
+	DO
+		LET ETYPE = READXMLENT.F(ASCHEMA)	'' read entity type data
+		LET S.ETYPES(ETYPE) = F.ETYPES(ASCHEMA)
+		LET F.ETYPES(ASCHEMA) = ETYPE
+		LET SCHEMAREF(ETYPE) = ASCHEMA
+
+		LET DREF = FINDDICTENTRY.F(ETYPENAME(ETYPE))
+		IF ISPROC(ETYPE) NE 0
+			CREATE AN EASEPROC CALLED APROC		'' auxiliary
+			LET PDICTREF(APROC) = DREF
+			LET S.PROCS(APROC) = F.PROCS(ASCHEMA)
+			LET F.PROCS(ASCHEMA) = APROC
+			LET AUSE = MAKEUSE.F(DREF, .USE.PROC)
+			LET ATT = F.ATTRDEFS(ETYPE)
+			WHILE ATT NE 0
+			DO
+				IF ISRETTYPE(ATT) NE 0
+					LET RETURNATT(APROC) = ATT
+					LEAVE
+				ENDIF
+				LET ATT = S.ATTRDEFS(ATT)
+			LOOP
+		ELSE
+			LET AUSE = MAKEUSE.F(DREF, .USE.ENT)
+			LET USEMODE(AUSE) = .MODE.REF
+		ENDIF
+		LET USEENTITY(AUSE) = ETYPE
+	LOOP
+	CALL XMLOUTOF
+ENDIF
+
+IF XMLFINDELEM.F("SETS") NE 0
+	CALL XMLINTO
+	WHILE XMLFINDELEM.F("setDef") NE 0
+	DO
+		CREATE A SETDEF CALLED SDEF
+		LET S.SETDEFS(SDEF) = F.SETDEFS
+		LET F.SETDEFS = SDEF
+		LET ATXT = XMLTATTR.F("discipline")
+		IF ATXT = "F"
+			LET SETDISCIPLINE(SDEF) = 1
+		ENDIF
+		IF ATXT = "L"
+			LET SETDISCIPLINE(SDEF) = 2
+		ENDIF
+		IF XMLTATTR.F("isPersistent") = "Y"
+			ISPERSISTENT(SDEF) = 1
+		ENDIF
+		CALL XMLINTO
+		IF XMLFINDELEM.F("setName") NE 0
+			LET SETNAME(SDEF) = FIXNAME.F(XMLGETDATA.F)
+		ENDIF
+ 		WHILE XMLFINDELEM_F("rankAttr") NE 0
+		DO
+			CREATE A RANKATTRDEF CALLED RANKATTR
+			IF F.RANKATTRS(SDEF) EQ 0
+				LET F.RANKATTRS(SDEF) = RANKATTR
+			ELSE
+				LET LRANKATTR = F.RANKATTRS(SDEF)
+				WHILE S.RANKATTRS(LRANKATTR) NE 0
+				DO	
+					LET LRANKATTR = S.RANKATTRS(LRANKATTR)
+				LOOP
+				LET S.RANKATTRS(LRANKATTR) = RANKATTR
+			ENDIF
+			IF XMLIATTR.F("low") NE 0
+				LET LO(RANKATTR) = 1
+			ENDIF
+			LET RATTRNAME(RANKATTR) = XMLGETDATA.F
+		LOOP
+		CALL XMLOUTOF
+  LOOP
+  CALL XMLOUTOF
+ENDIF
+
+IF XMLFINDELEM.F("SYSTEM") NE 0
+	CALL XMLINTO
+	IF XMLFINDELEM.F("entityType") NE 0
+		LET ETYPE = READXMLENT.F(ASCHEMA)
+		LET S.ETYPES(ETYPE) = F.SYSTEMS
+		LET F.SYSTEMS = ETYPE
+		LET SCHEMAREF(ETYPE) = ASCHEMA
+		LET ETYPENAME(ETYPE) = GENNAME(ASCHEMA)	'' we may have many 'SYSTEM's
+		LET THESYSTEM(ASCHEMA) = ETYPE
+	ENDIF
+	CALL XMLOUTOF
+ENDIF
+
+IF XMLFINDELEM.F("SUBST") NE 0				'' define to mean
+	CALL XMLINTO
+	WHILE XMLFINDELEM.F("d2m") NE 0
+	DO
+		ATXT = XMLTATTR.F("term")
+		LET DREF = FINDDICTENTRY.F(ATXT)
+		IF XMLFINDCHILD.F("substxt") NE 0
+			LET ATXT = XMLGETCHILDDATA.F
+			CALL ANALYZE(ATXT, LENGTH.F(ATXT), 1)
+			LET F.SUBST(DREF) = F.TOKENLIST
+			LET L.SUBST(DREF) = L.TOKENLIST
+			LET F.TOKENLIST = 0
+			LET L.TOKENLIST = 0
+		ENDIF
+	LOOP
+	CALL XMLOUTOF
+ENDIF
+]]></Body>
+<attrDef parameter="Y">
+<attrName>PATH</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>FNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>XMLFILE</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AINT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>OK</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LSCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RANKATTR</attrName>
+<attrTypeName>RANKATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LRANKATTR</attrName>
+<attrTypeName>RANKATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>READXMLENT_F</entityTypeName>
+<Body><![CDATA[
+	'' read one entity description 
+	CREATE AN ENTITYTYPE CALLED ETYPE
+	LET ETYPEID(ETYPE) = XMLIATTR.F("ID")
+	IF XMLLATTR.F("isSystemDefined") NE 0
+		LET ISSETTYPE(ETYPE) = XMLLATTR.F("isSetType")
+		LET ISHIDDEN(ETYPE) = XMLLATTR.F("isHidden")
+		LET TARGETNAME(ETYPE) = XMLTATTR.F("targetName")
+	ENDIF
+	LET ISPROC(ETYPE) = XMLLATTR.F("isProcedure")
+	LET ISPERSISTENT(ETYPE) = XMLLATTR.F("isPersistent")
+	CALL XMLINTO
+	IF XMLFINDELEM.F("entityTypeName") NE 0
+		LET ETYPENAME(ETYPE) = XMLGETDATA.F
+	ENDIF
+	IF ISPROC(ETYPE) NE 0
+		IF XMLFINDELEM.F("Body") NE 0
+			LET PROCBODY(ETYPE) = XMLGETDATA.F
+		ENDIF
+	ENDIF
+	
+	LET LATTR = 0
+	WHILE XMLFINDELEM.F("attrDef") NE 0
+	DO
+		CREATE AN ATTRDEF CALLED DATTR
+		IF F.ATTRDEFS(ETYPE) = 0		'' keep args in order
+			LET F.ATTRDEFS(ETYPE) = DATTR
+		ELSE
+			LET S.ATTRDEFS(LATTR) = DATTR
+		ENDIF
+		LET LATTR = DATTR
+		LET OWNERTYPE(DATTR) = ETYPE
+		LET ISEMBED(DATTR) = XMLLATTR.F("embedded")
+		LET ISPARAM(DATTR) = XMLLATTR.F("parameter")
+		LET ISYIELD(DATTR) = XMLLATTR.F("yielded")
+		LET ISRETTYPE(DATTR) = XMLLATTR.F("returntype")
+		LET SUBSCRIPTS(DATTR) = XMLIATTR.F("subscripts")
+		IF XMLFINDCHILD.F("attrName") NE 0
+			LET ATTRNAME(DATTR) = XMLGETCHILDDATA.F
+		ENDIF
+		IF XMLFINDCHILD.F("attrTypeName") NE 0
+			CREATE A FIXUP CALLED AFIX
+			LET ATTREF(AFIX) = DATTR
+			LET ENTREFNAME(AFIX) = XMLGETCHILDDATA.F
+			LET DBID(AFIX) = SCHEMAID(ASCHEMA)
+			LET S.FIXUPS(AFIX) = F.ATTRFIXUPS
+			LET F.ATTRFIXUPS = AFIX
+		ENDIF
+	LOOP
+	
+	WHILE XMLFINDELEM_F("setOwnDef") NE 0
+	DO
+		CREATE AN ATTRDEF CALLED DATTR			'' implementing ownership as reference attribute
+		LET ATTRNAME(DATTR) = FIXNAME.F(XMLGETDATA.F)
+		IF F.ATTRDEFS(ETYPE) = 0
+			LET F.ATTRDEFS(ETYPE) = DATTR
+		ELSE
+			LET S.ATTRDEFS(LATTR) = DATTR
+		ENDIF
+		LET LATTR = DATTR
+		LET OWNERTYPE(DATTR) = ETYPE
+		
+		CREATE A FIXUP CALLED AFIX
+		LET ATTREF(AFIX) = DATTR
+		LET DBID(AFIX) = XMLIATTR.F("dbId")
+		LET S.FIXUPS(AFIX) = F.SETOWNRFIXUPS
+		LET F.SETOWNRFIXUPS = AFIX
+	LOOP
+	
+	WHILE XMLFINDELEM_F("setBelongDef") NE 0
+	DO
+		CREATE A SETATTDEFREF CALLED SETREF
+		LET SETATTNAME(SETREF) = FIXNAME.F(XMLGETDATA.F)
+		LET DBID(SETREF) = XMLIATTR.F("dbId")
+		CREATE A FIXUP CALLED AFIX
+		LET SETATTREF(AFIX) = SETREF
+		LET FIXMMBRENTREF(AFIX) = ETYPE
+		LET S.FIXUPS(AFIX) = F.SETMMBRFIXUPS
+		LET F.SETMMBRFIXUPS = AFIX
+		'' LET DBID(AFIX) = SCHEMAID(ASCHEMA)
+	LOOP
+	CALL XMLOUTOF
+	RETURN WITH ETYPE
+	END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>E</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>AINT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DATTR</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LATTR</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SETREF</attrName>
+<attrTypeName>SETATTDEFREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AFIX</attrName>
+<attrTypeName>FIXUP</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RANKATTR</attrName>
+<attrTypeName>RANKATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FIXNAME_F</entityTypeName>
+<Body><![CDATA[
+'' this really ought to uppercase - but I need to fix 'built-ins' - Integer. Text etc.
+LET LEN = LENGTH.F(ATTNAME)
+FOR I = 1 TO LEN
+DO
+	IF ACHAR.F(ATTNAME, I) = .CH.PERIOD
+		LET ACHAR.F(ATTNAME, I) = .CH.USCORE
+	ENDIF
+LOOP
+RETURN WITH ATTNAME
+]]></Body>
+<attrDef returntype="Y">
+<attrName>N</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ATTNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LEN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FIXUPSCHEMAS</entityTypeName>
+<Body><![CDATA[
+RESERVE E_BUILTINS AS 13		 '' probably should init from a file.. targetName, also
+LET E_BUILTINS(1) = FINDETYPEBYNAME.F("Integer", 1)
+LET E_BUILTINS(2) = FINDETYPEBYNAME.F("Real", 1)
+LET E_BUILTINS(3) = FINDETYPEBYNAME.F("Text", 1)
+LET E_BUILTINS(4) = FINDETYPEBYNAME.F("Reference", 1)
+LET E_BUILTINS(5) = FINDETYPEBYNAME.F("iRef", 1)
+LET E_BUILTINS(6) = FINDETYPEBYNAME.F("Subprogram", 1)
+LET E_BUILTINS(12) = FINDETYPEBYNAME.F("E_SET", 1)
+LET E_BUILTINS(13) = FINDETYPEBYNAME.F("E_PSET", 1)
+
+'' get set ownership attribute type-name from set definitions
+LET AFIX = F.SETOWNRFIXUPS
+WHILE AFIX NE 0
+DO
+	LET SDEF = FINDSET.F(ATTRNAME(ATTREF(AFIX)), DBID(AFIX))
+	IF ISPERSISTENT(SDEF) EQ 0
+		LET ENTREFNAME(AFIX) = ETYPENAME(E_BUILTINS(12))
+	ELSE
+		LET ENTREFNAME(AFIX) = ETYPENAME(E_BUILTINS(13))
+	ENDIF
+	LET SETATTRSETDEF(ATTREF(AFIX)) = SDEF
+	LET FIXUP = AFIX						'' save this..
+	LET AFIX = S.FIXUPS(AFIX)
+	LET S.FIXUPS(FIXUP) = F.ATTRFIXUPS		'' ..and add into attribute fixup list
+	LET F.ATTRFIXUPS = FIXUP
+LOOP
+'' resolve attribute-to-entitytype references
+LET AFIX = F.ATTRFIXUPS
+WHILE AFIX NE 0
+DO
+	LET DATTR = ATTREF(AFIX)
+	LET ETYPE = FINDETYPEBYNAME_F(ENTREFNAME(AFIX), DBID(AFIX))
+	IF ETYPE EQ 0
+		CALL EASERR(-1002, ENTREFNAME(AFIX))
+		LET ETYPE = E_BUILTINS(1)
+	ENDIF
+	LET ATTRTYPE(DATTR) = ETYPE
+	LET DREF = FINDDICTENTRY_F(ATTRNAME(DATTR))
+	IF ISPROC(OWNERTYPE(DATTR)) EQ 0
+		LET AUSE2 = FINDSPECUSE_F(DREF, .USE.ATTR)
+		LET AUSE = MAKEUSE_F(DREF, .USE.ATTR)
+		IF AUSE2 NE 0
+			LET ISCOMMONATT(AUSE) = 1
+			LET ISCOMMONATT(AUSE2) = 1
+		ENDIF
+		LET USEOWNER(AUSE) = OWNERTYPE(DATTR)
+		LET USEENTITY(AUSE) = ETYPE
+		LET USESUBS(AUSE) = SUBSCRIPTS(DATTR)
+		LET USEMODE(AUSE) = FINDMODE.F(ETYPE)
+
+		IF ISSETTYPE(ETYPE) NE 0
+			LET USESETREFATT(AUSE) = DATTR
+			CALL MAKESETOWNRATTR("F_", DATTR, .MODE.REF)
+			CALL MAKESETOWNRATTR("L_", DATTR, .MODE.REF)
+			CALL MAKESETOWNRATTR("N_", DATTR, .MODE.INT)
+		ENDIF
+	ELSE
+		IF ISRETTYPE(DATTR) NE 0				'' function mode
+			LET DREF = FINDDICTENTRY.F(ETYPENAME(OWNERTYPE(DATTR)))
+			LET AUSE = FINDSPECUSE.F(DREF, .USE.PROC)
+			LET USEMODE(AUSE) = FINDMODE.F(ETYPE)
+		ENDIF
+	ENDIF
+
+	LET DEAD = AFIX
+	LET AFIX = S.FIXUPS(AFIX)
+	DESTROY FIXUP CALLED DEAD
+LOOP
+LET F.ATTRFIXUPS = 0
+
+LET AFIX = F.SETMMBRFIXUPS
+WHILE AFIX NE 0
+DO
+	LET SETREF = SETATTREF(AFIX)
+	LET SDEF = FINDSET.F(SETATTNAME(SETREF), DBID(SETREF))
+	CREATE A SETMMBRREF CALLED MREF
+	LET S.SETMMBRREFS(MREF) = F.SETMMBRREFS(SDEF)
+	LET F.SETMMBRREFS(SDEF) = MREF
+	LET MMBRENT(MREF) = FIXMMBRENTREF(AFIX)
+	LET DEAD = AFIX
+	LET AFIX = S.FIXUPS(AFIX)
+	DESTROY FIXUP CALLED DEAD
+LOOP
+CALL ENTSWRAPUP
+CALL SETSWRAPUP
+CALL SYSSETSINIT
+RETURN END
+]]></Body>
+<attrDef>
+<attrName>AFIX</attrName>
+<attrTypeName>FIXUP</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DATTR</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE2</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SETREF</attrName>
+<attrTypeName>SETATTDEFREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MREF</attrName>
+<attrTypeName>SETMMBRREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DEAD</attrName>
+<attrTypeName>FIXUP</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MAKEPROC_F</entityTypeName>
+<Body><![CDATA[
+CREATE A ENTITYTYPE CALLED RTN
+LET S.ETYPES(RTN) = F.ETYPES(ASCHEMA)
+LET F.ETYPES(ASCHEMA) = RTN
+LET SCHEMAREF(RTN) = ASCHEMA
+LET ISPROC(RTN) = 1
+LET ETYPENAME(RTN) = RNAME
+LET DREF = FINDDICTENTRY.F(RNAME)
+LET AUSE = MAKEUSE.F(DREF, .USE.PROC)
+LET USEENTITY(AUSE) = RTN
+CREATE A EASEPROC CALLED APROC
+LET PDICTREF(APROC) = DREF
+LET S.PROCS(APROC) = F.PROCS(ASCHEMA)
+LET F.PROCS(ASCHEMA) = APROC
+IF RTYPE NE 0
+	CREATE A ATTRDEF CALLED RATT
+	LET ISRETTYPE(RATT) = 1
+	LET ATTRNAME(RATT) = "rval"
+	LET ATTRTYPE(RATT) = RTYPE
+	LET F.ATTRDEFS(RTN) = RATT
+	LET RETURNATT(APROC) = RATT
+ENDIF
+RETURN WITH APROC
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>RNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>RTYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RTN</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>ADDPARM</entityTypeName>
+<Body><![CDATA[
+CREATE A ATTRDEF CALLED PARM
+LET ATTRNAME(PARM) = PNAME
+LET ATTRTYPE(PARM) = TYPE
+LET SUBSCRIPTS(PARM) = SUBS
+LET ISPARAM(PARM) = 1
+LET ISYIELD(PARM) = YLD
+LET AUSE = FINDSPECUSE.F(PDICTREF(APROC), .USE.PROC)
+LET RTN = USEENTITY(AUSE)
+LET S.ATTRDEFS(PARM) = F.ATTRDEFS(RTN)
+LET F.ATTRDEFS(RTN) = PARM
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>TYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>PNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SUBS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>YLD</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RTN</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PARM</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>ADDLCL</entityTypeName>
+<Body><![CDATA[
+CREATE A ATTRDEF CALLED ATT
+LET ATTRNAME(ATT) = ANAME
+LET ATTRTYPE(ATT) = TYPE
+LET SUBSCRIPTS(ATT) = SUBS
+LET AUSE = FINDSPECUSE.F(PDICTREF(APROC), .USE.PROC)
+LET RTN = USEENTITY(AUSE)
+LET S.ATTRDEFS(ATT) = F.ATTRDEFS(RTN)
+LET F.ATTRDEFS(RTN) = ATT
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>TYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ANAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SUBS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RTN</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>ATTRRANKRTN</entityTypeName>
+<Body><![CDATA[
+LET SCRIPTLEVEL = 1
+LET PTYPE = FINDETYPEBYNAME.F("Integer", 1)
+LET APROC = MAKEPROC_F(CONCAT.F("X_", SETNAME(SDEF)), SCHEMAREF(ETYPE), PTYPE)
+LET STRPTRS(1) = "E1"
+LET STRPTRS(2) = "E2"
+LET PTYPE = FINDETYPEBYNAME.F("Reference", 1)
+CALL ADDPARM(APROC, PTYPE, STRPTRS(2), 0, 0)
+CALL ADDPARM(APROC, PTYPE, STRPTRS(1), 0, 0)
+LET STRPTRS(3) = ETYPENAME(ETYPE)
+CALL SCRIPT(43)
+LET RANKATTR = F.RANKATTRS(SDEF)
+WHILE RANKATTR NE 0
+DO
+	LET STRPTRS(4) = RATTRNAME(RANKATTR)
+	CALL SCRIPT(44)
+	LET RANKATTR = S.RANKATTRS(RANKATTR)
+LOOP
+CALL SCRIPT(45)
+LET F.SCRIPTTOKENS(APROC) = F.TOKENLIST
+LET L_SCRIPTTOKENS(APROC) = L.TOKENLIST
+LET F.TOKENLIST = 0
+LET L.TOKENLIST = 0
+LET SCRIPTLEVEL = 0
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PTYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>STYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RANKATTR</attrName>
+<attrTypeName>RANKATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>CRERTN</entityTypeName>
+<Body><![CDATA[
+LET SCRIPTLEVEL = 1
+IF ISPERSISTENT(ETYPE) NE 0
+	LET RTYPE = FINDETYPEBYNAME.F("iRef", 1)
+ELSE
+	LET RTYPE = ETYPE
+ENDIF
+LET APROC = MAKEPROC.F(CONCAT.F("c_",ETYPENAME(ETYPE)), SCHEMAREF(ETYPE), RTYPE)
+CALL ADDLCL(APROC, RTYPE, "EPTR", 0)
+LET STRPTRS(1) = ETYPENAME(ETYPE)
+LET IPTRS(1) = SCHEMAID(SCHEMAREF(ETYPE))
+LET IPTRS(2) = ETYPEID(ETYPE)
+IF ISPERSISTENT(ETYPE) NE 0
+	CALL SCRIPT(46)
+ELSE
+	CALL SCRIPT(30)
+ENDIF
+LET STRPTRS(1) = "EPTR"
+IF ISHIDDEN(ETYPE) EQ 0
+	LET ATT = F.ATTRDEFS(ETYPE)
+	WHILE ATT NE 0
+	DO		'' init set attribute
+		IF ISSETTYPE(ATTRTYPE(ATT)) NE 0
+			LET STRPTRS(2) = ATTRNAME(ATT)
+			LET IPTRS(3) = SCHEMAID(SCHEMAREF(ATTRTYPE(ATT)))
+			LET IPTRS(4) = ETYPEID(ATTRTYPE(ATT))
+			IF ISPERSISTENT(ATTRTYPE(ATT)) NE 0
+				CALL SCRIPT(47)
+			ELSE
+				CALL SCRIPT(31)
+			ENDIF
+		ENDIF
+		LET ATT = S.ATTRDEFS(ATT)
+	LOOP
+ENDIF
+CALL SCRIPT(32)
+LET F.SCRIPTTOKENS(APROC) = F.TOKENLIST
+LET L_SCRIPTTOKENS(APROC) = L.TOKENLIST
+LET F.TOKENLIST = 0
+LET L.TOKENLIST = 0
+LET SCRIPTLEVEL = 0
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RTYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>DESRTN</entityTypeName>
+<Body><![CDATA[
+LET SCRIPTLEVEL = 1
+LET APROC = MAKEPROC.F(CONCAT.F("d_",ETYPENAME(ETYPE)), SCHEMAREF(ETYPE), 0)
+LET STRPTRS(1) = "EPTR"
+CALL ADDPARM(APROC, ETYPE, STRPTRS(1), 0, 1)
+LET ATT = F.ATTRDEFS(ETYPE)
+WHILE ATT NE 0
+DO
+	IF ETYPENAME(ATTRTYPE(ATT)) = "Text"
+		LET STRPTRS(2) = ATTRNAME(ATT)
+		CALL SCRIPT(28)
+	ENDIF
+	IF ISSETTYPE(ATTRTYPE(ATT)) NE 0 AND ISHIDDEN(ETYPE) EQ 0
+		LET STRPTRS(2) = ATTRNAME(ATT)
+		IF ISPERSISTENT(ATTRTYPE(ATT)) NE 0
+			CALL SCRIPT(59)
+		ELSE
+			CALL SCRIPT(33)
+		ENDIF
+	ENDIF
+	LET ATT = S.ATTRDEFS(ATT)
+LOOP
+IF ISPERSISTENT(ETYPE) NE 0
+	CALL SCRIPT(56)
+ELSE
+	CALL SCRIPT(29)
+ENDIF
+LET F.SCRIPTTOKENS(APROC) = F.TOKENLIST
+LET L_SCRIPTTOKENS(APROC) = L.TOKENLIST
+LET F.TOKENLIST = 0
+LET L.TOKENLIST = 0
+LET SCRIPTLEVEL = 0
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>ENTSWRAPUP</entityTypeName>
+<Body><![CDATA[
+'' script create/destroy routines
+LET ASCHEMA = F.SCHEMAS
+WHILE ASCHEMA NE 0
+DO
+	IF NOGEN(ASCHEMA) EQ 0
+		LET ETYPE = F.ETYPES(ASCHEMA)
+		WHILE ETYPE NE 0
+		DO
+			IF ISPROC(ETYPE) EQ 0
+				CALL CRERTN(ETYPE)
+				CALL DESRTN(ETYPE)
+			ENDIF
+			LET ETYPE = S.ETYPES(ETYPE)
+		LOOP
+	ENDIF
+	LET ASCHEMA = S.SCHEMAS(ASCHEMA)
+LOOP
+RETURN END
+]]></Body>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>SETSWRAPUP</entityTypeName>
+<Body><![CDATA[
+'' add synthesized set membership attributes
+LET SDEF = F.SETDEFS
+WHILE SDEF NE 0
+DO
+	LET MREF = F.SETMMBRREFS(SDEF)
+	WHILE MREF NE 0
+	DO
+		LET ETYPE = MMBRENT(MREF)
+		CALL MAKESETMMBRATTR("P_", ETYPE, .MODE.REF, SDEF)
+		CALL MAKESETMMBRATTR("S_", ETYPE, .MODE.REF, SDEF)
+		CALL MAKESETMMBRATTR("M_", ETYPE, .MODE.INT, SDEF)
+		LET MREF = S.SETMMBRREFS(MREF)
+	LOOP
+	IF SETDISCIPLINE(SDEF) EQ 0
+		CALL ATTRRANKRTN(ETYPE, SDEF)
+	ENDIF
+	LET SDEF = S.SETDEFS(SDEF)
+LOOP
+RETURN END
+]]></Body>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MREF</attrName>
+<attrTypeName>SETMMBRREF</attrTypeName>
+</attrDef>
+</entityType>
+
+
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>SYSSETSINIT</entityTypeName>
+<Body><![CDATA[
+'' Generate routine to create system-owned sets
+LET SYSETYPE = F.SYSTEMS
+WHILE SYSETYPE NE 0
+DO
+	LET SCRIPTLEVEL = 1
+	LET SYSNAME = GENNAME(SCHEMAREF(SYSETYPE))
+	LET APROC = MAKEPROC.F(CONCAT.F(SYSNAME, "_sets"), SCHEMAREF(SYSETYPE), 0)
+	LET ATT = F.ATTRDEFS(SYSETYPE)
+	WHILE ATT NE 0
+	DO
+		IF ISSETTYPE(ATTRTYPE(ATT)) NE 0
+			LET STRPTRS(2) = ATTRNAME(ATT)
+			IF ISPERSISTENT(ATTRTYPE(ATT)) NE 0
+				CALL SCRIPT(73)
+			ELSE
+				CALL SCRIPT(72)
+			ENDIF
+		ENDIF
+		LET ATT = S.ATTRDEFS(ATT)
+	LOOP
+	LET F.SCRIPTTOKENS(APROC) = F.TOKENLIST
+	LET L_SCRIPTTOKENS(APROC) = L.TOKENLIST
+	LET F.TOKENLIST = 0
+	LET L.TOKENLIST = 0
+	LET SCRIPTLEVEL = 0
+	LET SYSETYPE = S.ETYPES(SYSETYPE)
+LOOP
+RETURN END
+]]></Body>
+<attrDef>
+<attrName>SYSETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SYSNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MAKESETOWNRATTR</entityTypeName>
+<Body><![CDATA[
+LET DREF = FINDDICTENTRY.F(CONCAT.F(PREFIX, ATTRNAME(ATTR)))
+LET AUSE = FINDSPECUSE.F(DREF, .USE.OATTR)
+LET DUSE = MAKEUSE.F(DREF, .USE.OATTR)
+IF AUSE NE 0
+	LET ISCOMMONATT(AUSE) = 1
+	LET ISCOMMONATT(DUSE) = 1
+ENDIF
+LET USEOWNER(DUSE) = OWNERTYPE(ATTR)
+LET USEMODE(DUSE) = MODE
+LET USESETREFATT(DUSE) = ATTR
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>PREFIX</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ATTR</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>MODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MAKESETMMBRATTR</entityTypeName>
+<Body><![CDATA[
+LET DREF = FINDDICTENTRY.F(CONCAT.F(PREFIX, SETNAME(SDEF)))
+LET AUSE = FINDSPECUSE.F(DREF, .USE.MATTR)
+LET DUSE = MAKEUSE.F(DREF, .USE.MATTR)
+IF AUSE NE 0
+	LET ISCOMMONATT(AUSE) = 1
+	LET ISCOMMONATT(DUSE) = 1
+ENDIF
+LET USEOWNER(DUSE) = ETYPE
+LET USEMODE(DUSE) = MODE
+LET USESETDEF(DUSE) = SDEF
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>PREFIX</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>MODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FINDETYPEBYNAME_F</entityTypeName>
+<Body><![CDATA[
+'' find entity type from name - with precedence for given schema
+LET ASCHEMA = F.SCHEMAS
+WHILE ASCHEMA NE 0
+DO
+	LET ETYPE = F.ETYPES(ASCHEMA)
+	WHILE ETYPE NE 0
+	DO
+		IF ETYPENAME(ETYPE) = ANAME
+			LET FOUND = ETYPE
+			IF SCHEMAID(ASCHEMA) = SID
+				RETURN WITH ETYPE	'' look no further
+			ENDIF
+		ENDIF
+		LET ETYPE = S.ETYPES(ETYPE)
+	LOOP
+	LET ASCHEMA = S.SCHEMAS(ASCHEMA)
+LOOP
+RETURN WITH FOUND
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>E</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ANAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>FOUND</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FINDSET_F</entityTypeName>
+<Body><![CDATA[
+'' find set definition matching given name (and ss_id?)
+LET SDEF = F.SETDEFS
+WHILE SDEF NE 0
+DO
+	IF SETNAME(SDEF) EQ ANAME
+		RETURN WITH SDEF
+	ENDIF
+	LET SDEF = S.SETDEFS(SDEF)
+LOOP
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>S</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ANAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>LISTENTITIES</entityTypeName>
+<Body><![CDATA[
+OPEN 7 FOR OUTPUT, NAME IS "C:\\EASEsysdata\\entitylist.txt"
+USE 7 FOR OUTPUT
+WRITE " ****  Entity Definitions ****" AS T *, /
+LET ASCHEMA = F.SCHEMAS
+WHILE ASCHEMA NE 0
+DO
+	WRITE AS /
+	WRITE " ** Schema name: " AS T *
+	WRITE GENNAME(ASCHEMA) AS T *
+''	IF ISSYSDEF(ASCHEMA) NE 0
+''		WRITE "  (EASE System-defined)" AS T *
+''	ENDIF
+	WRITE AS /
+	
+	LET ETYPE = F.ETYPES(ASCHEMA)
+	WHILE ETYPE NE 0
+	DO
+		WRITE ETYPENAME(ETYPE) AS B 2, T *
+		WRITE AS /
+		LET DATTR = F.ATTRDEFS(ETYPE)
+		IF ISPROC(ETYPE) EQ 0 		'' **************************
+			WHILE DATTR NE 0
+			DO	
+				WRITE ATTRNAME(DATTR) AS B 6, T *
+				WRITE AS B 26
+				IF ATTRTYPE(DATTR) NE 0
+					WRITE ETYPENAME(ATTRTYPE(DATTR)) AS T *
+				ELSE
+					WRITE "Unknown - " AS T *
+				ENDIF
+				WRITE AS /
+				LET DATTR = S.ATTRDEFS(DATTR)
+			LOOP
+		ENDIF						'' **************************
+		LET ETYPE = S.ETYPES(ETYPE)
+	LOOP
+	LET ASCHEMA = S.SCHEMAS(ASCHEMA)
+LOOP
+CLOSE 7
+RETURN
+]]></Body>
+<attrDef>
+<attrName>DATTR</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FINDMODE_F</entityTypeName>
+<Body><![CDATA[
+IF ETYPENAME(ETYPE) = "Integer"
+	RETURN WITH .MODE.INT
+ENDIF
+IF ETYPENAME(ETYPE) = "Real"
+	RETURN WITH .MODE.NMBR
+ENDIF
+IF ETYPENAME(ETYPE) = "Text"
+	RETURN WITH .MODE.TXT
+ENDIF
+RETURN WITH .MODE.REF	''ref
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>M</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+</entityType>
+
+</ENTITIES>
+
+<SYSTEM>
+<entityType ID="0">
+<entityTypeName>SYSTEM</entityTypeName>
+<attrDef scripted="Y">
+<attrName>ENTITYTYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef scripted="Y">
+<attrName>SCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef scripted="Y">
+<attrName>ATTRDEF</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef scripted="Y">
+<attrName>FIXUP</attrName>
+<attrTypeName>FIXUP</attrTypeName>
+</attrDef>
+<attrDef scripted="Y">
+<attrName>ERRORREC</attrName>
+<attrTypeName>ERRORREC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_ATTRFIXUPS</attrName>
+<attrTypeName>FIXUP</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SETOWNRFIXUPS</attrName>
+<attrTypeName>FIXUP</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SETMMBRFIXUPS</attrName>
+<attrTypeName>FIXUP</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SETDEFS</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SCHEMAS</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SYSTEMS</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_ERRORRECS</attrName>
+<attrTypeName>ERRORREC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_ERRORRECS</attrName>
+<attrTypeName>ERRORREC</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>E_BUILTINS</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+</entityType>
+</SYSTEM>
+
+</EASE-Database>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<EASE-Database ID="2000" genname="pjobsdef">
+<ENTITIES>
+
+<entityType ID="2" isPersistent="Y">
+<entityTypeName>JOB</entityTypeName>
+<attrDef>
+<attrName>JOBNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>PRIORITY</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>VALUE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+
+<setOwnDef dbId="4000">ROUTING</setOwnDef>
+
+<setBelongDef dbId="4000">INBUFFER</setBelongDef>
+</entityType>
+
+<entityType ID="3" isPersistent="Y">
+<entityTypeName>JOBSTEP</entityTypeName>
+<attrDef>
+<attrName>STEPNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+
+<setBelongDef dbId="2000">ROUTING</setBelongDef>
+</entityType>
+
+</ENTITIES>
+
+<SETS>
+<setDef discipline="L" isPersistent="Y">
+<setName>ROUTING</setName>
+</setDef>
+</SETS>
+
+
+<SYSTEM>
+<entityType ID="0">
+<entityTypeName>SYSTEM</entityTypeName>
+<attrDef scripted="Y">
+<attrName>JOB</attrName>
+<attrTypeName>JOB</attrTypeName>
+</attrDef>
+<attrDef scripted="Y">
+<attrName>JOBSTEP</attrName>
+<attrTypeName>JOBSTEP</attrTypeName>
+</attrDef>
+</entityType>
+</SYSTEM>
+</EASE-Database>

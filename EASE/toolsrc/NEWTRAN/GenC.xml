@@ -1,0 +1,1764 @@
+<?xml version="1.0"?>
+<EASE-Database ID="3008" genname="EASEgen">
+<ENTITIES>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MAKETYPE_F</entityTypeName>
+<Body><![CDATA[
+IF TARGETNAME(ETYPE) NE 0
+	LET TXT = TARGETNAME(ETYPE)
+ELSE
+	LET TXT = CONCAT.F("struct ", ETYPENAME(ETYPE))
+	LET TXT = CONCAT.F(TXT, "*")
+ENDIF
+WHILE STARS GT 0
+DO
+	LET TXT = CONCAT.F(TXT, "*")
+	LET STARS = STARS - 1
+LOOP
+RETURN WITH TXT
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>T</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>STARS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MAKEATTRTYPE_F</entityTypeName>
+<Body><![CDATA[
+LET ETYPE = ATTRTYPE(ATT)
+LET STARS = SUBSCRIPTS(ATT)
+LET TXT = MAKETYPE_F(ETYPE, STARS)
+RETURN WITH TXT
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>T</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>STARS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENARGLIST</entityTypeName>
+<Body><![CDATA[
+LET FIRST = 1
+WRITE AS "("
+LET ATT = F.ATTRDEFS(ETYPE)
+WHILE ATT NE 0
+DO
+	IF ISPARAM(ATT) NE 0
+		IF FIRST EQ 0
+			WRITE AS ", "
+		ENDIF
+		FIRST = 0
+		WRITE MAKEATTRTYPE_F(ATT) AS T *
+		IF ISYIELD(ATT) NE 0
+			WRITE AS "&"
+		ENDIF
+		WRITE ATTRNAME(ATT) AS S 1, T *
+	ENDIF
+	LET ATT = S.ATTRDEFS(ATT)
+LOOP
+WRITE AS ")"
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>FIRST</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENPROC</entityTypeName>
+<Body><![CDATA[
+LET GORETLBL = 0		'' catch 'RETURN' stmts
+LET AUSE = FINDSPECUSE.F(PDICTREF(APROC), .USE.PROC)
+IF RETURNATT(APROC) EQ 0
+	WRITE AS "void "
+ELSE
+	WRITE MAKEATTRTYPE.F(RETURNATT(APROC)) AS T *, S 1
+ENDIF
+LET ETYPE = USEENTITY(AUSE)
+IF ETYPENAME(ETYPE) EQ "MAIN"
+	WRITE AS "main"
+ELSE
+	WRITE ETYPENAME(ETYPE) AS T *
+ENDIF
+CALL GENARGLIST(ETYPE)
+WRITE AS " {", /
+
+LET ATT = F.ATTRDEFS(ETYPE)		'' generate local var declarations
+WHILE ATT NE 0
+DO
+	IF ISPARAM(ATT) EQ 0 AND ATT NE RETURNATT(APROC)
+		WRITE MAKEATTRTYPE.F(ATT) AS T *		
+		WRITE ATTRNAME(ATT) AS S 1, T *, "= 0;", /
+	ENDIF
+	LET ATT = S.ATTRDEFS(ATT)
+LOOP
+IF RETURNATT(APROC) NE 0 
+	WRITE MAKEATTRTYPE.F(RETURNATT(APROC)), "rval" AS T *, S 1, T *, " = 0;", /
+ENDIF
+
+LET ATT = F.ATTRDEFS(ETYPE)
+WHILE ATT NE 0
+DO
+	IF ISPARAM(ATT) NE 0
+		IF ETYPENAME(ATTRTYPE(ATT)) = "Text"
+			WRITE ATTRNAME(ATT) AS "E_TXTINC_R(", T *, ");", /
+		ENDIF
+	ENDIF
+	LET ATT = S.ATTRDEFS(ATT)
+LOOP
+
+IF ETYPENAME(ETYPE) = "MAIN"
+	WRITE AS B 8, "easinit();", /
+ENDIF
+
+LET ASTMT = F.STMTS(APROC)
+WHILE ASTMT NE 0
+DO
+	CALL GENSTMT(APROC, ASTMT)
+	LET ASTMT = S.STMTS(ASTMT)
+LOOP
+IF GORETLBL NE 0
+	WRITE AS B 1, "retlbl:", /
+ENDIF
+
+LET ATT = F.ATTRDEFS(ETYPE)
+WHILE ATT NE 0				'' clean up Text mode locals/args
+DO
+	LET AREF = FINDDICTENTRY_F(ATTRNAME(ATT))
+	LET AUSE = FINDSPECUSE_F(AREF, .USE.LCL)
+	IF ATT NE RETURNATT(APROC)
+		IF ETYPENAME(ATTRTYPE(ATT)) = "Text" 
+			WRITE ATTRNAME(ATT) AS "E_TXTDEL_R(", T *, ");", /
+		ENDIF
+		IF USEMODE(AUSE) = .MODE.REF AND ISPERSISTENT(ATTRTYPE(ATT)) NE 0 
+			WRITE ATTRNAME(ATT) AS "eunasg((char*)&", T *, ");", /
+		ENDIF
+	ENDIF
+	CALL DESTROYUSE(AUSE)
+	LET ATT = S.ATTRDEFS(ATT)
+LOOP
+'' delete lbls, goto per/case etc - someday***********************************
+WRITE AS B 8, "return"
+IF RETURNATT(APROC) NE 0
+	WRITE AS " rval"
+ENDIF
+WRITE AS ";", /, "}", /
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>FIRST</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENADDTYPES</entityTypeName>
+<Body><![CDATA[
+WRITE GENNAME(ASCHEMA) AS "void ", T *, "_addTypes() {", /
+LET ETYPE = F.ETYPES(ASCHEMA)
+WHILE ETYPE NE 0
+DO
+	IF ISPROC(ETYPE) EQ 0
+		WRITE ETYPENAME(ETYPE) AS
+				"#ifdef _", T *, /
+		WRITE QUOTE.F(ETYPENAME(ETYPE)), SCHEMAID(ASCHEMA), ETYPEID(ETYPE) AS
+			"addEType(E_TXTLIT_F(_T(", T *, ")), ", I 4, ", ", I 4, ", "
+		IF ISPERSISTENT(ETYPE) NE 0
+			WRITE CONCAT.F("Y_", ETYPENAME(ETYPE)) AS T *
+		ELSE
+			WRITE AS "0"
+		ENDIF
+		WRITE AS ");", /, "#endif", /
+	ENDIF
+	LET ETYPE = S.ETYPES(ETYPE)
+LOOP
+WRITE AS "}", /
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENINIT</entityTypeName>
+<Body><![CDATA[
+WRITE AS /, "void easinit() {", /
+LET SYSETYPE = F.SYSTEMS
+WHILE SYSETYPE NE 0
+DO
+	LET SYSNAME = GENNAME(SCHEMAREF(SYSETYPE))
+	WRITE SYSNAME AS T *, "_init();", /
+	SYSETYPE = S.ETYPES(SYSETYPE)
+LOOP
+WRITE "}" AS T *, /
+RETURN END
+]]></Body>
+<attrDef>
+<attrName>SYSETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SYSNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>STYPENAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SREF</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENPROCINCL</entityTypeName>
+<Body><![CDATA[
+'' generate procedure includes
+PRINT 1 LINE THUS
+#include \"stdafx.h\"
+PRINT 1 LINE THUS
+#include \"malloc.h\"
+IF USEPERSIST NE 0
+	PRINT 1 LINE THUS
+	#define EASpersist
+ENDIF
+PRINT 1 LINE THUS
+#include \"libopts.h\"
+PRINT 1 LINE THUS
+#include \"math.h\"
+LET TXT = CONCAT.F(GENNAME(ASCHEMA), ".h")
+WRITE QUOTE.F(TXT) AS "#include ", T *, /, /
+
+CALL GENADDTYPES(ASCHEMA)
+
+LET SYSNAME = GENNAME(ASCHEMA)
+IF THESYSTEM(ASCHEMA) != 0
+	LET STYPENAME = CONCAT.F(SYSNAME, "_sys")
+	LET SREF = CONCAT.F(STYPENAME, "*")
+	WRITE SREF, SYSNAME  AS T *, S 1, T *, ";", /
+ENDIF
+WRITE SYSNAME AS /, "void ", T *, "_init() {", /
+IF THESYSTEM(ASCHEMA) != 0
+	LET ID = SCHEMAID(ASCHEMA)
+	WRITE SYSNAME, " = (", SREF, ")E_CREATE_F( 0,", ID, ", sizeof(", STYPENAME, "));"    
+		AS T *, T *, T *, T *, I 4, T *, T *, T *, /
+	WRITE CONCAT.F(SYSNAME, "_sets();") AS T *, /
+ENDIF
+WRITE SYSNAME AS T *,"_addTypes();", /
+WRITE "}" AS T *, /
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SYSNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>STYPENAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SREF</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENMAP</entityTypeName>
+<Body><![CDATA[
+LET ATTR = F.ATTRDEFS(ETYPE)
+WHILE ATTR NE 0
+DO
+	LET N = N + 1
+
+	LET ATTR = S.ATTRDEFS(ATTR)
+LOOP
+LET ATTR = F.ATTRDEFS(ETYPE)
+IF NOHDR(SCHEMAREF(ETYPE)) EQ 0
+	LET N = N + 4		'' schema uses explicit header attributes (sets)
+ELSE
+	FOR I = 1 TO 4
+	DO
+		LET ATTR = S.ATTRDEFS(ATTR)	'' skip standard hdr attrs
+	LOOP
+ENDIF
+WRITE ETYPENAME(ETYPE), N + 2, ETYPENAME(ETYPE), N AS
+	"const int Y_", T *, "[", I 3, "] = { sizeof(", T *, "), ", I 3, ", 1, 1, 4, 5"
+
+WHILE ATTR NE 0
+DO
+	LET ETYPE = ATTRTYPE(ATTR)
+	LET N = .MODE.REF		'' tentative
+	FOR I = 1 TO 3
+	DO
+		IF ETYPE = E_BUILTINS(I)
+			LET N = I
+			LEAVE
+		ENDIF
+	LOOP
+	IF N = .MODE.REF
+		IF ISPERSISTENT(ETYPE) NE 0
+			LET N = 5
+		ENDIF
+	ENDIF
+	WRITE N AS ", ", I 2 
+	LET ATTR = S.ATTRDEFS(ATTR)
+LOOP
+
+WRITE AS " };", /
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>N</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATTR</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENSIZES</entityTypeName>
+<Body><![CDATA[
+'' generate size constants for entity types
+LET ETYPE = F.ETYPES(ASCHEMA)
+WHILE ETYPE NE 0
+DO
+	IF ISPROC(ETYPE) = 0
+		LET TXT = CONCAT.F("int Z_", ETYPENAME(ETYPE))
+		WRITE TXT, ETYPENAME(ETYPE) AS T *, " = sizeof(", T *, ");", /
+	ENDIF
+	IF ISPERSISTENT(ETYPE) NE 0
+		CALL GENMAP(ETYPE)
+	ENDIF
+	LET ETYPE = S.ETYPES(ETYPE)
+LOOP
+WRITE AS /
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENSTMT</entityTypeName>
+<Body><![CDATA[
+LET CURRLINE = STMTLINE(ASTMT)		'' for error location
+LET RNAME = RULENAME(STMTRULE(ASTMT))
+LET ANODE = F.PARSENODES(ASTMT)		'' most need this...
+WRITE AS B 8
+
+IF RNAME = "CREATE"
+	LET AUSE = FINDSPECUSE.F(DICTREF(START(ANODE)), .USE.ENT)
+	IF AUSE EQ 0
+		CALL EASERR(1011, LEXEME(START(ANODE)))
+		RETURN
+	ENDIF
+	LET ISUSEDTYPE(USEENTITY(AUSE)) = 1
+	IF S.NODES(ANODE) NE 0		'' called ?
+		LET ANODE = S.NODES(ANODE)
+	ENDIF
+	LET MODE = GENVAR(ANODE, 1)
+	IF ISPERSISTENT(USEENTITY(AUSE)) NE 0
+		WRITE ETYPENAME(USEENTITY(AUSE)) AS ", c_", T *, "());"
+		LET USEPERSIST = 1
+	ELSE
+		WRITE ETYPENAME(USEENTITY(AUSE)) AS "= c_", T *, "();"
+	ENDIF
+	WRITE AS /
+	RETURN
+ENDIF
+
+IF RNAME = "DESTROY"
+	LET AUSE = FINDSPECUSE.F(DICTREF(START(ANODE)), .USE.ENT)
+	IF AUSE EQ 0
+		CALL EASERR(1011, LEXEME(START(ANODE)))
+		RETURN
+	ENDIF
+	IF S.NODES(ANODE) NE 0		'' called ?
+		LET ANODE = S.NODES(ANODE)
+	ENDIF
+	WRITE CONCAT.F("d_", ETYPENAME(USEENTITY(AUSE))) AS T *, "("
+	LET MODE = GENVAR(ANODE, 0)
+	WRITE AS ");", /
+	RETURN
+ENDIF
+
+IF RNAME = "ASSIGN"
+	LET VARNODE = ANODE
+	LET EXPNODE = S.NODES(VARNODE)
+
+	LET AUSE = FINDPREFUSE_F(START(VARNODE), 1)
+	IF USEMODE(AUSE) EQ .MODE.TXT
+		WRITE AS "E_TXTASG_R(&"
+		LET MODE = GENVAR(VARNODE, 0)
+		WRITE AS ", "
+		LET MODE = GENEXP(EXPNODE)
+		WRITE AS ");", /
+		RETURN
+	ENDIF
+
+	IF USETYPE(AUSE) EQ .USE.PROC		'' left routine invocation
+		LET ANODE = F.SUBNODES(VARNODE)
+		WRITE LEXEME(DICTREF(START(ANODE))) AS "Q", T *, "("
+		LET ANODE = F.SUBNODES(S.NODES(ANODE))
+		WHILE ANODE NE 0
+		DO
+			LET MODE = GENEXP(ANODE)
+			WRITE AS ", "
+			LET ANODE = S.NODES(ANODE)
+		LOOP
+		LET MODE = GENEXP(EXPNODE)
+		WRITE AS ");", /
+		RETURN
+	ENDIF
+	
+	IF USETYPE(AUSE) EQ .USE.OATTR
+	 OR USETYPE(AUSE) EQ .USE.MATTR
+		CALL EASERR(1017, LEXEME(START(ANODE)))		'' can't assign to synthesized attribute
+		RETURN
+	ENDIF 
+	IF ISPERSISTENT(USEENTITY(AUSE)) NE 0
+		LET MODE = GENVAR(VARNODE, 1)
+		WRITE AS ", (iRef*)"
+		LET MODE = GENEXP(EXPNODE)
+		WRITE AS ");", /
+		RETURN
+	ENDIF
+
+	LET MODE = GENVAR(VARNODE, 1)
+	WRITE AS " = "
+	IF USESUBS(AUSE) NE 0
+		LET COUNT = 0
+		LET ANODE = S.NODES(F.SUBNODES(VARNODE))
+		IF ANODE NE 0		'' subscripted
+			LET ANODE = F.SUBNODES(ANODE)
+			WHILE ANODE NE 0
+			DO
+				IF MATCHNUM(ANODE) EQ 1	'' not '*'
+					LET COUNT = COUNT + 1
+				ENDIF
+				LET ANODE = S.NODES(ANODE)
+			LOOP
+			LET COUNT = USESUBS(AUSE) - COUNT
+		ENDIF
+	ENDIF
+	IF MODE = .MODE.REF OR USESUBS(AUSE) NE 0
+		WRITE AS "("
+		''IF MODE EQ .MODE.REF AND USETYPE(AUSE) EQ .USE.LCL
+		''	WRITE AS "struct "
+		''ENDIF
+		WRITE MAKETYPE.F(USEENTITY(AUSE), COUNT) AS T *, ")"
+	ENDIF
+	LET EMODE = GENEXP(EXPNODE)
+	WRITE AS ";", /
+	RETURN
+ENDIF
+
+IF RNAME = "CALL"
+	AUSE = FINDSPECUSE.F(DICTREF(START(ANODE)), .USE.PROC)
+	IF AUSE EQ 0
+		CALL EASERR(1012, LEXEME(START(ANODE)))
+		RETURN
+	ENDIF
+	CALL GENCALL(F.PARSENODES(ASTMT))
+	WRITE AS ";", /
+	RETURN
+ENDIF
+
+IF RNAME = "GOTO"
+	WRITE LEXEME(DICTREF(START(ANODE))) AS "goto ", T *, ";", /
+	RETURN
+ENDIF
+
+IF RNAME = "LBL"
+	WRITE LEXEME(DICTREF(S.TOKENLIST(START(ANODE)))) AS B 1, T *, ":", /
+	'' some use_lbl stuff here... and maybe a null stmt?
+	LET ASTMT = S.STMTS(ASTMT)
+	IF ASTMT NE 0
+		IF RULENAME(STMTRULE(ASTMT)) EQ "ENDIF" 
+		 OR RULENAME(STMTRULE(ASTMT)) = "ELSE"
+			WRITE AS ";"
+		ENDIF
+	ENDIF
+	RETURN
+ENDIF
+
+IF RNAME = "IF"
+	IF MATCHNUM(ANODE) EQ 2
+		RETURN			'' a IS A form - see scripting
+	ENDIF
+	WRITE AS "if ("
+	CALL GENLOGICL(ANODE)
+	WRITE AS ") {", /
+	RETURN
+ENDIF
+
+IF RNAME = "ELSE"
+	'' some checking here !!!
+	WRITE AS "}", /, B 8, "else {", /
+	RETURN
+ENDIF
+
+IF RNAME = "ENDIF"
+	'' some checking here !!!
+	WRITE AS "}", /
+	RETURN
+ENDIF
+
+IF RNAME = "RET"
+	LET GORETLBL = 1			'' we will need 'retlbl'
+	LET ANODE = S.NODES(ANODE)
+	IF ANODE NE 0				'' return has 'with' value
+		IF RETURNATT(APROC) EQ 0
+			CALL EASERR(-1013, 0)
+		ENDIF
+		LET ANODE = F.SUBNODES(ANODE)
+		IF ETYPENAME(ATTRTYPE(RETURNATT(APROC))) = "Text"
+			WRITE AS "E_TXTASG_R(&rval, "
+			LET MODE = GENEXP(ANODE)
+			WRITE AS ");", /
+		ELSE
+			WRITE MAKEATTRTYPE.F(RETURNATT(APROC)) AS "rval = (", T *, ")"
+			LET MODE = GENEXP(ANODE)
+			WRITE AS ";", /
+		ENDIF
+	ELSE
+		IF RETURNATT(APROC) NE 0
+			CALL EASERR(-1014, 0)
+		ENDIF
+	ENDIF
+	WRITE AS "goto retlbl;", /
+	RETURN
+ENDIF
+
+IF RNAME = "RESERVE"
+	IF S.NODES(S.NODES(ANODE)) NE 0		'' a 'by' expression - done in scripting
+		RETURN
+	ENDIF
+	CALL GENRESERVE(ANODE)
+ENDIF
+
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>VARNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>EXPNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUBNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE2</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>MODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>EMODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>COUNT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENFUNC</entityTypeName>
+<Body><![CDATA[
+WRITE LEXEME(DICTREF(START(ANODE))) AS T *, "("
+IF S.NODES(ANODE) NE 0
+	FIRST = 1
+	ANODE = F.SUBNODES(S.NODES(ANODE))
+	WHILE ANODE NE 0
+	DO
+		IF FIRST EQ 0
+			WRITE AS ", "
+		ENDIF
+		LET EMODE = GENEXP(ANODE)
+		LET FIRST = 0
+		ANODE = S.NODES(ANODE)
+	LOOP
+ENDIF
+WRITE AS ")"
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>EMODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>FIRST</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENCALL</entityTypeName>
+<Body><![CDATA[
+WRITE LEXEME(DICTREF(START(ANODE))) AS T *, "("
+LET	FIRST = 1
+LET ANODE = S.NODES(ANODE)		'' arguments?
+WHILE ANODE NE 0
+DO
+	LET SUBNODE = F.SUBNODES(ANODE)
+	IF SCRIPTCODE(SUBNODE) NE 0
+		LET YLD = 1
+	ENDIF
+	WHILE SUBNODE NE 0
+	DO
+		IF FIRST EQ 0
+			WRITE AS ", "
+		ELSE
+			LET FIRST = 0
+		ENDIF
+		IF YLD EQ 0
+			LET EMODE = GENEXP(F.SUBNODES(SUBNODE))
+		ELSE
+			LET EMODE = GENVAR(F.SUBNODES(SUBNODE), 1)
+		ENDIF
+		LET SUBNODE = S.NODES(SUBNODE)
+	LOOP
+	LET ANODE = S.NODES(ANODE)
+LOOP
+WRITE AS ")"
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUBNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>EMODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>FIRST</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>YLD</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENRESERVE</entityTypeName>
+<Body><![CDATA[
+LET AUSE = FINDPREFUSE.F(START(ANODE), 1)
+LET I = USESUBS(AUSE)
+IF I EQ 0
+	CALL EASERR(1003, LEXEME(START(ANODE)))
+	RETURN
+ENDIF
+LET ETYPE = USEENTITY(AUSE)
+LET ARRMODE = GENVAR(ANODE, 1)
+WRITE AS " = "
+LET I = USESUBS(AUSE)
+LET SUBNODE = S.NODES(F.SUBNODES(ANODE))
+IF SUBNODE NE 0
+	IF MATCHNUM(SUBNODE) = 1	'' not 'star'
+		LET I = I - 1			'' ..this is not last dimension
+	ENDIF
+ENDIF
+WRITE ARRTYPE.F(ETYPE, I) AS T *
+WRITE AS "calloc("
+LET MODE = GENEXP(S.NODES(ANODE))
+LET I = I - 1
+WRITE ARRTYPE.F(ETYPE, I) AS " + 1, sizeof", T *, ");", /
+WRITE AS B 8
+LET MODE = GENVAR(ANODE, 1)
+WRITE AS "[0] = "
+WRITE ARRTYPE.F(ETYPE, I) AS T *, "("
+LET MODE = GENEXP(S.NODES(ANODE))
+WRITE AS ");", /
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ARRMODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUBNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>ARRTYPE_F</entityTypeName>
+<Body><![CDATA[
+IF TARGETNAME(ETYPE) NE 0
+	LET TXT = TARGETNAME(ETYPE)
+ELSE
+	LET TXT = CONCAT.F(ETYPENAME(ETYPE), "*")
+ENDIF
+LET TXT = CONCAT.F("(", TXT)
+WHILE STARS GT 0
+DO
+	LET TXT = CONCAT.F(TXT, "*")
+	LET STARS = STARS - 1
+LOOP
+LET TXT = CONCAT.F(TXT, ")")
+RETURN WITH TXT
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>T</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>STARS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENVAR</entityTypeName>
+<Body><![CDATA[
+LET VARTOKEN = START(ANODE)
+IF F.SUBNODES(ANODE) NE 0
+	IF S.NODES(F.SUBNODES(ANODE)) NE 0		'' subscript
+		LET SUBNODE = F.SUBNODES(S.NODES(F.SUBNODES(ANODE)))
+	ENDIF
+ENDIF
+
+LET DREF = DICTREF(VARTOKEN)
+
+LET AUSE = FINDSPECUSE.F(DREF, .USE.LCL)
+IF AUSE NE 0
+	IF ISPERSISTENT(USEENTITY(AUSE)) NE 0
+		IF ISPUT NE 0
+			WRITE AS "easg((char*)&"
+		ENDIF
+	ENDIF
+	WRITE LEXEME(DREF) AS T *
+	IF SUBNODE NE 0
+		CALL GENARRSUBS(SUBNODE)
+	ENDIF
+	RETURN WITH USEMODE(AUSE)
+ENDIF
+	
+LET AUSE = FINDSPECUSE.F(DREF, .USE.ATTR)
+IF AUSE NE 0
+	IF ISCOMMONATT(AUSE) NE 0 AND SUBNODE = 0
+		CALL EASERR(1015, LEXEME(VARTOKEN))
+		RETURN WITH USEMODE(AUSE)
+	ENDIF
+	IF ISPERSISTENT(USEOWNER(AUSE)) NE 0
+		RETURN WITH GENPATTR(AUSE, VARTOKEN, SUBNODE, ISPUT)
+	ELSE
+		IF ISPERSISTENT(USEENTITY(AUSE)) NE 0
+			RETURN WITH GENPENTREF(AUSE, VARTOKEN, SUBNODE, ISPUT)
+		ENDIF
+	ENDIF
+	LET AREF = FINDDICTENTRY.F(ETYPENAME(USEOWNER(AUSE)))
+	IF SUBNODE NE 0 AND USESUBS(AUSE) EQ 0
+		LET EMODE = GENEXP(SUBNODE)
+		LET SUBNODE = 0
+	ELSE							'' implicit subscript?
+		IF FINDSPECUSE.F(AREF, .USE.LCL) EQ 0
+			LET SUSE = FINDSPECUSE_F(AREF, .USE.ENT)
+			IF SUSE NE 0
+				LET SUSE = FINDSPECUSE.F(AREF, .USE.ATTR)
+				WRITE ETYPENAME(USEOWNER(SUSE)) AS T *, "->"
+			ENDIF
+		ENDIF
+		WRITE LEXEME(AREF) AS T *
+	ENDIF
+	WRITE LEXEME(DREF) AS "->", T *
+	IF SUBNODE NE 0
+		CALL GENARRSUBS(SUBNODE)
+	ENDIF
+	RETURN WITH USEMODE(AUSE)
+ENDIF
+
+LET AUSE = FINDSPECUSE.F(DREF, .USE.OATTR)
+IF AUSE NE 0
+	IF ISCOMMONATT(AUSE) NE 0 AND SUBNODE = 0
+		CALL EASERR(1015, LEXEME(VARTOKEN))
+		RETURN WITH USEMODE(AUSE)
+	ENDIF
+	LET ATT = USESETREFATT(AUSE)
+	LET SDEF = SETATTRSETDEF(ATT)
+	LET MREF = F.SETMMBRREFS(SDEF)
+
+	LET AREF = FINDDICTENTRY.F(ETYPENAME(USEOWNER(AUSE)))
+	LET SUSE = FINDSPECUSE.F(AREF, .USE.ENT)
+	IF SUSE NE 0								'' owner entity is not 'SYSTEM'
+		IF ISPERSISTENT(USEENTITY(SUSE)) NE 0	'' owner persistent?
+			LET SAVP = 1
+		ENDIF
+	ENDIF
+
+	IF USEMODE(AUSE) EQ .MODE.REF AND SAVP EQ 0
+		WRITE AS "("
+		CALL GENCAST(MMBRENT(MREF))
+	ENDIF
+
+	WRITE SUBSTR.F(LEXEME(DREF), 1, 2) AS T *
+	IF ISPERSISTENT(ATTRTYPE(ATT)) NE 0			'' persistent set?
+		WRITE AS "P"
+	ELSE
+		IF SAVP NE 0		'' owner persistent?
+			WRITE AS "X"	'' but not set
+		ENDIF
+	ENDIF
+	WRITE AS "EASSET_F("
+	
+	IF SAVP NE 0		'' owner persistent?
+		WRITE AS "("
+		CALL GENCAST(USEOWNER(AUSE))
+		WRITE AS "fetch((iRef*)"
+	ENDIF
+	
+	IF SUBNODE NE 0 AND USESUBS(AUSE) EQ 0
+		LET MODE = GENEXP(SUBNODE)
+		LET SUBNODE = 0
+	ELSE								'' implicit subscript
+		IF FINDSPECUSE.F(AREF, .USE.LCL) EQ 0
+			IF SUSE EQ 0 AND ETYPEID(USEOWNER(AUSE)) NE 0
+				CALL EASERR(1015, LEXEME(VARTOKEN))
+			ENDIF
+			LET SUSE = FINDSPECUSE.F(AREF, .USE.ATTR)	'' of 'system'
+			IF SUSE EQ 0  AND ETYPEID(USEOWNER(AUSE)) NE 0
+				CALL EASERR(1018, LEXEME(AREF))
+			ELSE
+				IF SUSE NE 0
+					WRITE ETYPENAME(USEOWNER(SUSE)) AS T *, "->"
+				ENDIF
+			ENDIF
+		ENDIF
+		WRITE LEXEME(AREF) AS T *
+	ENDIF
+
+	IF SAVP NE 0
+		WRITE AS "))"
+	ENDIF
+	
+	WRITE ATTRNAME(USESETREFATT(AUSE)) AS "->", T *
+	IF SUBNODE NE 0
+		CALL GENARRSUBS(SUBNODE)
+	ENDIF
+	WRITE AS ")"
+	IF USEMODE(AUSE) EQ .MODE.REF AND SAVP EQ 0
+		WRITE AS ")"
+	ENDIF
+
+	RETURN WITH USEMODE(AUSE)
+ENDIF
+
+LET AUSE = FINDSPECUSE.F(DREF, .USE.MATTR)
+IF AUSE NE 0
+	IF ISCOMMONATT(AUSE) NE 0 AND SUBNODE = 0
+		CALL EASERR(1015, LEXEME(VARTOKEN))
+		RETURN WITH USEMODE(AUSE)
+	ENDIF
+	LET SDEF = USESETDEF(AUSE)
+	LET MREF = F.SETMMBRREFS(SDEF)
+	LET AREF = FINDDICTENTRY.F(ETYPENAME(MMBRENT(MREF)))
+	LET SUSE = FINDSPECUSE.F(AREF, .USE.ENT)
+
+	IF ISPERSISTENT(SDEF) NE 0
+		LET SAVP = 1
+	ENDIF
+	
+	IF USEMODE(AUSE) EQ .MODE.REF AND SAVP EQ 0
+		WRITE AS "("
+		CALL GENCAST(MMBRENT(MREF))
+	ENDIF
+	
+	WRITE SUBSTR.F(LEXEME(DREF), 1, 2) AS T *
+	IF SAVP NE 0
+		WRITE AS "P"
+	ELSE
+		IF ISPERSISTENT(USEENTITY(SUSE)) NE 0
+			WRITE AS "X"
+		ENDIF
+	ENDIF
+	WRITE AS "EASSET_F("
+	IF ISPERSISTENT(USEENTITY(SUSE)) NE 0
+		WRITE AS "(iRef*)"
+	ENDIF
+		
+	IF SUBNODE NE 0 AND USESUBS(AUSE) EQ 0
+		LET MODE = GENEXP(SUBNODE)
+		LET SUBNODE = 0
+	ELSE				'' implicit subscript
+		IF FINDSPECUSE.F(AREF, .USE.LCL) EQ 0
+			IF SUSE EQ 0
+				CALL EASERR(1015, LEXEME(VARTOKEN))
+			ENDIF
+			LET SUSE = FINDSPECUSE.F(AREF, .USE.ATTR)
+			IF SUSE EQ 0
+				CALL EASERR(1018, LEXEME(AREF))
+			ELSE
+				WRITE ETYPENAME(USEOWNER(SUSE)) AS T *, "->"
+			ENDIF
+		ENDIF
+		WRITE LEXEME(AREF) AS T *	'' owning entity name
+	ENDIF
+	IF SUBNODE NE 0
+		CALL GENARRSUBS(SUBNODE)
+	ENDIF
+	WRITE QUOTE_F(SETNAME(SDEF)) AS ", E_TXTLIT_F(_T(", T *, ")))"
+	IF USEMODE(AUSE) EQ .MODE.REF AND SAVP EQ 0
+		WRITE AS ")"
+	ENDIF
+
+	RETURN WITH USEMODE(AUSE)
+ENDIF
+
+LET AUSE = FINDSPECUSE.F(DREF, .USE.PROC)
+IF AUSE NE 0
+	CALL GENFUNC(F.SUBNODES(ANODE))	'' function
+	LET MODE = USEMODE(AUSE)
+ELSE
+	LET AUSE = FINDPREFUSE.F(VARTOKEN, 1)
+	WRITE LEXEME(VARTOKEN) AS T *
+ENDIF
+RETURN WITH MODE
+
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>M</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ISPUT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>VARTOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUBNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>EMODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MREF</attrName>
+<attrTypeName>SETMMBRREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SAVP</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENEXP</entityTypeName>
+<Body><![CDATA[
+LET SUBNODE = S.NODES(F.SUBNODES(ANODE))
+IF SUBNODE NE 0							'' MOREXP
+	LET SUBNODE = F.SUBNODES(SUBNODE)	'' operator
+	IF MATCHNUM(SUBNODE) EQ 1			'' ** operator - special case!
+		LET SUBNODE = S.NODES(F.SUBNODES(S.NODES(SUBNODE)))	'' MOREXP ?
+		LET MODE = GENPOWER(ANODE)
+		IF SUBNODE NE 0
+			LET ANODE = F.SUBNODES(SUBNODE)
+			WRITE LEXEME(DICTREF(START(ANODE))) AS T *	'' operator
+			LET ANODE = S.NODES(ANODE)
+			IF ANODE NE 0
+				LET MODE = GENEXP(ANODE)
+			ENDIF
+		ENDIF
+		RETURN WITH MODE
+	ENDIF
+ENDIF
+
+LET ANODE = F.SUBNODES(ANODE)			'' EXP1
+
+LET SUBNODE = F.SUBNODES(ANODE)
+IF S.NODES(SUBNODE) EQ L.SUBNODES(ANODE)	'' unary sign ?
+	IF MATCHNUM(SUBNODE) EQ 2
+		WRITE LEXEME(DICTREF(START(SUBNODE))) AS T *
+	ENDIF
+	LET SUBNODE = S.NODES(SUBNODE)		'' skip to first term
+ENDIF
+LET MATCH = MATCHNUM(SUBNODE)
+IF MATCH EQ 1
+	WRITE LEXEME(DICTREF(START(SUBNODE))) AS T *
+	LET MODE = .MODE.INT
+ENDIF
+IF MATCH EQ 2
+	WRITE LEXEME(DICTREF(START(SUBNODE))) AS T *
+	LET MODE = .MODE.NMBR
+ENDIF
+IF MATCH EQ 3
+	WRITE QUOTE_F(LEXEME(DICTREF(START(SUBNODE)))) AS "E_TXTLIT_F(_T(", T *, "))"
+	LET MODE = .MODE.TXT
+ENDIF
+IF MATCH EQ 4
+	LET MODE = GENVAR(SUBNODE, 0)
+ENDIF
+IF MATCH EQ 5
+	WRITE AS "("
+	LET MODE = GENEXP(F.SUBNODES(SUBNODE))
+	WRITE AS ")"
+ENDIF
+IF MATCH EQ 6
+	WRITE LEXEME(DICTREF(START(F.SUBNODES(SUBNODE)))) AS T *
+	LET MODE = .MODE.UNDEF		'' for now...
+ENDIF
+IF S.NODES(ANODE) NE 0							'' more sub-expressions?
+	LET ANODE = F.SUBNODES(S.NODES(ANODE))
+	WRITE LEXEME(DICTREF(START(ANODE))) AS T *	'' operator
+	LET ANODE = S.NODES(ANODE)
+	IF ANODE NE 0
+		LET MODE = GENEXP(ANODE)
+	ENDIF
+ENDIF
+
+RETURN WITH MODE
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>M</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUBNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MATCH</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENPOWER</entityTypeName>
+<Body><![CDATA[
+LET SUBNODE = F.SUBNODES(ANODE)		'' EXP1
+LET EXPNODE = S.NODES(SUBNODE)	'' **
+LET S.NODES(SUBNODE) = 0			'' isolate
+WRITE AS " pow("
+LET MODE = GENEXP(ANODE)			'' EXP
+WRITE AS ", "
+LET ANODE = S.NODES(F.SUBNODES(EXPNODE))	'' EXP
+LET S.NODES(F.SUBNODES(ANODE)) = 0	'' isolate from any MOREXP
+LET MODE = GENEXP(ANODE)
+WRITE AS ")"
+RETURN WITH MODE
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>M</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>EXPNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUBNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MATCH</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENARRSUBS</entityTypeName>
+<Body><![CDATA[
+WHILE ANODE NE 0
+DO
+	IF MATCHNUM(ANODE) NE 1
+		RETURN			'' STAR * don't gen
+	ENDIF
+	WRITE AS "["
+	LET EMODE = GENEXP(ANODE)
+	WRITE AS "]"
+	LET ANODE = S.NODES(ANODE)
+LOOP
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>EMODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENLOGICL</entityTypeName>
+<Body><![CDATA[
+LET SUBNODE = F.SUBNODES(ANODE)
+IF S.NODES(SUBNODE) NE 0			'' true/false ?
+	IF MATCHNUM(F.SUBNODES(S.NODES(SUBNODE))) = 2
+		WRITE AS " ! "
+	ENDIF
+ENDIF
+IF MATCHNUM(SUBNODE) EQ 1			'' parens
+	WRITE AS " ( "
+	CALL GENLOGICL(S.NODES(F.SUBNODES(SUBNODE)))
+	WRITE AS " ) "
+ELSE
+	CALL GENCOMP(F.SUBNODES(SUBNODE))
+ENDIF
+
+LET ANODE = S.NODES(ANODE)			'' more ?
+IF ANODE NE 0
+	LET SUBNODE = F.SUBNODES(ANODE)
+	IF MATCHNUM(SUBNODE) EQ 1
+		WRITE AS " & "
+	ELSE
+		WRITE AS " | "
+	ENDIF
+	LET ANODE = S.NODES(SUBNODE)	'' skip operator
+	CALL GENLOGICL(ANODE)
+ENDIF
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUBNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENCOMP</entityTypeName>
+<Body><![CDATA[
+LET OPMATCH = MATCHNUM(S.NODES(ANODE))
+LET FINDER = F.SUBNODES(ANODE)
+WHILE F.SUBNODES(FINDER) NE 0
+ LET FINDER = F.SUBNODES(FINDER)	'' looking for first term of expression
+LET AUSE = FINDPREFUSE.F(START(FINDER), 1)
+IF USEMODE(AUSE) EQ .MODE.TXT
+	IF OPMATCH EQ 1
+		WRITE AS "E_TXTEQL_F("
+	ELSE
+		WRITE AS "E_TXTNEQ_F("
+	ENDIF
+	LET MODE1 = GENEXP(ANODE)
+	WRITE AS ", "
+	LET MODE2 = GENEXP(S.NODES(S.NODES(ANODE)))
+	WRITE AS ")"
+	'' check modes ?
+	RETURN
+ENDIF
+LET MODE1 = GENEXP(ANODE)
+LET ANODE = S.NODES(ANODE)
+WRITE LOGICOPS(OPMATCH) AS T *
+LET ANODE = S.NODES(ANODE)
+LET MODE2 = GENEXP(ANODE)
+'' check modes ?
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>FINDER</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>MODE1</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>MODE2</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>OPMATCH</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENHEADER</entityTypeName>
+<Body><![CDATA[
+'' generate header file
+PRINT 1 LINE THUS
+#pragma once\n\#include \"easlib.h\"\n
+LET ISCHEMA = F.SCHEMAS
+WHILE ISCHEMA NE 0
+DO
+	IF ISCHEMA NE ASCHEMA AND NOGEN(ISCHEMA) EQ 0
+		LET TXT = CONCAT.F(GENNAME(ISCHEMA), ".h")
+		WRITE QUOTE.F(TXT) AS "#include ", T *, /
+	ENDIF
+	LET ISCHEMA = S.SCHEMAS(ISCHEMA)
+LOOP
+WRITE AS /
+
+	LET ETYPE = F.ETYPES(ASCHEMA)
+	WHILE ETYPE NE 0
+	DO
+		IF ISPROC(ETYPE) = 0
+''			IF ISUSEDTYPE(ETYPE) NE 0
+				WRITE ETYPENAME(ETYPE) AS "#define _", T *, /
+''			ENDIF
+		ENDIF
+		LET ETYPE = S.ETYPES(ETYPE)
+	LOOP
+WRITE AS /
+
+'' entity structs
+LET ETYPE = F.ETYPES(ASCHEMA)
+WHILE ETYPE NE 0
+DO
+	IF ISPROC(ETYPE) = 0
+		WRITE ETYPENAME(ETYPE) AS "struct ", T *, " {", /
+		IF NOHDR(ASCHEMA) = 0
+			WRITE AS "struct eInstHdr hdr;", /
+		ENDIF
+		LET ATT = F.ATTRDEFS(ETYPE)
+		WHILE ATT NE 0
+		DO
+			WRITE MAKEATTRTYPE.F(ATT), ATTRNAME(ATT) AS T *, S 1, T *, ";", /
+			LET ATT = S.ATTRDEFS(ATT)
+		LOOP
+		WRITE AS "};", /
+		WRITE ETYPENAME(ETYPE), ETYPENAME(ETYPE) AS 
+			"#define Z_", T *, " sizeof(", T *, ")", /
+		IF ISPERSISTENT(ETYPE) NE 0
+			CALL GENMAP(ETYPE)
+		ENDIF
+	ENDIF
+	LET ETYPE = S.ETYPES(ETYPE)
+LOOP
+
+'' procedure prototypes
+LET ETYPE = F.ETYPES(ASCHEMA)
+WHILE ETYPE NE 0
+DO
+	IF ISPROC(ETYPE) NE 0
+		IF ETYPENAME(ETYPE) NE "MAIN"
+			LET ATT = F.ATTRDEFS(ETYPE)
+			WHILE ATT NE 0
+			DO
+				IF ISRETTYPE(ATT) NE 0
+					LEAVE
+				ENDIF
+				LET ATT = S.ATTRDEFS(ATT)
+			LOOP
+			IF ATT NE 0
+				WRITE MAKEATTRTYPE_F(ATT) AS T *
+			ELSE
+				WRITE AS "void"
+			ENDIF
+
+			WRITE ETYPENAME(ETYPE) AS S 1, T *
+			CALL GENARGLIST(ETYPE)
+			WRITE AS ";", /
+		ENDIF
+	ENDIF
+	LET ETYPE = S.ETYPES(ETYPE)
+LOOP
+
+LET ETYPE = THESYSTEM(ASCHEMA)
+IF ETYPE NE 0			'' and write its struct
+	WRITE ETYPENAME(ETYPE) AS /, "struct ", T *, "_sys {", /
+	WRITE AS "struct eInstHdr hdr;", /
+	LET ATT = F.ATTRDEFS(ETYPE)
+	WHILE ATT NE 0
+	DO
+		WRITE MAKEATTRTYPE.F(ATT), ATTRNAME(ATT) AS T *, S 1, T *, ";", /
+		LET ATT = S.ATTRDEFS(ATT)
+	LOOP
+	WRITE AS "};", /
+	WRITE GENNAME(ASCHEMA), GENNAME(ASCHEMA) AS "extern ", T *, "_sys* ", T *, ";", /
+ENDIF
+WRITE GENNAME(ASCHEMA) AS "void ", T *, "_init();", /
+
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ISCHEMA</attrName>
+<attrTypeName>SCHEMA</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SYSENT</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>QUOTE_F</entityTypeName>
+<Body><![CDATA[
+LET TXT = CONCAT.F(" ", TXT)
+LET TXT = CONCAT.F(TXT, " ")
+LET ACHAR.F(TXT, 1) = 34
+LET L = LENGTH.F(TXT)
+LET ACHAR.F(TXT, L) = 34
+RETURN WITH TXT
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>T</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>TXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>L</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENCAST</entityTypeName>
+<Body><![CDATA[
+WRITE AS "("
+IF TARGETNAME(ETYPE) NE ""
+	WRITE TARGETNAME(ETYPE) AS T *
+ELSE
+	WRITE ETYPENAME(ETYPE) AS "struct ", T *, "*"
+ENDIF
+WRITE AS ")"
+RETURN
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENSTARCAST</entityTypeName>
+<Body><![CDATA[
+WRITE AS "("
+IF TARGETNAME(ETYPE) NE ""
+	WRITE TARGETNAME(ETYPE) AS T *
+ELSE
+	WRITE ETYPENAME(ETYPE) AS T *
+ENDIF
+WRITE AS "*)"
+RETURN
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENPENTREF</entityTypeName>
+<Body><![CDATA[
+IF ISPUT NE 0
+	WRITE AS "easg((char*)&"
+ELSE
+	CALL GENCAST(USEENTITY(AUSE))
+ENDIF
+IF SUBNODE NE 0 AND USESUBS(AUSE) = 0
+	LET MODE = GENEXP(SUBNODE)
+	LET SUBNODE = 0
+ELSE
+	WRITE ETYPENAME(USEOWNER(AUSE)) AS T *
+ENDIF
+WRITE LEXEME(DICTREF(VARTOKEN)) AS "->", T *
+IF SUBNODE NE 0
+	LET MODE = GENEXP(SUBNODE)
+ENDIF
+RETURN WITH .MODE.REF
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>M</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>VARTOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SUBNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ISPUT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GENPATTR</entityTypeName>
+<Body><![CDATA[
+IF ISPUT NE 0 
+	IF USEMODE(AUSE) = .MODE.REF AND ISPERSISTENT(USEENTITY(AUSE)) NE 0
+		WRITE AS "easg((char*)&"
+	ENDIF
+	WRITE AS "(*"
+	CALL GENSTARCAST(USEENTITY(AUSE))
+	WRITE AS "&"
+ELSE
+	CALL GENCAST(USEENTITY(AUSE))
+ENDIF
+WRITE AS "("
+CALL GENCAST(USEOWNER(AUSE))
+WRITE AS "fetch((iRef*)"
+IF SUBNODE NE 0 AND USESUBS(AUSE) = 0
+	LET MODE = GENEXP(SUBNODE)
+	LET SUBNODE = 0
+ELSE				'' implicit subscript
+	AREF = FINDDICTENTRY.F(ETYPENAME(USEOWNER(AUSE)))
+	IF FINDSPECUSE.F(AREF, .USE.LCL) EQ 0
+		SUSE = FINDSPECUSE.F(AREF, .USE.ATTR)	'' of 'system'
+		IF SUSE EQ 0
+			CALL EASERR(1018, LEXEME(AREF))
+		ELSE
+			WRITE ETYPENAME(USEOWNER(SUSE)) AS T *, "->"
+		ENDIF
+	ENDIF
+	WRITE LEXEME(AREF) AS T *					'' owning entity name
+ENDIF
+WRITE LEXEME(DICTREF(VARTOKEN)) AS "))->", T *	'' attribute name
+IF SUBNODE NE 0
+	LET MODE = GENEXP(SUBNODE)
+ENDIF
+IF ISPUT NE 0
+	WRITE AS ")"
+ENDIF
+RETURN WITH USEMODE(AUSE)
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>M</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>VARTOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SUBNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ISPUT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+</entityType>
+
+</ENTITIES>
+
+<SYSTEM>
+<entityType ID="0">
+<entityTypeName>SYSTEM</entityTypeName>
+<attrDef embedded="Y">
+<attrName>GORETLBL</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>LOGICOPS</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>USEPERSIST</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+</SYSTEM>
+
+</EASE-Database>

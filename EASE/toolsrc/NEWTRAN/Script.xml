@@ -1,0 +1,1112 @@
+<?xml version="1.0"?>
+<EASE-Database ID="3006" genname="Script">
+<ENTITIES>
+<entityType ID="1">
+<entityTypeName>SCRIPTELEM</entityTypeName>
+<attrDef>
+<attrName>DICTREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SCRIPTCODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SCRIPTACTION</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>TKNFORM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SCRIPTPREFIX</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_SCRIPTELEMS</attrName>
+<attrTypeName>SCRIPTELEM</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>READSCRIPTS</entityTypeName>
+<Body><![CDATA[
+RESERVE SCRIPTS AS 128
+SCRIPTNO = 1
+OPEN 5 FOR INPUT, NAME IS FILENAME
+USE 5 FOR INPUT
+LET EOF.V = 1
+WHILE EOF.V NE 2
+DO
+	READ ALINE AS T RRECLEN.V
+	LET LEN = LENGTH.F(ALINE)
+	CALL ANALYZE(ALINE, LEN, 1)
+	CALL READSCRIPT(SCRIPTNO)
+	LET SCRIPTNO = SCRIPTNO + 1
+	READ AS /
+LOOP
+CLOSE 5
+RESERVE NODEPTRS AS 9
+RESERVE STRPTRS AS 9
+RESERVE IPTRS AS 9
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>FILENAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SCRIPTNO</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALINE</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LEN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>READSCRIPT</entityTypeName>
+<Body><![CDATA[
+LET ATOKEN = F.TOKENLIST
+WHILE LEXEME(ATOKEN) NE "!"
+DO
+	CREATE A SCRIPTELEM CALLED AELEM
+	IF LEXEME(ATOKEN) = "#"
+		LET ATOKEN = S.TOKENLIST(ATOKEN)
+		LET SCRIPTACTION(AELEM) = 1
+		LET SCRIPTCODE(AELEM) = ACHAR.F(LEXEME(ATOKEN), 1) - 48
+		IF LEXEME(DICTREF(S.TOKENLIST(ATOKEN))) = "|"
+			LET ATOKEN = S.TOKENLIST(ATOKEN)
+		ENDIF
+	ENDIF
+
+	IF LEXEME(ATOKEN) = "%"
+		LET ATOKEN = S.TOKENLIST(ATOKEN)
+		LET TKNFORM(AELEM) = .TKN.IDENT
+		IF LEXEME(ATOKEN) = "%"
+			LET TKNFORM(AELEM) = .TKN.NMBR
+			LET ATOKEN = S.TOKENLIST(ATOKEN)
+		ENDIF
+		IF LEXEME(ATOKEN) = "^"
+			LET TKNFORM(AELEM) = .TKN.QSTR
+			LET ATOKEN = S.TOKENLIST(ATOKEN)
+		ENDIF
+		LET SCRIPTACTION(AELEM) = 2
+		LET SCRIPTCODE(AELEM) = ACHAR.F(LEXEME(ATOKEN), 1) - 48
+	ENDIF
+	
+	IF LEXEME(ATOKEN) = "@"
+		LET ATOKEN = S.TOKENLIST(ATOKEN)
+		LET SCRIPTPREFIX(AELEM) = ACHAR.F(LEXEME(ATOKEN), 1)
+		LET ATOKEN = S.TOKENLIST(ATOKEN)
+		LET SCRIPTACTION(AELEM) = 3
+		IF LEXEME(ATOKEN) = "#"
+			LET SCRIPTACTION(AELEM) = 4
+		ENDIF
+		LET ATOKEN = S.TOKENLIST(ATOKEN)
+		LET TKNFORM(AELEM) = 3	
+		LET SCRIPTCODE(AELEM) = ACHAR.F(LEXEME(ATOKEN), 1) - 48
+	ENDIF
+
+	IF LEXEME(ATOKEN) ="~"
+		LET ATOKEN = S.TOKENLIST(ATOKEN)
+		LET TKNFORM(AELEM) = 2	
+		LET SCRIPTCODE(AELEM) = ACHAR.F(LEXEME(ATOKEN), 1) - 48
+		LET SCRIPTACTION(AELEM) = 5
+	ENDIF
+
+	IF SCRIPTCODE(AELEM) = 0	'' none of the above
+		LET DICTREF(AELEM) = DICTREF(ATOKEN)
+		LET TKNFORM(AELEM) = TOKENTYPE(ATOKEN)
+	ENDIF
+	
+	IF SCRIPTS(SCRIPTNO) = 0
+		LET SCRIPTS(SCRIPTNO) = AELEM
+	ELSE
+		LET S.SCRIPTELEMS(LASTELEM) = AELEM
+	ENDIF
+	LET LASTELEM = AELEM
+	LET ATOKEN = S.TOKENLIST(ATOKEN)
+LOOP
+LET ATOKEN = S.TOKENLIST(ATOKEN)
+
+LET LAST = F.TOKENLIST
+LET F.TOKENLIST = ATOKEN
+WHILE LAST NE F.TOKENLIST
+DO
+	LET CLEAN = LAST
+	LET LAST = S.TOKENLIST(LAST)
+	LET LEXEME(CLEAN) = ""
+	DESTROY TOKEN CALLED CLEAN
+LOOP
+RETURN
+]]></Body>
+<attrDef embedded="Y" parameter="Y">
+<attrName>SCRIPTNO</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AELEM</attrName>
+<attrTypeName>SCRIPTELEM</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LASTELEM</attrName>
+<attrTypeName>SCRIPTELEM</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LAST</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>CLEAN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>SCRIPT</entityTypeName>
+<Body><![CDATA[
+LET AELEM = SCRIPTS(SCRIPTNO)
+IF AELEM EQ 0
+	RETURN
+ENDIF
+''write "scripting:" as t *
+''write as /
+WHILE AELEM NE 0
+DO	
+	IF SCRIPTCODE(AELEM) EQ 0
+		CREATE A TOKEN CALLED ATOKEN
+		LET SCRIPTED(ATOKEN) = SCRIPTLEVEL
+		LET DICTREF(ATOKEN) = DICTREF(AELEM)
+		LET LEXEME(ATOKEN) = LEXEME(DICTREF(AELEM))
+''		write lexeme(atoken) as t *  write as s 2
+		LET TOKENTYPE(ATOKEN) = TKNFORM(AELEM)
+		CALL FILETOKEN(ATOKEN)
+	ELSE
+		IF SCRIPTACTION(AELEM) EQ 1
+			LET ANODE = NODEPTRS(SCRIPTCODE(AELEM))
+			IF ANODE NE 0
+				LET TKN = START(ANODE)
+				WHILE TKN NE S.TOKENLIST(END(ANODE))
+				DO
+					CREATE A TOKEN CALLED ATOKEN
+					LET SCRIPTED(ATOKEN) = SCRIPTLEVEL
+					LET DICTREF(ATOKEN) = DICTREF(TKN)
+					LET LEXEME(ATOKEN) = LEXEME(DICTREF(TKN))
+''		write lexeme(atoken) as t *  write as s 2
+					LET TOKENTYPE(ATOKEN) = TOKENTYPE(TKN)
+					CALL FILETOKEN(ATOKEN)
+					LET TKN = S.TOKENLIST(TKN)
+				LOOP
+			ENDIF
+		ENDIF
+
+		IF SCRIPTACTION(AELEM) EQ 2
+			CREATE A TOKEN CALLED ATOKEN
+			LET SCRIPTED(ATOKEN) = SCRIPTLEVEL
+			LET LEXEME(ATOKEN) = STRPTRS(SCRIPTCODE(AELEM))
+''		write lexeme(atoken) as t *  write as s 2
+			LET TOKENTYPE(ATOKEN) = TKNFORM(AELEM)
+			LET DICTREF(ATOKEN) = FINDDICTENTRY_F(LEXEME(ATOKEN))
+			CALL FILETOKEN(ATOKEN)
+		ENDIF
+
+		IF SCRIPTACTION(AELEM) EQ 3
+			CREATE A TOKEN CALLED ATOKEN
+			LET SCRIPTED(ATOKEN) = SCRIPTLEVEL
+			LET TMPTXT = "__"
+			LET ACHAR.F(TMPTXT, 1) = SCRIPTPREFIX(AELEM)
+			LET LEXEME(ATOKEN) = CONCAT.F(TMPTXT, STRPTRS(SCRIPTCODE(AELEM)))
+''		write lexeme(atoken) as t *  write as s 2
+			LET TOKENTYPE(ATOKEN) = TKNFORM(AELEM)
+			LET DICTREF(ATOKEN) = FINDDICTENTRY_F(LEXEME(ATOKEN))
+			CALL FILETOKEN(ATOKEN)
+		ENDIF
+
+		IF SCRIPTACTION(AELEM) EQ 4
+			LET ANODE = NODEPTRS(SCRIPTCODE(AELEM))
+			CREATE A TOKEN CALLED ATOKEN
+			LET SCRIPTED(ATOKEN) = SCRIPTLEVEL
+			LET TMPTXT = "__"
+			LET ACHAR.F(TMPTXT, 1) = SCRIPTPREFIX(AELEM)
+			LET LEXEME(ATOKEN) = CONCAT.F(TMPTXT, LEXEME(START(ANODE)))
+''		write lexeme(atoken) as t *  write as s 2
+			LET TOKENTYPE(ATOKEN) = TKNFORM(AELEM)
+			LET DICTREF(ATOKEN) = FINDDICTENTRY_F(LEXEME(ATOKEN))
+			CALL FILETOKEN(ATOKEN)
+		ENDIF
+
+		IF SCRIPTACTION(AELEM) EQ 5
+			CREATE A TOKEN CALLED ATOKEN
+			LET SCRIPTED(ATOKEN) = SCRIPTLEVEL
+			LET LEXEME(ATOKEN) = ITOT_F(IPTRS(SCRIPTCODE(AELEM)))
+		write lexeme(atoken) as t *, s 2 using 97
+			LET TOKENTYPE(ATOKEN) = TKNFORM(AELEM)
+			LET DICTREF(ATOKEN) = FINDDICTENTRY_F(LEXEME(ATOKEN))
+			CALL FILETOKEN(ATOKEN)
+		ENDIF
+
+	ENDIF
+	LET AELEM = S.SCRIPTELEMS(AELEM)
+LOOP
+write as / using 97
+RETURN	
+]]></Body>
+<attrDef embedded="Y" parameter="Y">
+<attrName>SCRIPTNO</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AELEM</attrName>
+<attrTypeName>SCRIPTELEM</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TKN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TMPTXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>SETNODEPTRS</entityTypeName>
+<Body><![CDATA[
+WHILE ANODE NE 0
+DO
+	IF SCRIPTCODE(ANODE) NE 0
+		LET NODEPTRS(SCRIPTCODE(ANODE)) = ANODE
+	ENDIF
+	IF F.SUBNODES(ANODE) NE 0
+		CALL SETNODEPTRS(F.SUBNODES(ANODE))
+	ENDIF
+	LET ANODE = S.NODES(ANODE)
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>SCRIPTLBL</entityTypeName>
+<Body><![CDATA[
+LET ALBL = CONCAT.F(PREFIX, "0000")
+LET I = LENGTH.F(PREFIX)
+LET J = I + 4
+WHILE NUM > 9
+DO
+	I = NUM
+	NUM = NUM / 10
+	I = I - NUM * 10
+	LET ACHAR.F(ALBL, J) = I + 48
+	J = J - 1
+LOOP
+LET ACHAR.F(ALBL, J) = NUM + 48
+RETURN WITH ALBL
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y" parameter="Y">
+<attrName>PREFIX</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef  embedded="Y" parameter="Y">
+<attrName>NUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef  embedded="Y">
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef  embedded="Y">
+<attrName>J</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALBL</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>SCRIPTLOOP</entityTypeName>
+<Body><![CDATA[
+IF LASTCTLSTMT EQ 0
+	CALL EASERR(1007, 0)
+ELSE
+	'' script single statement loop here
+	LET PSTMT = LASTCTLSTMT
+	LET LASTCTLSTMT = 0
+	WHILE PSTMT NE 0
+	DO
+		IF RULENAME(STMTRULE(PSTMT)) EQ "FOR"
+		 OR RULENAME(STMTRULE(PSTMT)) EQ "WHILE"
+		  OR RULENAME(STMTRULE(PSTMT)) EQ "UNTIL"
+			LET STRPTRS(2) = SCRIPTLBL("next", LBLNUM(PSTMT))
+			LET STRPTRS(3) = SCRIPTLBL("done", LBLNUM(PSTMT))
+			CALL SCRIPT(13)
+		ENDIF
+		LET PSTMT = P.CTRLSTMT(PSTMT)
+	LOOP
+ENDIF
+RETURN
+]]></Body>
+<attrDef  embedded="Y">
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef  embedded="Y">
+<attrName>J</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PSTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>STMTSCRIPT</entityTypeName>
+<Body><![CDATA[
+LET SCRIPTLEVEL = SCRIPTDEPTH(ASTMT) + 1
+FOR I = 1 TO 9
+DO
+	LET NODEPTRS(I) = 0
+LOOP
+LET ANODE = F.PARSENODES(ASTMT)
+CALL SETNODEPTRS(ANODE)
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "FOR"
+	LET LBL = LBL + 1
+	LET LBLNUM(ASTMT) = LBL
+	
+	IF LASTCTLSTMT NE 0
+		LET P.CTRLSTMT(ASTMT) = LASTCTLSTMT
+	ENDIF
+	LET LASTCTLSTMT = ASTMT
+	
+	LET STRPTRS(2) = SCRIPTLBL("next", LBL)
+	IF P.CTRLSTMT(ASTMT) = 0
+		LET STRPTRS(3) = SCRIPTLBL("done", LBL)
+	ELSE
+		LET STRPTRS(3) = SCRIPTLBL("next", LBLNUM(P.CTRLSTMT(ASTMT)))
+	ENDIF
+	LET STRPTRS(6) = SCRIPTLBL("test", LBL)
+
+	IF MATCHNUM(ANODE) = 1
+		LET LV = LV + 1
+		LET STRPTRS(4) = SCRIPTLBL("E_", LV)
+		LET AUSE = FINDPREFUSE.F(START(NODEPTRS(1)), 0)
+		IF AUSE NE 0
+			LET STRPTRS(5) = ETYPENAME(USEENTITY(AUSE))
+		ELSE
+			LET ALCL = F.LCLDEFS(CURRPROC)
+			WHILE ALCL NE 0
+			DO
+				IF LDEFNAME(ALCL) EQ LEXEME(START(NODEPTRS(1)))
+					LEAVE
+				ENDIF
+				ALCL = S.LCLDEFS(ALCL)
+			LOOP
+			IF ALCL EQ 0
+				CALL EASERR(1002, LEXEME(START(NODEPTRS(1))))
+			ENDIF
+			LET STRPTRS(5) = ETYPENAME(LDEFTYPE(ALCL))
+		ENDIF
+		CALL SCRIPT(41)
+		LET SCRIPTNO = 2
+	ELSE
+		LET SCRIPTNO = 3
+	ENDIF
+	CALL SCRIPT(SCRIPTNO)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "WHILE"
+	LET I = 0
+	LET PSTMT = LASTCTLSTMT
+	WHILE PSTMT NE 0
+	DO
+		LET I = LBLNUM(PSTMT)
+		LET PSTMT = P.CTRLSTMT(PSTMT)
+	LOOP
+	IF I EQ 0					'' stand-alone WHILE
+		LET LASTCTLSTMT = ASTMT
+		LET LBL = LBL + 1
+		LET LBLNUM(ASTMT) = LBL
+		LET STRPTRS(1) = SCRIPTLBL("next", LBL)
+		CALL SCRIPT(7)
+		LET STRPTRS(3) = SCRIPTLBL("done", LBL)
+	ELSE
+		LET LBLNUM(ASTMT) = I
+		LET STRPTRS(3) = SCRIPTLBL("done", I)
+	ENDIF
+	CALL SCRIPT(8)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "UNTIL"
+	IF LASTCTLSTMT = 0
+		CALL EASERR(1004, 0)
+		RETURN
+	ENDIF
+	LET PSTMT = LASTCTLSTMT
+	WHILE P.CTRLSTMT(PSTMT) NE 0
+	DO
+		LET PSTMT = P.CTRLSTMT(PSTMT)
+	LOOP
+	LET STRPTRS(3) = SCRIPTLBL("done", LBLNUM(PSTMT))
+	CALL SCRIPT(14)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "WITH"
+	IF LASTCTLSTMT = 0
+		CALL EASERR(1005, 0)
+		RETURN
+	ENDIF
+	LET STRPTRS(3) = SCRIPTLBL("next", LBLNUM(LASTCTLSTMT))
+	CALL SCRIPT(8)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "FIND"
+	IF LASTCTLSTMT EQ 0
+		CALL EASERR(1006, 0)
+		RETURN
+	ENDIF
+	IF MATCHNUM(ANODE) = 1
+		LET NODEPTRS(1) = F_SUBNODES(ANODE)
+		LET NODEPTRS(2) = S_NODES(NODEPTRS(1))
+		CALL SCRIPT(4) '' assign found value - just one, for now
+	ENDIF
+	LET PSTMT = LASTCTLSTMT
+	LET LASTCTLSTMT = 0
+	WHILE PSTMT NE 0
+	DO
+		LET I = LBLNUM(PSTMT)
+		LET PSTMT = P_CTRLSTMT(PSTMT)
+	LOOP
+	LET STRPTRS(1) = SCRIPTLBL("skip", I)
+	LET STRPTRS(2) = SCRIPTLBL("done", I)
+	CALL SCRIPT(53)
+	IF S_NODES(ANODE) NE 0
+		IF MATCHNUM(S.NODES(ANODE)) EQ 1
+			CALL SCRIPT(54)
+		ELSE
+			CALL SCRIPT(55)
+		ENDIF
+	ENDIF
+	RETURN	
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "DO"
+	IF LASTCTLSTMT = 0
+		CALL EASERR(1007, 0)
+		RETURN
+	ENDIF
+	LET P_CTRLSTMT(ASTMT) = LASTCTLSTMT
+	IF LASTDOSTMT NE 0
+		LET P_DOSTMT(ASTMT) = LASTDOSTMT
+	ENDIF
+	LET LASTDOSTMT = ASTMT
+	LET LASTCTLSTMT = 0
+	LET CURRLOOPDEPTH = CURRLOOPDEPTH + 1
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "LOOP"
+	IF LASTDOSTMT = 0
+		CALL EASERR(1008, 0)
+		RETURN
+	ENDIF
+
+	LET CURRLOOPDEPTH = CURRLOOPDEPTH - 1
+	LET PSTMT = P_CTRLSTMT(LASTDOSTMT)
+	LET STRPTRS(2) = SCRIPTLBL("next", LBLNUM(PSTMT))
+	WHILE P_CTRLSTMT(PSTMT) NE 0
+	DO
+		LET PSTMT = P_CTRLSTMT(PSTMT)
+	LOOP
+	LET STRPTRS(3) = SCRIPTLBL("done", LBLNUM(PSTMT))
+	CALL SCRIPT(13)
+	LET LASTDOSTMT = P.DOSTMT(LASTDOSTMT)
+	RETURN
+ENDIF
+	
+IF RULENAME(STMTRULE(ASTMT)) EQ "LEAVE"
+	IF LASTDOSTMT = 0
+		CALL EASERR(1009, 0)
+		RETURN
+	ENDIF
+	LET PSTMT = P_CTRLSTMT(LASTDOSTMT)
+	IF P_CTRLSTMT(PSTMT) = 0
+		LET STRPTRS(3) = SCRIPTLBL("done", LBLNUM(PSTMT))
+	ELSE
+		LET STRPTRS(3) = SCRIPTLBL("next", LBLNUM(P_CTRLSTMT(PSTMT)))
+	ENDIF
+	CALL SCRIPT(18)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "CYCLE"
+	IF LASTDOSTMT = 0
+		CALL EASERR(1009, 0)
+		RETURN
+	ENDIF
+	LET PSTMT = P_CTRLSTMT(LASTDOSTMT)
+	LET STRPTRS(3) = SCRIPTLBL("next", LBLNUM(PSTMT))
+	CALL SCRIPT(18)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "FILE"
+	LET ANODE = S.NODES(F.PARSENODES(ASTMT))
+	LET I = 0
+	IF SCRIPTCODE(ANODE) = 0		'' explicit first/last
+		LET I = MATCHNUM(ANODE)
+		LET ANODE = S_NODES(ANODE)	
+	ENDIF
+	LET AUSE = FINDSPECUSE_F(DICTREF(START(ANODE)), .USE.ATTR)
+	IF AUSE EQ 0
+		CALL EASERR(1010, LEXEME(START(ANODE)))
+		RETURN
+	ENDIF
+	IF ISSETTYPE(USEENTITY(AUSE)) EQ 0
+		CALL EASERR(1010, LEXEME(START(ANODE)))
+		RETURN
+	ENDIF
+	IF SETDISCIPLINE(SETATTRSETDEF(USESETREFATT(AUSE))) EQ 0	'' ranked
+		IF I NE 0	'' first or last specified?
+			CALL EASERR(1016, LEXEME(START(ANODE)))
+			RETURN
+		ENDIF
+		LET STRPTRS(1) = LEXEME(START(F.SUBNODES(NODEPTRS(2))))
+		IF ISPERSISTENT(USEENTITY(AUSE)) NE 0
+			LET SCRIPTNO = 57
+		ELSE
+			LET SCRIPTNO = 42
+		ENDIF
+	ELSE
+		LET SCRIPTNO = 6	'' presume default LIFO
+		IF I EQ 0
+			IF SETDISCIPLINE(SETATTRSETDEF(USESETREFATT(AUSE))) EQ 1	'' FIFO
+				LET SCRIPTNO = 5
+			ENDIF
+		ELSE
+			IF I EQ 1
+				LET SCRIPTNO = 5
+			ENDIF
+		ENDIF
+		IF ISPERSISTENT(USEENTITY(AUSE)) NE 0
+			LET SCRIPTNO = SCRIPTNO + 43
+		ENDIF
+	ENDIF
+	IF SCRIPTNO NE 0
+		CALL SCRIPT(SCRIPTNO)
+	ENDIF
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "REMOV"
+	LET ANODE = F.PARSENODES(ASTMT)
+	LET SCRIPTNO = 0
+	IF SCRIPTCODE(ANODE) = 0		'' explicit first/last
+		LET SCRIPTNO = 34
+		IF MATCHNUM(ANODE) = 2
+			LET SCRIPTNO = 35
+		ENDIF
+		IF MATCHNUM(ANODE) = 3		'' SPECIFIC
+			LET SCRIPTNO = 36
+		ENDIF
+		LET ANODE = S.NODES(ANODE)
+	ENDIF
+	LET AUSE = FINDSPECUSE_F(DICTREF(START(ANODE)), .USE.ATTR)
+	IF AUSE EQ 0
+		CALL EASERR(1010, LEXEME(START(ANODE)))
+		RETURN
+	ENDIF
+	IF ISSETTYPE(USEENTITY(AUSE)) EQ 0
+		CALL EASERR(1010, LEXEME(START(ANODE)))
+		RETURN
+	ENDIF
+	IF SCRIPTNO = 0
+		LET SCRIPTNO = 34
+		IF SETDISCIPLINE(SETATTRSETDEF(USESETREFATT(AUSE))) EQ 1	'' FIFO
+			LET SCRIPTNO = 35
+		ENDIF
+	ENDIF
+	IF ISPERSISTENT(USEENTITY(AUSE)) NE 0
+		LET SCRIPTNO = SCRIPTNO + 16
+	ENDIF
+	CALL SCRIPT(SCRIPTNO)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "OPEN"
+	IF MATCHNUM(S.NODES(ANODE)) EQ 1
+		LET SCRIPTNO = 11
+	ELSE
+		LET SCRIPTNO = 12
+	ENDIF
+	CALL SCRIPT(SCRIPTNO)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "CLOSE"
+	CALL SCRIPT(20)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "WRITE"
+	CALL SCRIPTWRITE(ASTMT)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "READ"
+	CALL SCRIPTREAD(ASTMT)
+	RETURN
+ENDIF
+		
+IF RULENAME(STMTRULE(ASTMT)) EQ "USE"
+	LET IPTRS(1) = MATCHNUM(S.NODES(ANODE))	'' input/output
+	CALL SCRIPT(60)
+	RETURN
+ENDIF
+		
+IF RULENAME(STMTRULE(ASTMT)) EQ "RESERVE"
+	IF S.NODES(S.NODES(ANODE)) NE 0		'' a 'by' expression
+		LET END(ANODE) = START(ANODE) 	'' 'isolate' the array name
+
+		LET ANODE = S.NODES(ANODE)		'' first exp
+		LET NODEPTRS(2) = ANODE
+		LET LV = LV + 1
+		LET STRPTRS(1) = SCRIPTLBL("I_", LV)
+		CALL SCRIPT(25)
+		
+		LET NODEPTRS(3) = S.NODES(ANODE)	'' by exp
+		LET LV = LV + 1
+		LET STRPTRS(2) = SCRIPTLBL("I_", LV)
+		LET LV = LV + 1
+		LET STRPTRS(3) = SCRIPTLBL("I_", LV)
+		CALL SCRIPT(26)
+	ENDIF
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "PRINTN"
+	LET PRTLINE = F.FMTLINES(ASTMT)
+	WHILE PRTLINE NE 0
+	DO
+		LET STRPTRS(1) = LTXT(PRTLINE)
+		CALL SCRIPT(39)
+		LET PRTLINE = S.SRCLINES(PRTLINE)
+	LOOP
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "ERASE"
+	CALL SCRIPT(27)
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "PSERVER"
+	IF MATCHNUM(ANODE) = 1
+		CALL SCRIPT(65)
+	ELSE
+		CALL SCRIPT(66)
+	ENDIF
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "RECUNL"
+	IF MATCHNUM(ANODE) = 1
+		CALL SCRIPT(58)
+	ENDIF
+	RETURN
+ENDIF
+
+IF RULENAME(STMTRULE(ASTMT)) EQ "IF"
+	IF MATCHNUM(ANODE) = 2				'' IS A ....
+		LET STRPTRS(2) = LEXEME(DICTREF(END(ANODE)))
+		CALL SCRIPT(67)
+	ENDIF
+	RETURN
+ENDIF
+
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PSTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SCRIPTNO</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PRTLINE</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALCL</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>SCRIPTWRITE</entityTypeName>
+<Body><![CDATA[
+LET ANODE = F.PARSENODES(ASTMT)
+IF S.NODES(ANODE) NE 0		'' using clause
+	LET HASUSING = 1
+	CALL SCRIPT(63)
+	LET IPTRS(1) = 2
+	CALL SCRIPT(60)
+ENDIF
+IF MATCHNUM(ANODE) = 2
+	LET ANODE = F.SUBNODES(ANODE)
+	LET EXPNODE = F.SUBNODES(ANODE)
+	LET FMTNODE = F.SUBNODES(S.NODES(ANODE))
+ELSE
+	LET FMTNODE = F.SUBNODES(F.SUBNODES(ANODE))
+ENDIF
+
+WHILE FMTNODE NE 0
+DO
+	LET ANODE = F.SUBNODES(FMTNODE)
+	IF MATCHNUM(ANODE) = 1		'' a control format
+		LET ANODE = F.SUBNODES(ANODE)
+		LET MATCH = MATCHNUM(ANODE)
+		IF MATCH = 1
+			LET SCRIPTNUM = 15
+			LET NODEPTRS(1) = F.SUBNODES(ANODE)
+		ENDIF
+		IF MATCH = 2
+			LET SCRIPTNUM = 16
+		ENDIF
+		IF MATCH = 3
+			LET SCRIPTNUM = 17
+			LET NODEPTRS(1) = F.SUBNODES(ANODE)
+		ENDIF
+		IF MATCH = 4
+			LET SCRIPTNUM = 9
+			LET NODEPTRS(1) = ANODE
+		ENDIF
+	ELSE
+		LET NODEPTRS(1) = F.SUBNODES(EXPNODE)
+		LET ANODE = F.SUBNODES(F.SUBNODES((FMTNODE)))
+		IF MATCHNUM(ANODE) = 1
+			LET SCRIPTNUM = 10
+			LET NODEPTRS(2) = F.SUBNODES(ANODE)
+		ENDIF
+		IF MATCHNUM(ANODE) = 2
+			LET ANODE = F.SUBNODES(ANODE)
+			IF MATCHNUM(ANODE) = 1
+				LET SCRIPTNUM = 19
+				LET NODEPTRS(2) = F.SUBNODES(ANODE)
+			ELSE
+				LET SCRIPTNUM = 9
+			ENDIF
+		ENDIF
+		IF MATCHNUM(ANODE) = 3
+			LET SCRIPTNUM = 68	'' WTP
+		ENDIF
+		IF MATCHNUM(ANODE) = 4	'' D FORMAT
+			LET NODEPTRS(2) = F.SUBNODES(ANODE)
+			LET NODEPTRS(3) = S.NODES(F.SUBNODES(ANODE))
+			LET SCRIPTNUM = 74
+		ENDIF
+		LET EXPNODE = S.NODES(EXPNODE)
+	ENDIF
+	LET FMTNODE = S.NODES(FMTNODE)
+	CALL SCRIPT(SCRIPTNUM)
+LOOP
+IF HASUSING NE 0
+	CALL SCRIPT(64)
+ENDIF
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>EXPNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>FMTNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SCRIPTNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MATCH</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>HASUSING</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>SCRIPTREAD</entityTypeName>
+<Body><![CDATA[
+LET ANODE = F.PARSENODES(ASTMT)
+IF S.NODES(ANODE) NE 0		'' using clause
+	LET HASUSING = 1
+	CALL SCRIPT(61)
+	LET IPTRS(1) = 1
+	CALL SCRIPT(60)
+ENDIF
+
+IF MATCHNUM(ANODE) = 3		'' free-form read
+	LET ANODE = F.SUBNODES(ANODE)
+	WHILE ANODE NE 0
+	DO
+		LET AUSE = FINDPREFUSE.F(START(ANODE), 0)
+		IF AUSE NE 0
+			AMODE = USEMODE(AUSE)
+		ELSE
+			LET ALCL = F.LCLDEFS(CURRPROC)
+			WHILE ALCL NE 0
+			DO
+				IF LDEFNAME(ALCL) EQ LEXEME(START(ANODE))
+					LEAVE
+				ENDIF
+				ALCL = S.LCLDEFS(ALCL)
+			LOOP
+			IF ALCL EQ 0
+				CALL EASERR(1002, LEXEME(START(ANODE)))
+			ENDIF
+			AMODE = FINDMODE.F(LDEFTYPE(ALCL))
+		ENDIF
+			LET NODEPTRS(1) = F.SUBNODES(ANODE)
+		IF AMODE = .MODE.INT	'' free-form read ints
+			CALL SCRIPT(40)
+		ENDIF
+		IF AMODE = .MODE.TXT	'' free-form read text
+			CALL SCRIPT(70)
+		ENDIF
+		IF AMODE = .MODE.NMBR
+			CALL SCRIPT(75)
+		ENDIF
+		LET ANODE = S.NODES(ANODE)
+	LOOP
+	IF HASUSING NE 0
+		CALL SCRIPT(62)
+	ENDIF
+	RETURN
+ENDIF
+
+IF MATCHNUM(ANODE) = 2
+	LET ANODE = F.SUBNODES(ANODE)
+	LET EXPNODE = F.SUBNODES(ANODE)
+	LET FMTNODE = S.NODES(ANODE)
+ELSE
+	LET FMTNODE = F.SUBNODES(ANODE)
+ENDIF
+
+LET FMTNODE = F.SUBNODES(FMTNODE)
+WHILE FMTNODE NE 0
+DO
+	LET ANODE = F.SUBNODES(FMTNODE)
+	IF MATCHNUM(ANODE) = 1		'' a control format
+		LET ANODE = F.SUBNODES(ANODE)
+		LET MATCH = MATCHNUM(ANODE)
+		IF MATCH = 1
+			LET SCRIPTNUM = 21
+			LET NODEPTRS(1) = F.SUBNODES(ANODE)
+		ENDIF
+		IF MATCH = 2
+			LET SCRIPTNUM = 22
+		ENDIF
+		IF MATCH = 3
+			LET SCRIPTNUM = 23
+			LET NODEPTRS(1) = F.SUBNODES(ANODE)
+		ENDIF
+		IF MATCH = 4
+			LET SCRIPTNUM = 24
+			LET NODEPTRS(1) = ANODE
+		ENDIF
+	ELSE
+		LET NODEPTRS(1) = F.SUBNODES(EXPNODE)
+		LET ANODE = F.SUBNODES(F.SUBNODES((FMTNODE)))
+		IF MATCHNUM(ANODE) = 1
+			LET SCRIPTNUM = 37
+			LET NODEPTRS(2) = F.SUBNODES(ANODE)
+		ENDIF
+		IF MATCHNUM(ANODE) = 2
+			LET ANODE = F.SUBNODES(ANODE)
+			IF MATCHNUM(ANODE) = 1
+				LET SCRIPTNUM = 38
+				LET NODEPTRS(2) = F.SUBNODES(ANODE)
+			ELSE
+				LET SCRIPTNUM = 24
+			ENDIF
+		ENDIF
+		IF MATCHNUM(ANODE) = 3
+			LET SCRIPTNUM = 69	'' RDP
+		ENDIF
+		IF MATCHNUM(ANODE) = 4	'' D FORMAT
+			LET NODEPTRS(2) = F.SUBNODES(ANODE)
+			LET NODEPTRS(3) = S.NODES(F.SUBNODES(ANODE))
+			LET SCRIPTNUM = 71
+		ENDIF
+		LET EXPNODE = S.NODES(EXPNODE)
+	ENDIF
+	LET FMTNODE = S.NODES(FMTNODE)
+	CALL SCRIPT(SCRIPTNUM)
+LOOP
+IF HASUSING NE 0
+	CALL SCRIPT(62)
+ENDIF
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>EXPNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>FMTNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SCRIPTNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MATCH</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AMODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALCL</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>HASUSING</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+</ENTITIES>
+
+<SYSTEM>
+<entityType ID="0">
+<attrDef scripted="Y">
+<attrName>SCRIPTELEM</attrName>
+<attrTypeName>SCRIPTELEM</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SCRIPTS</attrName>
+<attrTypeName>SCRIPTELEM</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>NODEPTRS</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>STRPTRS</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>IPTRS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LBL</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LV</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SCRIPTLEVEL</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>CURRLOOPDEPTH</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LASTCTLSTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LASTDOSTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+</entityType>
+</SYSTEM>
+</EASE-Database>

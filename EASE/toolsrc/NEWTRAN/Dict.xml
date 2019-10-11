@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<EASE-Database ID="3003" genname="Dict">
+<ENTITIES>
+<entityType ID="1">
+<entityTypeName>DICTENTRY</entityTypeName>
+<attrDef>
+<attrName>S_DICT</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_ENTRULES</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LEXEME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_USAGE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SUBST</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_SUBST</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="2">
+<entityTypeName>DICTUSE</entityTypeName>
+<attrDef>
+<attrName>S_USAGE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>USEREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>USETYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>USEMODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>USEENTITY</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>USEOWNER</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>USESETREFATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>USESETDEF</attrName>
+<attrTypeName>SETDEF</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>USESUBS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISCOMMONATT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MAKEUSE_F</entityTypeName>
+<Body><![CDATA[
+CREATE A DICTUSE CALLED DUSE
+LET USETYPE(DUSE) = TYPE
+LET S.USAGE(DUSE) = F.USAGE(DREF)
+LET F.USAGE(DREF) = DUSE
+LET USEREF(DUSE) = DREF
+RETURN WITH DUSE
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>TYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FINDSPECUSE_F</entityTypeName>
+<Body><![CDATA[
+LET DUSE = F.USAGE(DREF)
+WHILE DUSE NE 0
+DO
+	IF USETYPE(DUSE) EQ TYPE
+		LEAVE
+	ENDIF
+	LET DUSE = S.USAGE(DUSE)
+LOOP
+RETURN WITH DUSE
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>TYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FINDPREFUSE_F</entityTypeName>
+<Body><![CDATA[
+LET DREF = DICTREF(TKN)
+LET DUSE = FINDSPECUSE_F(DREF, .USE.LCL)
+IF DUSE EQ 0
+	LET DUSE = F.USAGE(DREF)
+	WHILE DUSE NE 0
+	DO
+		IF USETYPE(DUSE) LT .USE.LBL
+			LEAVE
+		ENDIF
+		LET DUSE = S.USAGE(DUSE)
+	LOOP
+ENDIF
+IF DUSE EQ 0 AND MUSTHAVE NE 0
+	IF SCRIPTED(TKN) = 0
+		CALL EASERR(1002, LEXEME(TKN))
+	ENDIF
+	LET DUSE = MAKEUSE_F(DREF, .USE.LCL)
+	LET USEMODE(DUSE) = .MODE.INT
+	LET USEENTITY(DUSE) = FINDETYPEBYNAME_F("Integer", 1)
+ENDIF
+RETURN WITH DUSE
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>TKN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>MUSTHAVE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+</entityType>
+
+
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>DESTROYUSE</entityTypeName>
+<Body><![CDATA[
+LET REF = USEREF(AUSE)
+LET DUSE = F.USAGE(REF)
+WHILE DUSE NE 0
+DO
+	IF DUSE = AUSE
+		IF LUSE NE 0
+			LET S.USAGE(LUSE) = S.USAGE(DUSE)
+		ELSE
+			LET F.USAGE(REF) = S.USAGE(DUSE)
+		ENDIF
+		DESTROY DICTUSE CALLED AUSE
+		LEAVE
+	ENDIF
+	LET LUSE = DUSE
+	LET DUSE = S.USAGE(DUSE)
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>REF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FINDDICTENTRY_F</entityTypeName>
+<Body><![CDATA[
+LET INDEX = ACHAR.F(INLEX, 1)	'' very cheap hash!
+LET ENTRY = F.DICT(INDEX)
+WHILE ENTRY NE 0
+DO
+	IF LEXEME(ENTRY) = INLEX
+		LEAVE
+	ENDIF
+	LET ENTRY = S.DICT(ENTRY)
+LOOP
+IF ENTRY EQ 0
+	CREATE A DICTENTRY CALLED ENTRY
+	LET LEXEME(ENTRY) = INLEX
+	LET S.DICT(ENTRY) = F.DICT(INDEX)
+	LET F.DICT(INDEX) = ENTRY
+ENDIF
+RETURN WITH ENTRY
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>INLEX</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>INDEX</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTRY</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+</entityType>
+</ENTITIES>
+<SYSTEM>
+<entityType ID="0">
+<entityTypeName>SYSTEM</entityTypeName>
+<attrDef scripted="Y">
+<attrName>DICTENTRY</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>F_DICT</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+</entityType>
+</SYSTEM>
+
+<SUBST>
+<d2m term="_USE_LCL">
+<substxt><![CDATA[1]]></substxt>
+</d2m>
+<d2m term="_USE_ENT">
+<substxt><![CDATA[2]]></substxt>
+</d2m>
+<d2m term="_USE_PROC">
+<substxt><![CDATA[3]]></substxt>
+</d2m>
+<d2m term="_USE_ATTR">
+<substxt><![CDATA[4]]></substxt>
+</d2m>
+<d2m term="_USE_OATTR">
+<substxt><![CDATA[5]]></substxt>
+</d2m>
+<d2m term="_USE_MATTR">
+<substxt><![CDATA[6]]></substxt>
+</d2m>
+<d2m term="_USE_LBL">
+<substxt><![CDATA[7]]></substxt>
+</d2m>
+<d2m term="_USE_SYS">
+<substxt><![CDATA[8]]></substxt>
+</d2m>
+</SUBST>
+
+
+</EASE-Database>

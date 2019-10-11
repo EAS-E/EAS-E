@@ -1,0 +1,631 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#include ""res\\EASE0002.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""      // Standard components\r\n"
+    "#include ""afxprint.rc""    // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\EASE0002.ico"
+
+IDR_EASE0002TYPE        ICON                    "res\\EASE0002Doc.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        POPUP "&New\tCtrl+N"
+        BEGIN
+            MENUITEM "File",                        ID_NEW_FILE
+        END
+        POPUP "&Open...\tCtrl+O"
+        BEGIN
+            MENUITEM "File",                        ID_OPEN_FILE
+        END
+        POPUP "&Save\tCtrl+S"
+        BEGIN
+            MENUITEM "Save File",                   ID_SAVE_SAVEFILE, CHECKED
+            MENUITEM "Save EAS Schema",             ID_SAVE_SAVEDATABASE
+        END
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "EAS System",                  ID_VIEW_SYSTEM
+    END
+    POPUP "Project"
+    BEGIN
+        MENUITEM "Open...",                     ID_PROJECT_SELECT
+        MENUITEM "New...",                      ID_PROJECT_NEW32793
+        MENUITEM "Import...",                   ID_FILE_IMPORT
+        MENUITEM "Close",                       ID_PROJECT_CLOSE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About EASE0002...",          ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 333, 98
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About EASE0002 - Work in progress"
+FONT 14, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
+    LTEXT           "EASE0002, Version 0.1",IDC_STATIC,39,7,241,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2016, 2019",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "OK",IDOK,276,77,50,14,WS_GROUP
+END
+
+IDD_EASVIEWDLG DIALOGEX 0, 0, 671, 356
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "EAS-E "
+FONT 8, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,569,328,50,14
+    LTEXT           "Entity                         Attribute                    Owns                  Belongs",IDC_STATIC,27,23,285,16
+    CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_SHOWSELALWAYS | WS_BORDER | WS_HSCROLL | WS_TABSTOP,27,39,290,272
+    LTEXT           "Description",IDC_STATIC,337,26,47,8
+    PUSHBUTTON      "Edit definition...",IDC_BUTTON1,26,328,79,14
+    EDITTEXT        IDC_VWDESCR,331,38,284,273,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL
+    PUSHBUTTON      "Delete type",IDC_BNVWDELTYPE,122,328,81,14
+    PUSHBUTTON      "Save",IDC_BUTTONSAVE,478,328,50,14
+    PUSHBUTTON      "New entity",IDC_BTNNEWENT,230,328,50,14
+    PUSHBUTTON      "New set",IDC_BTNNEWSET,291,328,50,14
+    PUSHBUTTON      "New procedure",IDC_BTNNEWPROC,354,328,59,14
+END
+
+IDD_NEWTYPDLG DIALOGEX 0, 0, 591, 198
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "New entity type"
+FONT 8, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,424,177,50,14
+    EDITTEXT        IDC_EDIT1,44,28,138,14,ES_UPPERCASE | ES_AUTOHSCROLL
+    LTEXT           "New Entity Type Name:",IDC_STATIC,45,16,78,8
+    LISTBOX         IDC_LIST1,202,33,133,147,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Compound component types",IDC_STATIC,419,20,109,8
+    LTEXT           "Entity description",IDC_STATIC,43,89,74,8
+    EDITTEXT        IDC_EDENTDESC,41,103,136,77,ES_MULTILINE | WS_VSCROLL
+    LISTBOX         IDC_LIST2,419,34,129,60,LBS_NOINTEGRALHEIGHT | LBS_NOSEL | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add ->",IDC_BUTTON1,352,36,50,14
+    PUSHBUTTON      "Clear all ->",IDC_BUTTONCLEAR,353,60,50,14
+    CONTROL         "Implement as Function",IDC_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,421,106,97,10
+    LTEXT           "Compound candidate types",IDC_STATIC,201,17,108,8
+    LTEXT           "Subsystem",IDC_STATIC,45,49,121,8
+    COMBOBOX        IDC_SELSCHEMA,43,62,136,89,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Cancel",IDCANCEL,502,177,50,14
+END
+
+IDD_EDITENTTYPDLG DIALOGEX 0, 0, 599, 330
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Edit entity definition"
+FONT 8, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,485,309,50,14
+    LISTBOX         IDC_LIST1,250,80,140,243,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Attribute type",IDC_STATIC,274,58,83,10
+    LTEXT           "Entity name:",IDC_STATIC,23,16,46,8
+    EDITTEXT        IDC_EDIT1,249,32,140,14,ES_UPPERCASE | ES_AUTOHSCROLL
+    LTEXT           "Attribute name:",IDC_STATIC,249,15,55,8
+    PUSHBUTTON      "Add attribute",IDC_BUTTON1,177,131,60,14
+    LISTBOX         IDC_LIST2,27,80,140,243,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Attributes",IDC_STATIC,23,54,36,8
+    PUSHBUTTON      "Delete attribute",IDC_BNEEATTRDEL,178,150,59,14
+    EDITTEXT        IDC_EDIT3,23,32,140,14,ES_UPPERCASE | ES_AUTOHSCROLL
+    PUSHBUTTON      "Rename attribute",IDC_BUTTON4,178,170,59,14
+    CONTROL         "Embedded",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,180,92,50,10
+    LISTBOX         IDC_LISTMSETS,420,171,140,115,LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set membership",IDC_STATICSETS,421,157,52,8
+    LTEXT           "Set ownership",IDC_STATICATTRDESC,420,15,66,8
+    EDITTEXT        IDC_ATTDIMS,178,112,14,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Dimensionality",IDC_STATIC,195,115,45,8
+    LISTBOX         IDC_LISTOSETS,421,32,140,113,LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Persistent entity",IDC_ENTPERSIST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,180,58,79,10
+END
+
+IDD_EDITSETDLG DIALOGEX 0, 0, 493, 201
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,371,180,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,436,180,50,14
+    EDITTEXT        IDC_EDTSETNAME,26,41,155,14,ES_UPPERCASE | ES_AUTOHSCROLL
+    LTEXT           "Set Name",IDC_STATICNAME,26,28,69,8
+    COMBOBOX        IDC_COMBODISPLN,200,41,64,42,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set Discipline",IDC_STATICDSPLN,201,28,57,8
+    LISTBOX         IDC_LISTMMBRATTS,26,78,155,109,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LISTRANKATTS,290,78,144,79,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBOSCHEMA,289,41,144,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add >",IDC_BUTTONADD,198,82,50,14
+    PUSHBUTTON      "Remove <",IDC_BUTTONREMV,198,107,50,14
+    CONTROL         "Persistent",IDC_SETPERSIST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,26,60,48,10
+    LTEXT           "Subsystem",IDC_STATIC,290,31,36,8
+    CONTROL         "Descending order",IDC_DOWNORDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,199,126,72,10
+    LTEXT           "Ranking attributes",IDC_STATIC,293,65,85,8
+END
+
+IDD_NEWPROCDLG DIALOGEX 0, 0, 616, 308
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,387,287,50,14,NOT WS_TABSTOP
+    PUSHBUTTON      "Cancel",IDCANCEL,455,287,50,14,NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT1,44,28,193,14,ES_UPPERCASE | ES_AUTOHSCROLL | NOT WS_TABSTOP
+    LTEXT           "New Procedure Name:",IDC_STATIC,45,16,78,8
+    COMBOBOX        IDC_SELSCHEMA,263,29,136,89,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Add to Schema definition:",IDC_STATIC,264,16,95,8
+    CONTROL         "Left handed",IDC_CHECK1,"Button",BS_AUTOCHECKBOX,531,28,55,10
+    EDITTEXT        IDC_EDITSRC,44,50,547,231,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL | NOT WS_TABSTOP,WS_EX_ACCEPTFILES
+END
+
+IDD_NEWPROJECTDLG DIALOGEX 0, 0, 449, 200
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,315,179,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,392,179,50,14
+    EDITTEXT        IDC_PROJNAME,99,44,82,14,ES_AUTOHSCROLL
+    LTEXT           "New project name",IDC_STATIC1,22,46,67,8
+    EDITTEXT        IDC_PROJID,101,76,79,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Unique ID",IDC_STATIC,22,79,59,8
+    EDITTEXT        IDC_LOCATION,98,115,253,14,ES_AUTOHSCROLL
+    LTEXT           "Location",IDC_STATIC,25,118,58,8
+    PUSHBUTTON      "Browse...",IDC_LOCBROWSE,371,116,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "EASE0002"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "EASE0002.exe"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "EASE0002.exe"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 326
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 91
+    END
+
+    IDD_EASVIEWDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 646
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 349
+    END
+
+    IDD_NEWTYPDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 584
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 191
+    END
+
+    IDD_EDITENTTYPDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 592
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 323
+    END
+
+    IDD_EDITSETDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 486
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 194
+    END
+
+    IDD_NEWPROCDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 609
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 301
+    END
+
+    IDD_NEWPROJECTDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 442
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_EASVIEWDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ABOUTBOX AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_NEWTYPDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_EDITENTTYPDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_EDITSETDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_NEWPROCDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_NEWPROJECTDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
+END
+
+STRINGTABLE
+BEGIN
+    IDR_MAINFRAME           "EASE0002\n\nEASE0002\n\n\nEASE0002.Document\nEASE0002.Document"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_APP_TITLE       "EASE0002"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_DIRECT    "Print the active document using current options\nQuick Print"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle Status Bar"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+END
+
+STRINGTABLE
+BEGIN
+    ID_NEW_ENTITYTYPE       "Define a new EAS entity type"
+    ID_NEW_FILE             "Create a new file"
+    ID_VIEW_SYSTEM          "Display EAS system contents"
+    ID_OPEN_DATABASE        "Open an EAS xml dbSchema\n"
+    ID_OPEN_FILE            "Open a file\n"
+    ID_EDIT_ENTITYTYPE      "Edit an EAS entity type definition"
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#include "res\EASE0002.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"      // Standard components
+#include "afxprint.rc"    // printing/print preview resources
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

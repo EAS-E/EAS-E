@@ -1,0 +1,490 @@
+<?xml version="1.0"?>
+<EASE-Database ID="3004" genname="Synrule">
+<ENTITIES>
+<entityType ID="1">
+<entityTypeName>SYNRULE</entityTypeName>
+<attrDef>
+<attrName>RULENAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>KEYRULE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_SYNRULES</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_ENTRULES</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RULETYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_PARTS</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="2">
+<entityTypeName>RULEPART</entityTypeName>
+<attrDef>
+<attrName>S_PARTS</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>REPEATS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>REQUIRED</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_ALTS</attrName>
+<attrTypeName>ALTPART</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="3">
+<entityTypeName>ALTPART</entityTypeName>
+<attrDef>
+<attrName>DICTENT</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_ALTS</attrName>
+<attrTypeName>ALTPART</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SCRIPTREF</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUBRULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>TERMINALTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SEQNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>DISCARD</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="8">
+<entityTypeName>RULFIXUP</entityTypeName>
+<attrDef>
+<attrName>RULENAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>THERULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_RULFIXUPS</attrName>
+<attrTypeName>RULFIXUP</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_ALTREFS</attrName>
+<attrTypeName>ALTREF</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="9">
+<entityTypeName>ALTREF</entityTypeName>
+<attrDef>
+<attrName>ALTSUBRULE</attrName>
+<attrTypeName>ALTPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_ALTREFS</attrName>
+<attrTypeName>ALTREF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="101" isProcedure="Y">
+<entityTypeName>READSYNTAX</entityTypeName>
+<Body><![CDATA[
+OPEN 5 FOR INPUT, NAME IS FILENAME
+USE 5 FOR INPUT
+LET EOF.V = 1
+WHILE EOF.V NE 2
+DO
+READ RULELINE AS T RRECLEN.V
+LET LEN = LENGTH.F(RULELINE)
+CALL ANALYZE(RULELINE, LEN, 0)
+IF F.TOKENLIST NE 0
+  LET CURRTOKEN = F.TOKENLIST
+  CALL READRULE
+ENDIF
+READ AS /
+LOOP
+CLOSE 5
+CALL LISTSYNTAX
+CALL LISTENTITIES
+]]></Body>
+<attrDef parameter="Y">
+<attrName>FILENAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RULELINE</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LEN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="101" isProcedure="Y">
+<entityTypeName>READRULE</entityTypeName>
+<Body><![CDATA[
+CREATE A SYNRULE CALLED ARULE
+LET RULENAME(ARULE) = LEXEME(CURRTOKEN)
+LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+IF LEXEME(CURRTOKEN) = "~"
+	LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+	LET KEYRULE(ARULE) = 0
+	LET AFIX = F.RULFIXUPS
+	WHILE AFIX NE 0
+	DO
+     IF RULENAME(ARULE) = RULENAME(AFIX)
+       LEAVE
+     ELSE
+       LET AFIX = S.RULFIXUPS(AFIX)
+     ENDIF
+	LOOP
+	IF AFIX = 0
+     CREATE A RULFIXUP CALLED AFIX
+     LET RULENAME(AFIX) = RULENAME(ARULE)
+     LET S.RULFIXUPS(AFIX) = F.RULFIXUPS
+     LET F.RULFIXUPS = AFIX  
+	ENDIF
+	LET THERULE(AFIX) = ARULE
+ELSE
+   LET KEYRULE(ARULE) = 1
+   LET S.SYNRULES(ARULE) = F.SYNRULES
+   LET F.SYNRULES = ARULE
+   LET RULETYPE(ARULE) = 1		'' tentative
+   IF TOKENTYPE(CURRTOKEN) = 1
+     LET RULETYPE(ARULE) = ACHAR.F(LEXEME(CURRTOKEN), 1) - 48	'' digit char-to-int
+     LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+   ENDIF
+ENDIF
+WHILE LEXEME(CURRTOKEN) NE "!"
+DO
+   LET APART = READPART
+   IF F.PARTS(ARULE) = 0
+     LET F.PARTS(ARULE) = APART
+   ELSE
+     LET LASTPART = F.PARTS(ARULE)
+     WHILE S.PARTS(LASTPART) NE 0
+     DO
+       LET LASTPART = S.PARTS(LASTPART)
+     LOOP
+     LET S.PARTS(LASTPART) = APART
+   ENDIF
+LOOP
+LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+IF CURRTOKEN NE 0
+   IF LEXEME(CURRTOKEN) = "!"
+     LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+     CALL FIXUPSUBRULES
+   ENDIF
+ENDIF
+LET LAST = F.TOKENLIST
+LET F.TOKENLIST = CURRTOKEN
+WHILE LAST NE F.TOKENLIST
+DO
+   LET CLEAN = LAST
+   LET LAST = S.TOKENLIST(LAST)
+   LET LEXEME(CLEAN) = ""
+   DESTROY TOKEN CALLED CLEAN
+LOOP
+RETURN
+]]></Body>
+<attrDef>
+<attrName>ARULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APART</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AFIX</attrName>
+<attrTypeName>RULFIXUP</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LASTPART</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LAST</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>CLEAN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="105" isProcedure="Y">
+<entityTypeName>READALT</entityTypeName>
+<Body><![CDATA[
+CREATE A ALTPART CALLED ALT
+IF TOKENTYPE(CURRTOKEN) = .TKN.QSTR
+	LET DICTENT(ALT) = FINDDICTENTRY.F(LEXEME(CURRTOKEN))
+	LET TERMINALTYPE(ALT) = 5	'' KEYWORD
+	IF LEXEME(S.TOKENLIST(CURRTOKEN)) = "&"
+		LET DISCARD(ALT) = 1
+		LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+	ENDIF
+ELSE
+	IF LEXEME(CURRTOKEN) = "@"
+		LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+		IF LEXEME(CURRTOKEN) = "IDENT"
+			LET TERMINALTYPE(ALT) = 3
+		ENDIF
+		IF LEXEME(CURRTOKEN) = "FLOAT"
+			LET TERMINALTYPE(ALT) = 2
+		ENDIF
+		IF LEXEME(CURRTOKEN) = "INT"
+			LET TERMINALTYPE(ALT) = 1
+		ENDIF
+		IF LEXEME(CURRTOKEN) = "STR"
+			LET TERMINALTYPE(ALT) = 4
+		ENDIF
+	ELSE
+		CREATE A ALTREF CALLED AREF
+		LET ALTSUBRULE(AREF) = ALT
+		LET AFIX = F.RULFIXUPS
+		WHILE AFIX NE 0
+		DO
+			IF LEXEME(CURRTOKEN) = RULENAME(AFIX)
+				LEAVE
+			ENDIF
+			LET AFIX = S.RULFIXUPS(AFIX)
+		LOOP
+		IF AFIX EQ 0
+			CREATE A RULFIXUP CALLED AFIX
+			RULENAME(AFIX) = LEXEME(CURRTOKEN)
+			LET S.RULFIXUPS(AFIX) = F.RULFIXUPS
+			LET F.RULFIXUPS = AFIX
+		ELSE
+			LET S.ALTREFS(AREF) = F.ALTREFS(AFIX)
+		ENDIF
+		LET F.ALTREFS(AFIX) = AREF
+		IF LEXEME(S.TOKENLIST(CURRTOKEN)) = "&"
+			LET DISCARD(ALT) = 1
+			LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+		ENDIF
+	ENDIF
+ENDIF
+CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+IF LEXEME(CURRTOKEN) = "#"
+	CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+	SCRIPTREF(ALT) = ACHAR.F(LEXEME(CURRTOKEN), 1) - 48
+	CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+ENDIF
+IF F.ALTS(PART) = 0
+	LET F.ALTS(PART) = ALT
+	LET SEQNUM(ALT) = 1
+ELSE
+	LET LAST = F.ALTS(PART)
+	WHILE S.ALTS(LAST) NE 0
+	DO
+		LET LAST = S.ALTS(LAST)
+	LOOP
+	LET S.ALTS(LAST) = ALT
+	LET SEQNUM(ALT) = SEQNUM(LAST) + 1
+ENDIF
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>PART</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALT</attrName>
+<attrTypeName>ALTPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LAST</attrName>
+<attrTypeName>ALTPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AREF</attrName>
+<attrTypeName>ALTREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AFIX</attrName>
+<attrTypeName>RULFIXUP</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="103" isProcedure="Y">
+<entityTypeName>FIXUPSUBRULES</entityTypeName>
+<Body><![CDATA[
+LET AFIX = F.RULFIXUPS
+WHILE AFIX NE 0
+DO
+	LET AREF = F.ALTREFS(AFIX)
+	WHILE AREF NE 0
+	DO
+		LET SUBRULE(ALTSUBRULE(AREF)) = THERULE(AFIX)
+		LET AREF = S.ALTREFS(AREF)
+	LOOP
+	LET AFIX = S.RULFIXUPS(AFIX)
+LOOP
+LET ARULE = F.SYNRULES
+WHILE ARULE NE 0
+DO
+	CALL LINKSUBTOROOTENTRY(ARULE)
+	LET ARULE = S.SYNRULES(ARULE)
+LOOP
+RETURN
+]]></Body>
+<attrDef>
+<attrName>AREF</attrName>
+<attrTypeName>ALTREF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ARULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AFIX</attrName>
+<attrTypeName>RULFIXUP</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="110" isProcedure="Y">
+<entityTypeName>LINKSUBTOROOTENTRY</entityTypeName>
+<Body><![CDATA[
+LET APART = F.PARTS(ARULE)
+WHILE APART NE 0
+DO
+	LET AALT = F.ALTS(APART)
+	WHILE AALT NE 0
+	DO
+		IF TERMINALTYPE(AALT) EQ 5	'' KEYWORD
+			LET AENTRY = DICTENT(AALT)
+		ELSE
+			LET SPART = F.PARTS(SUBRULE(AALT))
+			LET AENTRY = DICTENT(F.ALTS(SPART))
+		ENDIF
+		IF F.ENTRULES(AENTRY) = 0
+			LET F.ENTRULES(AENTRY) = ARULE
+		ELSE
+			LET LRULE = F.ENTRULES(AENTRY)
+			WHILE S.ENTRULES(LRULE) NE 0
+			DO
+				LET LRULE  = S.ENTRULES(LRULE)
+			LOOP
+			LET S.ENTRULES(LRULE) = ARULE
+		ENDIF
+		LET AALT = S.ALTS(AALT)
+	LOOP
+	IF REQUIRED(APART) NE 0
+		LET APART = 0
+	ELSE
+		LET APART = S.PARTS(APART)
+	ENDIF
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ARULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APART</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AALT</attrName>
+<attrTypeName>ALTPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SPART</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LRULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AENTRY</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="102" isProcedure="Y">
+<entityTypeName>READPART</entityTypeName>
+<Body><![CDATA[
+CREATE A RULEPART CALLED APART
+IF LEXEME(CURRTOKEN) = "<" AND TOKENTYPE(CURRTOKEN) EQ 0
+	LET REQUIRED(APART) = 1
+	LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+	WHILE LEXEME(CURRTOKEN) NE ">" OR  TOKENTYPE(CURRTOKEN) NE 0
+	DO
+		CALL READALT(APART)
+	LOOP
+ELSE
+	IF LEXEME(CURRTOKEN) = "("
+		LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+		WHILE LEXEME(CURRTOKEN) NE ")"
+		DO
+			CALL READALT(APART)
+		LOOP
+	ENDIF
+ENDIF
+LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+IF LEXEME(CURRTOKEN) = "*"
+	LET REPEATS(APART) = 1
+	LET CURRTOKEN = S.TOKENLIST(CURRTOKEN)
+ENDIF
+RETURN WITH APART
+]]></Body>
+<attrDef>
+<attrName>APART</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+<attrDef returntype="Y">
+<attrName>PART</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+</entityType>
+
+
+</ENTITIES>
+
+<SYSTEM>
+<entityType ID="0">
+<attrDef>
+<attrName>CURRTOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SYNRULES</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_RULFIXUPS</attrName>
+<attrTypeName>RULFIXUP</attrTypeName>
+</attrDef>
+</entityType>
+</SYSTEM>
+</EASE-Database>

@@ -1,0 +1,1257 @@
+<?xml version="1.0"?>
+<EASE-Database ID="3005" genname="EASEpars">
+<ENTITIES>
+<entityType ID="101">
+<entityTypeName>NODE</entityTypeName>
+<attrDef>
+<attrName>S_NODES</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SUBNODES</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_SUBNODES</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>START</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>END</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>MATCHNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SCRIPTCODE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>NODENAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="102">
+<entityTypeName>STMT</entityTypeName>
+<attrDef>
+<attrName>F_PARSENODES</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_PARSENODES</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_STMTS</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>P_STMTS</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>STMTRULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LBLNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>STMTNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LOOPDEPTH</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SCRIPTDEPTH</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_FMTLINES</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_TOKENS</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_TOKENS</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>P_CTRLSTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>P_DOSTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>STMTLINE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="103">
+<entityTypeName>EASEPROC</entityTypeName>
+<attrDef>
+<attrName>S_PROCS</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PDICTREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_STMTS</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_STMTS</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SCRIPTTOKENS</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_SCRIPTTOKENS</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LASTLBLNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RETURNATT</attrName>
+<attrTypeName>ATTRDEF</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ERRCOUNT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_LCLDEFS</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="104">
+<entityTypeName>LCLDEF</entityTypeName>
+<attrDef>
+<attrName>S_LCLDEFS</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LDEFNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LDEFTYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LDEFDIM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LPARAM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LYLD</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LRET</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ISSUBPROG</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="105">
+<entityTypeName>SRCLINE</entityTypeName>
+<attrDef>
+<attrName>S_SRCLINES</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LTXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>BUILDSOURCE</entityTypeName>
+<Body><![CDATA[
+CALL CLEARSRCLINES 
+LET TOTLEN = LENGTH.F(BODYTEXT)
+LET START = 1
+FOR I = 1 TO TOTLEN
+DO
+	IF ACHAR.F(BODYTEXT, I) EQ 13	
+		LET LINELEN = I - START
+		IF LINELEN NE 0
+			CREATE A SRCLINE CALLED ALINE
+			LET LTXT(ALINE) = SUBSTR.F(BODYTEXT, START, LINELEN)
+			IF F.SRCLINES EQ 0
+				LET F.SRCLINES = ALINE
+			ELSE
+				LET S.SRCLINES(LASTLINE) = ALINE
+			ENDIF
+			LET LASTLINE = ALINE
+			LET TOTLINES = TOTLINES + 1
+		ENDIF
+		LET START = I + 2	'' take both CR & LF
+	ENDIF
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>BODYTEXT</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALINE</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LASTLINE</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>TOTLEN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LINELEN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>START</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>CLEARSRCLINES</entityTypeName>
+<Body><![CDATA[
+LET CURRENTLINE = F.SRCLINES
+LET F.SRCLINES = 0
+WHILE CURRENTLINE NE 0
+DO
+	LET LAST = CURRENTLINE
+	LET CURRENTLINE = S.SRCLINES(CURRENTLINE)
+	ERASE LTXT(LAST)
+	DESTROY SRCLINE CALLED LAST
+LOOP
+]]></Body>
+<attrDef>
+<attrName>LAST</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>NEXTLINE_F</entityTypeName>
+<Body><![CDATA[
+IF CURRENTLINE EQ 0
+	LET CURRENTLINE = F.SRCLINES
+	LET CURRLINE = 1
+ELSE
+	LET CURRENTLINE = S.SRCLINES(CURRENTLINE)
+	LET CURRLINE = CURRLINE + 1
+ENDIF
+IF CURRENTLINE EQ 0
+	LET CURRLINE = 0
+	CALL CLEARSRCLINES
+	RETURN WITH ""
+ELSE
+	WRITE LTXT(CURRENTLINE) AS T *, / USING 98
+	RETURN WITH LTXT(CURRENTLINE)
+ENDIF
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LAST</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>STRUCTNODES</entityTypeName>
+<Body><![CDATA[
+IF L.NODES NE LASTNODE	'' one or more nodes to form a subtree under ANODE
+	IF LASTNODE EQ 0	'' this will be the first subtree
+		LET F.SUBNODES(ANODE) = F.NODES	
+		LET L.SUBNODES(ANODE) = L.NODES
+		LET F.NODES = 0					'' filenode will reset these
+		LET L.NODES = 0
+	ELSE
+		LET F.SUBNODES(ANODE) = S.NODES(LASTNODE)
+		LET S.NODES(LASTNODE) = ANODE
+		LET L.SUBNODES(ANODE) = L.NODES
+		LET L.NODES = LASTNODE
+	ENDIF
+ENDIF
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>LASTNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MATCHPARTALT_F</entityTypeName>
+<Body><![CDATA[
+SUCCESS = 0
+IF PARSETOKEN EQ 0
+	ATOKEN = L.TOKENLIST
+	WHILE S.TOKENLIST(ATOKEN) EQ 0
+	DO
+		LINE = NEXTLINE.F
+		IF LINE EQ 0
+			RETURN WITH SUCCESS
+		ENDIF
+		CALL ANALYZE(LINE, LENGTH_F(LINE), 1)
+		CALL SUBSTITUT(F.TOKENLIST)
+	LOOP
+	PARSETOKEN = S.TOKENLIST(ATOKEN)
+ENDIF
+
+IF SUBRULE(AALT) NE 0
+	LET LASTNODE = L.NODES
+	LET ATOKEN = PARSETOKEN
+	LET SUCCESS = MATCHRULE_F(SUBRULE(AALT))
+	IF SUCCESS EQ 0
+		LET PARSETOKEN = ATOKEN
+		WHILE ATOKEN NE 0
+		DO
+			IF PARSED(ATOKEN) EQ 0
+				LEAVE
+			ENDIF
+			LET PARSED(ATOKEN) = 0
+			ATOKEN = S.TOKENLIST(ATOKEN)
+		LOOP
+		IF LASTNODE NE 0				'' some nodes created in error?
+			IF L.NODES NE LASTNODE
+				LET L.NODES = LASTNODE
+				LET ANODE = S.NODES(L.NODES)
+				LET S.NODES(L.NODES) = 0
+				CALL DESTROYNODES(ANODE)
+			ENDIF
+		ELSE
+			IF F.NODES != 0				'' the whole node tree is bad
+				CALL DESTROYNODES(F.NODES)
+				LET F.NODES = 0
+				LET L.NODES = 0
+			ENDIF
+		ENDIF
+	ELSE
+		IF DISCARD(AALT) = 0
+			CREATE A NODE CALLED ANODE
+			LET START(ANODE) = ATOKEN
+			WHILE ATOKEN NE 0
+			DO
+				IF PARSED(ATOKEN) EQ 0
+					LEAVE
+				ELSE
+					LET END(ANODE) = ATOKEN
+					ATOKEN = S.TOKENLIST(ATOKEN)
+				ENDIF
+			LOOP
+			
+			LET MATCHNUM(ANODE) = SEQNUM(AALT)
+			LET SCRIPTCODE(ANODE) = SCRIPTREF(AALT)
+			LET NODENAME(ANODE) = RULENAME(SUBRULE(AALT))	'' for debug
+			CALL STRUCTNODES(ANODE, LASTNODE)
+			CALL FILENODE(ANODE)
+		ENDIF
+	ENDIF
+ELSE
+	AENTRY = DICTREF(PARSETOKEN)
+	TTYPE = TERMINALTYPE(AALT)
+
+	IF TTYPE EQ 0
+		IF DICTENT(AALT) = AENTRY
+			GO TO 'MATCHED'
+		ENDIF
+	ENDIF
+	
+	IF TTYPE EQ 1
+		IF TOKENTYPE(PARSETOKEN) = 1
+			GO TO 'MATCHED'
+		ENDIF
+	ENDIF
+
+	IF TTYPE EQ 2
+		IF TOKENTYPE(PARSETOKEN) = 1
+		 OR TOKENTYPE(PARSETOKEN) = 2
+			GO TO 'MATCHED'
+		ENDIF
+	ENDIF
+
+	IF TTYPE EQ 3
+		IF TOKENTYPE(PARSETOKEN) = 3
+			GO TO 'MATCHED'
+		ENDIF
+	ENDIF
+
+	IF TTYPE EQ 4
+		IF TOKENTYPE(PARSETOKEN) = 4
+			GO TO 'MATCHED'
+		ENDIF
+	ENDIF
+
+	IF TTYPE EQ 5
+		IF DICTENT(AALT) = AENTRY
+			GO TO 'MATCHED'
+		ENDIF
+	ENDIF
+
+	RETURN WITH 0
+
+  'MATCHED'
+	SUCCESS = 1
+	PARSED(PARSETOKEN) = 1
+
+	IF DISCARD(AALT) = 0
+		CREATE A NODE CALLED ANODE
+		LET START(ANODE) = PARSETOKEN
+		LET END(ANODE) = PARSETOKEN
+		LET MATCHNUM(ANODE) = SEQNUM(AALT)
+		LET SCRIPTCODE(ANODE) = SCRIPTREF(AALT)
+		CALL FILENODE(ANODE)
+	ENDIF
+
+	LET PARSETOKEN = S.TOKENLIST(PARSETOKEN)
+ENDIF
+RETURN WITH SUCCESS
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>AALT</attrName>
+<attrTypeName>ALTPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LINE</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LASTNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AENTRY</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>TTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SUCCESS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>FOUND1</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MATCHRULEPART_F</entityTypeName>
+<Body><![CDATA[
+LET AALT = F.ALTS(APART)
+WHILE AALT NE 0
+DO
+	SUCCESS = MATCHPARTALT_F(AALT)
+	IF SUCCESS NE 0
+		IF REPEATS(APART) NE 0
+			LET FOUND1 = 1
+			WHILE SUCCESS NE 0
+			DO
+				LET SUCCESS = MATCHPARTALT_F(AALT)
+			LOOP
+			LET SUCCESS = FOUND1
+		ENDIF
+		LET AALT = 0
+	ELSE
+		LET AALT = S.ALTS(AALT)
+	ENDIF
+LOOP
+RETURN WITH SUCCESS
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>APART</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AALT</attrName>
+<attrTypeName>ALTPART</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SUCCESS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>FOUND1</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MATCHRULE_F</entityTypeName>
+<Body><![CDATA[
+LET APART = F.PARTS(ARULE)
+WHILE APART NE 0
+DO
+	LET SUCCESS = MATCHRULEPART_F(APART)
+	IF SUCCESS EQ 0
+		IF REQUIRED(APART) NE 0
+			LEAVE
+		ELSE
+			IF FOUNDPART NE 0
+				LET SUCCESS = 1
+			ENDIF
+		ENDIF
+	ELSE
+		LET FOUNDPART = 1
+	ENDIF
+	APART = S.PARTS(APART)
+LOOP	
+RETURN WITH SUCCESS
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ARULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APART</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SUCCESS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>FOUNDPART</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>PARSESTMT_F</entityTypeName>
+<Body><![CDATA[
+''LET SUCCESS = 0
+''LET LASTCHANCE = 0
+LET PARSETOKEN = F.TOKENLIST
+LET AENTRY = DICTREF(PARSETOKEN)
+LET ARULE = F.ENTRULES(AENTRY)
+IF ARULE EQ 0 AND TOKENTYPE(PARSETOKEN) = .TKN.IDENT
+	LET LASTCHANCE = F.TOKENLIST
+	LET AENTRY = FINDDICTENTRY_F("LET")	'' Glen Johnson's BASIC hail-mary fix
+	CREATE A TOKEN CALLED PARSETOKEN
+	LET DICTREF(PARSETOKEN) = AENTRY
+	LET S.TOKENLIST(PARSETOKEN) = F.TOKENLIST
+	LET F.TOKENLIST = PARSETOKEN
+	LET ARULE = F.ENTRULES(AENTRY)
+ENDIF	
+WHILE ARULE NE 0
+DO
+	LET SUCCESS = MATCHRULE_F(ARULE)
+	IF SUCCESS EQ 0
+		CALL DESTROYNODES(F_NODES)
+		IF LASTCHANCE NE 0
+			LET F.TOKENLIST = S.TOKENLIST(LASTCHANCE)
+			RETURN WITH 0
+		ENDIF
+		LET PARSETOKEN = F.TOKENLIST
+		LET ARULE = S.ENTRULES(ARULE)
+	ELSE
+		CREATE A STMT CALLED ASTMT
+		LET STMTRULE(ASTMT) = ARULE
+		LET STMTLINE(ASTMT) = CURRLINE
+		IF F.NODES NE 0
+			LET F.PARSENODES(ASTMT) = F.NODES
+			LET L.PARSENODES(ASTMT) = L.NODES
+			LET F.NODES = 0
+			LET L.NODES = 0
+		ENDIF
+		RETURN WITH ASTMT		'' success
+	ENDIF
+LOOP
+RETURN WITH 0		'' no more rule choices
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AENTRY</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ARULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>APART</attrName>
+<attrTypeName>RULEPART</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LINE</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SUCCESS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LASTCHANCE</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>PARSE</entityTypeName>
+<Body><![CDATA[
+LET SCRIPTLEVEL = 0
+LET STMTSTATE = 1
+WHILE F.TOKENLIST = 0
+DO
+	LET LINE = NEXTLINE.F
+	IF LINE = 0
+		RETURN
+	ENDIF
+	CALL ANALYZE(LINE, LENGTH_F(LINE), 1)
+	CALL SUBSTITUT(F.TOKENLIST)
+LOOP	
+WHILE F.TOKENLIST NE 0
+DO
+	LET ATOKEN = F.TOKENLIST
+	LET ASTMT = PARSESTMT_F
+	IF ASTMT NE 0
+''	write rulename(stmtrule(astmt)) as t *  write as /
+		LET F.TOKENS(ASTMT) = ATOKEN		'' for debug printout...
+		LET SCRIPTDEPTH(ASTMT) = SCRIPTED(ATOKEN)
+		WHILE ATOKEN NE 0
+		DO
+			IF PARSED(ATOKEN) EQ 0
+				LEAVE
+			ENDIF
+			LET LASTPARSED = ATOKEN
+''			write lexeme(atoken) as t *
+''			write as s 2
+			LET ATOKEN = S.TOKENLIST(ATOKEN)
+		LOOP
+''		write as /
+		L.TOKENS(ASTMT) = LASTPARSED
+		
+		IF SCRIPTDEPTH(ASTMT) EQ 0
+			LET STMTSTATE = CTLSTATES(STMTSTATE, RULETYPE(STMTRULE(ASTMT)))	'' for non-DO looping
+		ENDIF
+		
+		IF F.STMTS(APROC) EQ 0
+			LET F.STMTS(APROC) = ASTMT
+			LET STMTNUM(ASTMT) = 1
+		ELSE
+			LET S.STMTS(L_STMTS(APROC)) = ASTMT
+			LET STMTNUM(ASTMT) = STMTNUM(L.STMTS(APROC)) + 1
+		ENDIF
+		LET P.STMTS(ASTMT) = L.STMTS(APROC)
+		LET L.STMTS(APROC) = ASTMT
+
+		IF RULENAME(STMTRULE(ASTMT)) = "MAIN"
+			LET PDICTREF(APROC) = FINDDICTENTRY.F("MAIN")
+			CALL STMTDEFRTN(ASTMT)
+		ENDIF
+		
+		IF RULENAME(STMTRULE(ASTMT)) = "DCLRTN"
+			CALL STMTDEFRTN(ASTMT)
+		ENDIF
+
+		IF RULENAME(STMTRULE(ASTMT)) = "DCLFUNC"
+			CALL STMTDEFFUNC(ASTMT)
+		ENDIF
+
+		IF RULENAME(STMTRULE(ASTMT)) = "DEFVAR"
+			CALL STMTDEFVAR(ASTMT)
+		ENDIF
+		
+		IF RULENAME(STMTRULE(ASTMT)) = "PRINTN"
+			IF MATCHNUM(F.PARSENODES(ASTMT)) = 2
+				LET N = 1
+			ELSE
+				LET N = ACHAR.F(LEXEME(START(F.PARSENODES(ASTMT))), 1) - 48
+			ENDIF
+			WHILE N > 0
+			DO
+				LET N = N - 1
+				CREATE A SRCLINE CALLED PFMT
+				LET LTXT(PFMT) = NEXTLINE.F
+				IF F.FMTLINES(ASTMT) EQ 0
+					LET F.FMTLINES(ASTMT) = PFMT
+				ELSE
+					LET LFMT = F.FMTLINES(ASTMT)
+					WHILE S.SRCLINES(LFMT) NE 0
+					DO
+						LET LFMT = S.SRCLINES(LFMT)
+					LOOP
+					LET S.SRCLINES(LFMT) = PFMT
+				ENDIF
+			LOOP
+		ENDIF
+
+		LET F.TOKENLIST = S.TOKENLIST(LASTPARSED)
+		LET S.TOKENLIST(LASTPARSED) = 0
+		IF F.TOKENLIST EQ 0
+			LET L.TOKENLIST = 0
+		ENDIF
+		
+		IF F.PARSENODES(ASTMT) NE 0
+			LET SAVEF = F.TOKENLIST
+			LET F.TOKENLIST = 0		'' give scripting an 'empty' token list
+			LET SAVEL = L.TOKENLIST
+			LET L.TOKENLIST = 0
+			
+			CALL STMTSCRIPT(ASTMT)	'' DO SCRIPTING HERE
+			IF STMTSTATE EQ 4
+				CALL SCRIPTLOOP
+			ENDIF
+			
+			IF L.TOKENLIST NE 0
+				LET S.TOKENLIST(L.TOKENLIST) = SAVEF
+			ELSE
+				LET F.TOKENLIST = SAVEF
+			ENDIF
+			IF SAVEL NE 0
+				LET L.TOKENLIST = SAVEL
+			ENDIF
+		ENDIF
+		
+		IF STMTSTATE GT 2
+			LET STMTSTATE = 1
+		ENDIF
+	ELSE
+		CALL EASERR(1001, LEXEME(F.TOKENLIST))							'' syntax error
+		LET ARULE = 0
+		WHILE ARULE EQ 0
+		DO
+			LET F.TOKENLIST = S.TOKENLIST(F.TOKENLIST)	'' advance parse position
+			WHILE F.TOKENLIST EQ 0
+			DO
+				LET LINE = NEXTLINE.F
+				IF LINE = 0
+					LEAVE
+				ENDIF
+				CALL ANALYZE(LINE, LENGTH_F(LINE), 1)
+				CALL SUBSTITUT(F.TOKENLIST)
+			LOOP
+			IF F.TOKENLIST EQ 0
+				LEAVE
+			ENDIF
+			LET ARULE = F.ENTRULES(DICTREF(F.TOKENLIST))
+		LOOP
+	ENDIF
+	
+	WHILE F.TOKENLIST = 0
+	DO
+		LET LINE = NEXTLINE.F
+		IF LINE = 0
+			LEAVE
+		ENDIF
+		CALL ANALYZE(LINE, LENGTH_F(LINE), 1)
+		CALL SUBSTITUT(F.TOKENLIST)
+	LOOP
+
+	IF F.TOKENLIST = 0		'' no more source
+		LET L.TOKENLIST = 0
+	ENDIF
+	
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LINE</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SAVEF</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SAVEL</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>N</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PFMT</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LFMT</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ARULE</attrName>
+<attrTypeName>SYNRULE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FILENODE</entityTypeName>
+<Body><![CDATA[
+IF F.NODES = 0
+	LET F.NODES = ANODE
+ELSE
+	LET S.NODES(L.NODES) = ANODE
+ENDIF
+LET L.NODES = ANODE
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>SUBSTITUT</entityTypeName>
+<Body><![CDATA[
+WHILE ATOKEN NE 0
+DO
+	IF TOKENTYPE(ATOKEN) = .TKN.IDENT
+		LET DREF = DICTREF(ATOKEN)
+		IF F.SUBST(DREF) NE 0
+			IF F.SUBST(DREF) = L.SUBST(DREF)	'' single Def2mean token
+				LET STOKEN = F.SUBST(DREF)
+				LET DICTREF(ATOKEN) = DICTREF(STOKEN)
+				LET TOKENTYPE(ATOKEN) = TOKENTYPE(STOKEN)
+				LET LEXEME(ATOKEN) = LEXEME(STOKEN)
+			ENDIF
+		ENDIF
+	ENDIF 
+	LET ATOKEN = S.TOKENLIST(ATOKEN)
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ATOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>STOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>DESTROYNODES</entityTypeName>
+<Body><![CDATA[
+IF ANODE = F.NODES
+	LET F.NODES = 0
+	LET LASTNODE = ANODE
+ENDIF
+WHILE ANODE NE 0
+DO
+	IF F.SUBNODES(ANODE) NE 0
+		CALL DESTROYNODES(F.SUBNODES(ANODE))
+	ENDIF
+	LET LASTNODE = ANODE
+	LET ANODE = S.NODES(ANODE)
+	DESTROY NODE CALLED LASTNODE
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LASTNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>STMTDEFVAR</entityTypeName>
+<Body><![CDATA[
+LET ANODE = F.PARSENODES(ASTMT)
+LET VARNODE = F.SUBNODES(ANODE)
+LET ANODE = S.NODES(ANODE)
+WHILE ANODE NE 0
+DO
+	IF MATCHNUM(ANODE) EQ 1
+		LET DIMNODE = ANODE
+	ELSE
+		LET MODENODE = F.SUBNODES(ANODE)
+	ENDIF
+	LET ANODE = S.NODES(ANODE)
+LOOP
+WHILE VARNODE NE 0
+DO
+	LET ALCL = FINDLCLDEF(LEXEME(START(VARNODE)))
+	CALL UPDATELCL(ALCL, MODENODE, DIMNODE)
+	IF SCRIPTCODE(L.PARSENODES(ASTMT)) NE 0
+		LET ISSUBPROG(ALCL) = 1
+	ENDIF
+	LET VARNODE = S.NODES(VARNODE)
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALCL</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>VARNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MODENODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DIMNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>STMTDEFRTN</entityTypeName>
+<Body><![CDATA[
+LET ANODE = F.PARSENODES(ASTMT)
+LET ANODE = S.NODES(ANODE)
+WHILE ANODE NE 0
+DO
+	LET VARNODE = F.SUBNODES(ANODE)
+	IF SCRIPTCODE(VARNODE) NE 0
+		LET YLD = 1
+	ENDIF
+	WHILE VARNODE NE 0
+	DO
+		LET ALCL = FINDLCLDEF(LEXEME(START(F.SUBNODES(VARNODE))))
+		LET LPARAM(ALCL) = 1
+		LET LYLD(ALCL) = YLD
+		LET VARNODE = S.NODES(VARNODE)
+	LOOP
+	LET ANODE = S.NODES(ANODE)
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALCL</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>VARNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>YLD</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>STMTDEFFUNC</entityTypeName>
+<Body><![CDATA[
+LET ANODE = F.PARSENODES(ASTMT)
+LET ANODE = S.NODES(ANODE)
+IF ANODE NE L.PARSENODES(ASTMT)		'' given arguments
+	LET VARNODE = F.SUBNODES(ANODE)
+ENDIF
+WHILE VARNODE NE 0
+DO
+	LET ALCL = FINDLCLDEF(LEXEME(START(F.SUBNODES(VARNODE))))
+	LET LPARAM(ALCL) = 1
+	LET VARNODE = S.NODES(VARNODE)
+LOOP
+LET ALCL = FINDLCLDEF("rval")	'' return specification
+LET ANODE = F.SUBNODES(F.SUBNODES(L.PARSENODES(ASTMT)))		'' we could & varmode %%
+IF MATCHNUM(ANODE) EQ 4 AND F.SUBNODES(ANODE) NE 0
+	LET DREF = FINDDICTENTRY.F(LEXEME(START(ANODE)))
+	LET AUSE = FINDSPECUSE.F(DREF, .USE.ENT)
+	IF AUSE NE 0
+		LET RTYPE = USEENTITY(AUSE)
+	ENDIF
+ELSE	
+	LET RTYPE = E_BUILTINS(MATCHNUM(ANODE))
+ENDIF
+IF RTYPE EQ 0
+	CALL EASERR(1002, LEXEME(START(ANODE)))
+	LET RTYPE = E_BUILTINS(1)	'' presume Integer
+ENDIF
+LET LDEFTYPE(ALCL) = RTYPE
+LET LRET(ALCL) = 1
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ANODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALCL</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>VARNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>RTYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>UPDATELCL</entityTypeName>
+<Body><![CDATA[
+IF LDEFTYPE(ALCL) NE 0			'' redefinition?
+	CALL EASERR(1019, LDEFNAME(ALCL))
+	RETURN
+ENDIF
+IF MODENODE NE 0
+	IF MATCHNUM(MODENODE) EQ 4 AND F.SUBNODES(MODENODE) NE 0		'' entity type reference
+		LET AUSE = FINDSPECUSE.F(DICTREF(START(MODENODE)), .USE.ENT)
+		IF AUSE EQ 0
+			CALL EASERR(1002, LEXEME(START(MODENODE)))
+		ELSE
+			LET LDEFTYPE(ALCL) = USEENTITY(AUSE)
+		ENDIF
+	ELSE
+		LET LDEFTYPE(ALCL) = E_BUILTINS(MATCHNUM(MODENODE))
+	ENDIF
+ENDIF
+IF LDEFTYPE(ALCL) EQ 0
+	CALL EASERR(-1002, LDEFNAME(ALCL))
+	LET LDEFTYPE(ALCL) = E_BUILTINS(1)		'' default to Integer
+ENDIF
+IF DIMNODE NE 0
+	LET LDEFDIM(ALCL) = ACHAR.F(LEXEME(START(DIMNODE)), 1) - 48		'' yes, this really crude
+ENDIF
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ALCL</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>MODENODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>DIMNODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+</entityType>
+
+
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FINDLCLDEF</entityTypeName>
+<Body><![CDATA[
+LET ALCL = F.LCLDEFS(CURRPROC)
+WHILE ALCL NE 0
+DO
+	IF LDEFNAME(ALCL) EQ VARNAME
+		LEAVE
+	ENDIF
+	LET LAST = ALCL
+	LET ALCL = S.LCLDEFS(ALCL)
+LOOP
+IF ALCL EQ 0
+	CREATE A LCLDEF CALLED ALCL
+	IF LAST NE 0
+		LET S.LCLDEFS(LAST) = ALCL
+	ELSE
+		LET F.LCLDEFS(CURRPROC) = ALCL
+	ENDIF
+	LET LDEFNAME(ALCL) = VARNAME
+ENDIF
+RETURN WITH ALCL
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>VARNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ALCL</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LAST</attrName>
+<attrTypeName>LCLDEF</attrTypeName>
+</attrDef>
+</entityType>
+
+</ENTITIES>
+
+<SYSTEM>
+<entityType ID="0">
+<entityTypeName>SYSTEM</entityTypeName>
+<attrDef scripted="Y">
+<attrName>NODE</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef scripted="Y">
+<attrName>STMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef scripted="Y">
+<attrName>SRCLINE</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+<attrDef scripted="Y">
+<attrName>EASEPROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_NODES</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_NODES</attrName>
+<attrTypeName>NODE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_SRCLINES</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>CURRENTLINE</attrName>
+<attrTypeName>SRCLINE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LASTPARSED</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PARSETOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>STMTSTATE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef subscripts="2">
+<attrName>CTLSTATES</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+</SYSTEM>
+
+</EASE-Database>

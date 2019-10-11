@@ -1,0 +1,295 @@
+<?xml version="1.0"?>
+<EASE-Database ID="2" noGen="Y" genname="easlib">
+<ENTITIES>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_INITSET_F</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_PINITSET_F</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_DELSET_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_PDELSET_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_FFIRST_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_PFFIRST_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_FLAST_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_PFLAST_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_RMVFRST_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_PRMVFRST_F</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_RMVLAST_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_RMVSPCFC_R</entityTypeName>
+<attrDef returntype="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_PRMVSPCFC_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_FRANK_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_PFRANK_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_CREATE_F</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_PCREATE_F</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_DESTROY_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_PDESTROY_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>E_RECORD_R</entityTypeName>
+</entityType>
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>ERASE_R</entityTypeName>
+<attrDef parameter="Y">
+<attrName>ARG1</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="13" isProcedure="Y">
+<entityTypeName>ACHAR_F</entityTypeName>
+</entityType>
+<entityType ID="14" isProcedure="Y">
+<entityTypeName>LENGTH_F</entityTypeName>
+</entityType>
+<entityType ID="15" isProcedure="Y">
+<entityTypeName>CONCAT_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>T</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="16" isProcedure="Y">
+<entityTypeName>SUBSTR_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>T</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="18" isProcedure="Y">
+<entityTypeName>OPENI_R</entityTypeName>
+</entityType>
+<entityType ID="19" isProcedure="Y">
+<entityTypeName>OPENO_R</entityTypeName>
+</entityType>
+<entityType ID="20" isProcedure="Y">
+<entityTypeName>CLOSE_R</entityTypeName>
+</entityType>
+<entityType ID="21" isProcedure="Y">
+<entityTypeName>RES_F</entityTypeName>
+</entityType>
+<entityType ID="22" isProcedure="Y">
+<entityTypeName>WTX_R</entityTypeName>
+</entityType>
+<entityType ID="24" isProcedure="Y">
+<entityTypeName>WTI_R</entityTypeName>
+</entityType>
+<entityType ID="25" isProcedure="Y">
+<entityTypeName>WTB_R</entityTypeName>
+</entityType>
+<entityType ID="26" isProcedure="Y">
+<entityTypeName>WTL_R</entityTypeName>
+</entityType>
+<entityType ID="27" isProcedure="Y">
+<entityTypeName>WTS_R</entityTypeName>
+</entityType>
+<entityType ID="28" isProcedure="Y">
+<entityTypeName>WTT_R</entityTypeName>
+</entityType>
+<entityType ID="28" isProcedure="Y">
+<entityTypeName>WTP_R</entityTypeName>
+</entityType>
+<entityType ID="31" isProcedure="Y">
+<entityTypeName>RDB_R</entityTypeName>
+</entityType>
+<entityType ID="32" isProcedure="Y">
+<entityTypeName>RDL_R</entityTypeName>
+</entityType>
+<entityType ID="33" isProcedure="Y">
+<entityTypeName>RDS_R</entityTypeName>
+</entityType>
+<entityType ID="34" isProcedure="Y">
+<entityTypeName>RDX_F</entityTypeName>
+</entityType>
+<entityType ID="35" isProcedure="Y">
+<entityTypeName>RDI_F</entityTypeName>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>RDS_F</entityTypeName>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>RDN_F</entityTypeName>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>RDS_R</entityTypeName>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>RDT_F</entityTypeName>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>RDP_F</entityTypeName>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>ITOT_F</entityTypeName>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>USE_R</entityTypeName>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>ERR_R</entityTypeName>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>E_PCONNECT_R</entityTypeName>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>E_PDISCONNECT_R</entityTypeName>
+</entityType>
+</entityType>
+<entityType ID="36" isProcedure="Y">
+<entityTypeName>E_TYPENAME_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>T</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="15" isProcedure="Y">
+<entityTypeName>XMLOPEN_F</entityTypeName>
+</entityType>
+<entityType ID="16" isProcedure="Y">
+<entityTypeName>XMLFINDELEM_F</entityTypeName>
+</entityType>
+<entityType ID="18" isProcedure="Y">
+<entityTypeName>XMLFINDCHILD_F</entityTypeName>
+</entityType>
+<entityType ID="19" isProcedure="Y">
+<entityTypeName>XMLINTO</entityTypeName>
+</entityType>
+<entityType ID="20" isProcedure="Y">
+<entityTypeName>XMLOUTOF</entityTypeName>
+</entityType>
+<entityType ID="21" isProcedure="Y">
+<entityTypeName>XMLLATTR_F</entityTypeName>
+</entityType>
+<entityType ID="22" isProcedure="Y">
+<entityTypeName>XMLIATTR_F</entityTypeName>
+</entityType>
+<entityType ID="22" isProcedure="Y">
+<entityTypeName>XMLTATTR_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>T</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="24" isProcedure="Y">
+<entityTypeName>XMLGETDATA_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>T</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="25" isProcedure="Y">
+<entityTypeName>XMLGETCHILDDATA_F</entityTypeName>
+<attrDef returntype="Y">
+<attrName>T</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="22" isSystemDefined="Y">
+<entityTypeName>UIB_R</entityTypeName>
+<attrDef embedded="Y">
+<attrName>RRECLEN_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>RCOL_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ROPENERR_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>EOF_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="23" isSystemDefined="Y">
+<entityTypeName>UIB_W</entityTypeName>
+<attrDef embedded="Y">
+<attrName>WRECLEN_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>WCOL_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>WOPENERR_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+</ENTITIES>
+<SYSTEM>
+<entityType ID="0">
+<entityTypeName>easlib</entityTypeName>
+<attrDef embedded="Y">
+<attrName>READ_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>WRITE_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>E_SAVE_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>UIB_R</attrName>
+<attrTypeName>UIB_R</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>E_FOUND_V</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+</SYSTEM>
+</EASE-Database>

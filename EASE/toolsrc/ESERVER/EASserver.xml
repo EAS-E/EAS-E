@@ -1,0 +1,887 @@
+<?xml version="1.0"?>
+<EASE-Database ID="3001" genname="EASserver">
+<ENTITIES>
+<entityType ID="10">
+<entityTypeName>SLOT</entityTypeName>
+<attrDef embedded="Y">
+<attrName>ISINUSE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>DASH</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>DATASIZE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LOGICALBLK</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>FIRSTSEG</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>NSEGS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>MORELGBLK</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>LOCKSTATUS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="11">
+<entityTypeName>PERSISTTYPE</entityTypeName>
+<attrDef embedded="Y">
+<attrName>SSID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>ETYPEID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SLOTARR_PTR</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>NSLOTS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_PTYPES</attrName>
+<attrTypeName>PERSISTTYPE</attrTypeName>
+</attrDef>
+</entityType>
+<entityType ID="12">
+<entityTypeName>LGBLKREP</entityTypeName>
+<Descr><![CDATA[Representation of a Logical Block.]]></Descr>
+<attrDef embedded="Y">
+<attrName>BLKNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>F_FREESEGS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>N_FREESEGS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SEGARR_PTR</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_LBLKS</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>BLKADDR</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>CHANGED</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>BLKOFFSET</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>REGETYPE_F</entityTypeName>
+<Body><![CDATA[
+LET PTYPE = F.PTYPES
+WHILE PTYPE NE 0
+DO
+	IF SSID(PTYPE) EQ ID1 AND ETYPEID(PTYPE) EQ ID2
+		LEAVE
+	ENDIF
+	LET PTYPE = S.PTYPES(PTYPE)
+LOOP
+IF PTYPE EQ 0
+	WRITE ID1, ID2 AS "Registering new type: ", I 5, I 5, /
+	CREATE A PERSISTTYPE CALLED PTYPE
+	LET SSID(PTYPE) = ID1
+	LET ETYPEID(PTYPE) = ID2
+	LET NSLOTS(PTYPE) = .INIT.SLOTS
+	RESERVE SLOTARR AS NSLOTS(PTYPE)
+	LET SLOTARR_PTR(PTYPE) = SLOTARR(*)
+	LET S.PTYPES(PTYPE) = F.PTYPES
+	LET F.PTYPES = PTYPE
+ENDIF
+IF PTYPE NE 0
+	WRITE ID1, ID2 AS "Catalogued/verified: ", I 5, I 5, /
+ELSE
+	LET SUCCESS = -1
+ENDIF
+RETURN WITH SUCCESS
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ID1</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ID2</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PTYPE</attrName>
+<attrTypeName>PERSISTTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SUCCESS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SLOTARR</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>CREETYPE</entityTypeName>
+<Body><![CDATA[
+LET PTYPE = F.PTYPES
+WHILE PTYPE NE 0
+DO
+	IF SSID(PTYPE) EQ ID1 AND ETYPEID(PTYPE) EQ ID2
+		LEAVE
+	ENDIF
+	LET PTYPE = S.PTYPES(PTYPE)
+LOOP
+IF PTYPE EQ 0
+	WRITE AS "No such entity type", /
+	RETURN
+ENDIF
+WHILE SLOTNUM EQ 0
+DO
+	LET SLOTARR(*) = SLOTARR_PTR(PTYPE)
+	LET N = NSLOTS(PTYPE)
+	FOR I = 1 TO N
+	 WHILE SLOTNUM EQ 0
+	DO	
+		IF SLOTARR(I) = 0				'' not yet used
+			CREATE A SLOT CALLED ASLOT
+			LET SLOTARR(I) = ASLOT
+			LET SLOTNUM = I
+		ELSE
+			LET ASLOT = SLOTARR(I)
+			IF ISINUSE(ASLOT) EQ 0		'' can recycle
+				LET SLOTNUM = I
+			ENDIF
+		ENDIF
+	LOOP
+	IF SLOTNUM NE 0
+		LET ISINUSE(ASLOT) = 1			'' reusing slot - increment dash
+		LET DASH(ASLOT) = DASH(ASLOT) + 1
+		LET DASHNUM = DASH(ASLOT)
+	ELSE
+		RESERVE NEWARR AS N * 2
+		FOR I = 1 TO N
+		DO
+			LET NEWARR(I) = SLOTARR(I)
+		LOOP
+		LET NSLOTS(PTYPE) = N * 2
+		LET SLOTARR_PTR(PTYPE) = NEWARR(*)
+		'' RELEASE SLOTARR(*)
+	ENDIF 
+LOOP
+WRITE ID1, ID2, SLOTNUM, DASHNUM AS "New instance: ",  I 5, I 5, I 5, I 5, /
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ID1</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ID2</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y" yielded="Y">
+<attrName>SLOTNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y" yielded="Y">
+<attrName>DASHNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PTYPE</attrName>
+<attrTypeName>PERSISTTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASLOT</attrName>
+<attrTypeName>SLOT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>N</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SLOTARR</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>NEWARR</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>MAIN</entityTypeName>
+<Body><![CDATA[
+OPEN 6 FOR OUTPUT, NAME IS "serverlog.txt"
+USE 6 FOR OUTPUT
+
+OPEN 1 FOR INPUT, NAME IS "ptypes.txt"
+USE 1 FOR INPUT
+IF ROPENERR.V(UIB.R) EQ 0
+	WHILE EOF.V(UIB.R) NE 2
+	DO
+		CREATE A PERSISTTYPE CALLED PTYPE
+		LET S.PTYPES(PTYPE) = F.PTYPES
+		LET F.PTYPES = PTYPE
+		READ SSID(PTYPE), ETYPEID(PTYPE), NSLOTS(PTYPE) AS I 6, I 6, I 6, /
+		RESERVE SLOTARR AS NSLOTS(PTYPE)
+		LET SLOTARR_PTR(PTYPE) = SLOTARR(*)
+		FOR I = 1 TO NSLOTS(PTYPE)
+		DO
+			READ EXISTS AS I 6
+			IF EXISTS NE 0
+				CREATE A SLOT CALLED ASLOT
+				LET SLOTARR(I) = ASLOT
+				READ ISINUSE(ASLOT), DASH(ASLOT), LOGICALBLK(ASLOT), FIRSTSEG(ASLOT), NSEGS(ASLOT), DATASIZE(ASLOT)
+					AS I 2, I 4, I 6, I 3, I 3, I 4
+			ENDIF
+			READ AS /
+		LOOP
+	LOOP
+ENDIF
+CLOSE 1
+
+OPEN 1 FOR INPUT, NAME IS "plblks.txt"
+USE 1 FOR INPUT
+IF ROPENERR.V(UIB.R) EQ 0
+  WHILE EOF.V NE 2
+  DO
+	CREATE A LGBLKREP CALLED LBLK
+	IF F.LBLKS EQ 0
+	  LET F.LBLKS = LBLK
+	ELSE
+	  LET S.LBLKS(L.LBLKS) = LBLK
+	ENDIF
+	LET L.LBLKS = LBLK
+	READ BLKNUM(LBLK), BLKOFFSET(LBLK), N.FREESEGS(LBLK), F.FREESEGS(LBLK) AS I 6, I 6, I 6, I 6
+	RESERVE SEGARR AS .NUM.SEGS
+	FOR I = 1 TO .NUM.SEGS
+	DO
+		READ SEGARR(I)
+	LOOP
+	LET SEGARR_PTR(LBLK) = SEGARR(*)
+	READ AS /
+  LOOP
+ENDIF
+CLOSE 1
+
+CALL OPENDATA_R(.SEG.SIZE * .NUM.SEGS)		'' block size
+
+CALL LISTENERINIT_F		'' this will not return...
+
+WRITE AS "Server shutting down; communication error", /
+CLOSE 6
+END
+]]></Body>
+<attrDef>
+<attrName>PTYPE</attrName>
+<attrTypeName>PERSISTTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASLOT</attrName>
+<attrTypeName>SLOT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SLOTARR</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>EXISTS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LBLK</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SEGARR</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>UPDATEINST_F</entityTypeName>
+<Body><![CDATA[
+LET PTYPE = F.PTYPES
+WHILE PTYPE NE 0
+DO
+	IF SSID(PTYPE) EQ ID1 AND ETYPEID(PTYPE) EQ ID2
+		LEAVE
+	ENDIF
+	LET PTYPE = S.PTYPES(PTYPE)
+LOOP
+IF PTYPE EQ 0
+	RETURN WITH -1
+ENDIF
+WRITE ID1, ID2, PID, DASHNUM, ESIZE AS "Updating instance: ", I 5, I 5, I 5, I 3, I 5, /
+LET SLOTARR(*) = SLOTARR_PTR(PTYPE)
+LET ASLOT = SLOTARR(PID)
+
+IF DASH(ASLOT) NE DASHNUM
+	WRITE AS "Warning - dash number mismatch in update", /
+ENDIF
+
+LET S = ESIZE
+WHILE S GT .SEG.SIZE
+	DO
+	LET N = N + 1
+	LET S = S - .SEG.SIZE
+LOOP
+IF S > 0	'' incomplete segment
+	LET N = N + 1
+ENDIF
+
+IF N NE NSEGS(ASLOT)
+	CALL FREESEGS(ASLOT)
+	LET LBLK = FINDLBLK.F(N)
+	LET LOGICALBLK(ASLOT) = BLKNUM(LBLK)
+	LET FIRSTSEG(ASLOT) = F.FREESEGS(LBLK)
+	LET NSEGS(ASLOT) = N
+ENDIF
+LET DATASIZE(ASLOT) = ESIZE
+CALL COPYTO(DATA, ASLOT)
+RETURN WITH 0
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ID1</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ID2</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>PID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>DASHNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ESIZE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>DATA</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PTYPE</attrName>
+<attrTypeName>PERSISTTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>N</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SLOTARR</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASLOT</attrName>
+<attrTypeName>SLOT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LBLK</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>GETBLK_F</entityTypeName>
+<Body><![CDATA[
+LET LBLK = F.LBLKS
+WHILE LBLK NE 0
+DO
+	IF BLKNUM(LBLK) EQ N
+		LEAVE
+	ENDIF
+	LET LBLK = S.LBLKS(LBLK)
+LOOP
+IF BLKADDR(LBLK) EQ 0
+	WRITE BLKNUM(LBLK), BLKOFFSET(LBLK) AS "Reading block ", I 4, " from offset ", I 6, /
+	LET BLKADDR(LBLK) = READBLK_F(BLKOFFSET(LBLK))
+ENDIF
+RETURN WITH LBLK
+]]></Body>
+<attrDef returntype="Y">
+<attrName>B</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>N</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LBLK</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FREESEGS</entityTypeName>
+<Body><![CDATA[
+IF NSEGS(ASLOT) NE 0
+	LET LBLK = GETBLK_F(LOGICALBLK(ASLOT))
+	LET SEGARR(*) = SEGARR_PTR(LBLK)
+	LET I = FIRSTSEG(ASLOT)
+	WHILE SEGARR(I) NE 0
+	DO
+		LET I = SEGARR(I)
+	LOOP
+	LET SEGARR(I) = F.FREESEGS(LBLK)
+	LET F.FREESEGS(LBLK) = FIRSTSEG(ASLOT)
+	LET FIRSTSEG(ASLOT) = 0
+	LET NSEGS(ASLOT) = 0
+	LET LOGICALBLK(ASLOT) = 0
+	LET SEGARR_PTR(LBLK) = SEGARR(*)
+ENDIF
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASLOT</attrName>
+<attrTypeName>SLOT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LBLK</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SEGARR</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FINDLBLK_F</entityTypeName>
+<Body><![CDATA[
+LET LBLK = F.LBLKS
+WHILE LBLK NE 0
+DO
+	IF N_FREESEGS(LBLK) GE N
+		LEAVE
+	ENDIF
+	LBLK = S.LBLKS(LBLK)
+LOOP
+IF LBLK EQ 0
+	CREATE A LGBLKREP CALLED LBLK
+	RESERVE SEGARR AS .NUM.SEGS
+	FOR N = 1 TO .NUM.SEGS - 1
+	DO
+		LET SEGARR(N) = N + 1
+	LOOP
+	LET SEGARR_PTR(LBLK) = SEGARR(*)
+	LET F.FREESEGS(LBLK) = 1
+	LET N.FREESEGS(LBLK) = .NUM.SEGS
+	IF F.LBLKS EQ 0
+		LET F.LBLKS = LBLK
+		LET BLKNUM(LBLK) = 1
+	ELSE
+		LET S.LBLKS(L.LBLKS) = LBLK
+		LET BLKNUM(LBLK) = BLKNUM(L_LBLKS) + 1
+	ENDIF
+	LET L_LBLKS = LBLK
+	LET BLKADDR(LBLK) = ALLOCNEWBLK_F(.NUM.SEGS * .SEG.SIZE)
+ENDIF
+RETURN WITH LBLK
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>N</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LBLK</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SEGARR</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>COPYTO</entityTypeName>
+<Body><![CDATA[
+LET LBLK = GETBLK_F(LOGICALBLK(ASLOT))
+LET SEGARR(*) = SEGARR_PTR(LBLK)
+LET N = NSEGS(ASLOT)
+LET SIZE = DATASIZE(ASLOT)
+WRITE N, FIRSTSEG(ASLOT), BLKNUM(LBLK) AS "Allocate ", I 2, " segments at ", I 2, " block ", I 4, /
+WHILE N GT 0
+DO
+	LET SEG = F.FREESEGS(LBLK)
+	CALL PUTDATA_R(DATA, BLKADDR(LBLK), I, SEG, .SEG.SIZE, SIZE)
+	LET SIZE = SIZE - .SEG.SIZE
+	LET F.FREESEGS(LBLK) = SEGARR(SEG)		'' next free
+	LET N.FREESEGS(LBLK) = N.FREESEGS(LBLK) - 1
+	LET N = N - 1
+	LET I = I + 1
+LOOP
+LET SEGARR(SEG) = 0		'' mark end of segment chain
+LET SEGARR_PTR(LBLK) = SEGARR(*)
+LET SEGARR(*) = 0
+LET CHANGED(LBLK) = 1
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>DATA</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ASLOT</attrName>
+<attrTypeName>SLOT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SIZE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LBLK</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SEGARR</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SEG</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>N</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FETCHINST_F</entityTypeName>
+<Body><![CDATA[
+LET PTYPE = F.PTYPES
+WHILE PTYPE NE 0
+DO
+	IF SSID(PTYPE) EQ ID1 AND ETYPEID(PTYPE) EQ ID2
+		LEAVE
+	ENDIF
+	LET PTYPE = S.PTYPES(PTYPE)
+LOOP
+IF PTYPE EQ 0
+	RETURN WITH -1
+ENDIF
+LET SLOTARR(*) = SLOTARR_PTR(PTYPE)
+LET ASLOT = SLOTARR(PID)
+
+IF DASH(ASLOT) NE DASHNUM
+	WRITE AS "Warning - dash number mismatch in fetch", /
+ENDIF
+
+LET ESIZE = DATASIZE(ASLOT)
+WRITE ID1, ID2, PID, DASHNUM, ESIZE AS "Fetching instance: ", I 5, I 5, I 5, I 3, I 5, /
+CALL COPYFROM(ASLOT, DATA)
+RETURN WITH ESIZE
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ID1</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ID2</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>PID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>DASHNUM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>DATA</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PTYPE</attrName>
+<attrTypeName>PERSISTTYPE</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SLOTARR</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASLOT</attrName>
+<attrTypeName>SLOT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ESIZE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>COPYFROM</entityTypeName>
+<Body><![CDATA[
+LET LBLK = GETBLK_F(LOGICALBLK(ASLOT))
+LET SEGARR(*) = SEGARR_PTR(LBLK)
+LET N = NSEGS(ASLOT)
+LET SIZE = DATASIZE(ASLOT)
+LET SEG = FIRSTSEG(ASLOT)
+WRITE N, FIRSTSEG(ASLOT), BLKNUM(LBLK) AS "Reading ", I 2, " segments at ", I 2, " block ", I 4, /
+WHILE N GT 0
+DO
+	CALL GETDATA_R(DATA, BLKADDR(LBLK), I, SEG, .SEG.SIZE, SIZE)
+	LET SEG = SEGARR(SEG)
+	LET SIZE = SIZE - .SEG.SIZE
+	LET N = N - 1
+	LET I = I + 1
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ASLOT</attrName>
+<attrTypeName>SLOT</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>DATA</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SIZE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LBLK</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SEGARR</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SEG</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>N</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>WRITECATALOG_F</entityTypeName>
+<Body><![CDATA[
+LET SAVWRITE = WRITE.V
+OPEN 2 FOR OUTPUT, NAME IS "ptypes.txt"
+USE 2 FOR OUTPUT
+LET PTYPE = F.PTYPES
+WHILE PTYPE NE 0
+DO
+	WRITE SSID(PTYPE), ETYPEID(PTYPE), NSLOTS(PTYPE) AS I 6, I 6, I 6, /
+	LET SLOTARR(*) = SLOTARR_PTR(PTYPE)
+	FOR I = 1 TO NSLOTS(PTYPE)
+	DO
+		LET ASLOT = SLOTARR(I)
+		IF ASLOT NE 0
+			WRITE I, ISINUSE(ASLOT), DASH(ASLOT), LOGICALBLK(ASLOT), FIRSTSEG(ASLOT), NSEGS(ASLOT), DATASIZE(ASLOT)
+					AS I 6, I 2, I 4, I 6, I 3, I 3, I 4
+		ELSE
+			WRITE 0 AS I 6
+		ENDIF
+		WRITE AS /
+	LOOP
+	LET PTYPE = S.PTYPES(PTYPE)
+LOOP
+CLOSE 2
+OPEN 2 FOR OUTPUT, NAME IS "plblks.txt"
+USE 2 FOR OUTPUT
+LET LBLK = F.LBLKS
+WHILE LBLK NE 0
+DO
+	LET SEGARR(*) = SEGARR_PTR(LBLK)
+	WRITE BLKNUM(LBLK), BLKOFFSET(LBLK), N.FREESEGS(LBLK), F.FREESEGS(LBLK) AS I 6, I 6, I 6, I 6, S 4
+	FOR I = 1 TO .NUM.SEGS
+	DO
+		WRITE SEGARR(I) AS I 3
+	LOOP
+	WRITE AS /
+	LET LBLK = S.LBLKS(LBLK)
+LOOP
+CLOSE 2
+USE SAVWRITE FOR OUTPUT
+RETURN
+]]></Body>
+<attrDef>
+<attrName>PTYPE</attrName>
+<attrTypeName>PERSISTTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ASLOT</attrName>
+<attrTypeName>SLOT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SAVWRITE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SLOTARR</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LBLK</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>SEGARR</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>WRITELBLKS_F</entityTypeName>
+<Body><![CDATA[
+LET LBLK = F.LBLKS
+WHILE LBLK NE 0
+DO
+	IF CHANGED(LBLK) NE 0
+		LET BLKOFFSET(LBLK) = WRITEBLK_F(BLKADDR(LBLK))
+		WRITE BLKNUM(LBLK), BLKOFFSET(LBLK) AS "Block ", I 4, " written at ", I 6, /
+		LET CHANGED(LBLK) = 0
+	ENDIF
+	LBLK = S.LBLKS(LBLK)
+LOOP
+RETURN WITH 0
+]]></Body>
+<attrDef returntype="Y">
+<attrName>RET</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LBLK</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+</entityType>
+
+</ENTITIES>
+
+<SYSTEM>
+<entityType ID="0">
+<entityTypeName>SYSTEM</entityTypeName>
+<attrDef scripted="Y">
+<attrName>LGBLKREP</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef scripted="Y">
+<attrName>PERSISTTYPE</attrName>
+<attrTypeName>PERSISTTYPE</attrTypeName>
+</attrDef>
+<attrDef scripted="Y">
+<attrName>SLOT</attrName>
+<attrTypeName>SLOT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_PTYPES</attrName>
+<attrTypeName>PERSISTTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_LBLKS</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_LBLKS</attrName>
+<attrTypeName>LGBLKREP</attrTypeName>
+</attrDef>
+</entityType>
+</SYSTEM>
+
+<SUBST>
+<d2m term="_INIT_SLOTS">
+<substxt><![CDATA[4]]></substxt>
+</d2m>
+<d2m term="_SEG_SIZE">
+<substxt><![CDATA[64]]></substxt>
+</d2m>
+<d2m term="_NUM_SEGS">
+<substxt><![CDATA[4]]></substxt>
+</d2m>
+</SUBST>
+
+</EASE-Database>

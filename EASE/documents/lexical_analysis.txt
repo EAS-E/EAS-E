@@ -1,0 +1,124 @@
+Lexical analysis - token building routine.
+
+ Note: the +1's are because C has 0-based arrays; EASE arrays are 1-based
+ For a long time, the tables were shared by both C and EASE code while bootstrapping.
+ In fact, some remnants of the C cross-compiler still exist for obscure test purposes.
+The code is in XML format.
+The arguments follow the procedural code, as attribute definitions for the procedure entity.
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>ANALYZE</entityTypeName>
+<Body><![CDATA[
+LET CURRPOS = 1
+LET STARTPOS = 1
+WHILE CURRPOS LE BUFFERLEN + 1
+DO
+	IF CURRPOS > BUFFERLEN
+		LET CTYPE = 0			'' virtual space to end line
+	ELSE
+		LET THISCHAR = ACHAR.F(BUFFER, CURRPOS)
+		IF THISCHAR > 127
+			LET ACHAR.F(BUFFER, CURRPOS) = .CH.SPC
+			LET THISCHAR = ACHAR.F(BUFFER, CURRPOS)
+		ENDIF
+		IF CURRSTATE NE 4 		'' string
+		 AND (THISCHAR GT 96 AND THISCHAR LT 123)
+			LET ACHAR.F(BUFFER, CURRPOS) = THISCHAR - 32	'' lower to upper
+			LET THISCHAR = ACHAR.F(BUFFER, CURRPOS)
+		ENDIF
+		LET CTYPE = CHARTYPE(THISCHAR + 1)
+	ENDIF
+	LET NXTSTATE = NEXTSTATE(CURRSTATE+1, CTYPE+1)
+	LET TOKENTYPE = TOKENFORM(CURRSTATE+1)
+	LET ACTN = ACTION(CURRSTATE+1, CTYPE+1)
+	IF ACTN = 0								'' space: advance scan
+		STARTPOS = STARTPOS+1
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 1								'' maintain start and continue scan
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 2								'' make token; start new token search
+		CALL MAKETOKEN(BUFFER, STARTPOS, CURRPOS-1, TOKENTYPE, SEEKDICT)
+		LET STARTPOS = CURRPOS
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 3								'' as above..
+		CALL MAKETOKEN(BUFFER, STARTPOS, CURRPOS-1, TOKENTYPE, SEEKDICT)
+		LET STARTPOS = CURRPOS + 1			'' .. but discard space
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 4								'' punctuation..
+		IF STARTPOS < CURRPOS				'' ..token in progress?
+			CALL MAKETOKEN(BUFFER, STARTPOS, CURRPOS-1, TOKENTYPE, SEEKDICT)
+		ENDIF
+		CALL MAKETOKEN(BUFFER, CURRPOS, CURRPOS, .TKN.PUNCT, SEEKDICT)
+		LET STARTPOS = CURRPOS + 1
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 5								'' quoted string completion - strip quotes 
+		CALL MAKETOKEN(BUFFER, STARTPOS+1, CURRPOS-1, .TKN.QSTR, SEEKDICT)
+		LET STARTPOS = CURRPOS + 1
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 6								'' exponentiation operator - double asterisk
+		CALL MAKETOKEN(BUFFER, STARTPOS, CURRPOS, .TKN.PUNCT, SEEKDICT)
+		LET STARTPOS = CURRPOS + 1
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 7								'' double apostrophe - discard comment
+		LET STARTPOS = CURRPOS + 1
+		GO TO 'CONT'
+	ENDIF
+  'CONT'
+	LET CURRPOS = CURRPOS + 1
+	LET CURRSTATE = NXTSTATE
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>BUFFER</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>BUFFERLEN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SEEKDICT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>STARTPOS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>CURRPOS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>CTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>THISCHAR</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>CURRSTATE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>NXTSTATE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACTN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TOKENTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>

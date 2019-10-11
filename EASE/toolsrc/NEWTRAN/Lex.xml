@@ -1,0 +1,382 @@
+<?xml version="1.0"?>
+<EASE-Database ID="3002" genname="EASElex">
+<ENTITIES>
+<entityType ID="1">
+<entityTypeName>TOKEN</entityTypeName>
+<Descr><![CDATA[The result of applying lexical analysis to the input stream of characters: an identifier, number, quoted string or punctuation]]></Descr>
+<attrDef embedded="Y">
+<attrName>TOKENTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_TOKENLIST</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>LEXEME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>PARSED</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>SCRIPTED</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DICTREF</attrName>
+<attrTypeName>DICTENTRY</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>FILETOKEN</entityTypeName>
+<Body><![CDATA[
+IF F.TOKENLIST EQ 0
+	LET F.TOKENLIST = ATOKEN
+ELSE
+	LET S.TOKENLIST(L.TOKENLIST) = ATOKEN
+ENDIF
+LET L.TOKENLIST = ATOKEN
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>ATOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="111" isProcedure="Y">
+<entityTypeName>MAKETOKEN</entityTypeName>
+<Body><![CDATA[
+WHILE ACHAR.F(BUFF, END) EQ .CH.PERIOD
+DO
+	LET END = END - 1
+LOOP
+IF BEGIN > END
+	IF TTYPE NE .TKN.QSTR
+		RETURN
+	ENDIF
+	LET BEGIN = BEGIN - 1
+	LET END = END + 1
+ENDIF
+LET LEN = END - BEGIN + 1
+
+CREATE A TOKEN CALLED ATOKEN
+LET LEXEME(ATOKEN) = SUBSTR.F(BUFF, BEGIN, LEN)
+LET TOKENTYPE(ATOKEN) = TTYPE
+
+IF TTYPE EQ .TKN.IDENT
+	WHILE LEN GT 0
+	DO
+		IF ACHAR.F(LEXEME(ATOKEN), LEN) = .CH.PERIOD
+			LET ACHAR.F(LEXEME(ATOKEN), LEN) = .CH.USCORE
+		ENDIF
+		LEN = LEN - 1
+	LOOP
+ENDIF
+
+CALL FILETOKEN(ATOKEN)
+
+IF SEEKDICT NE 0
+	LET DICTREF(ATOKEN) = FINDDICTENTRY_F(LEXEME(ATOKEN))
+ENDIF
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>BUFF</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>BEGIN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>END</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>TTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SEEKDICT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded-"Y">
+<attrName>LEN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ATOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>ANALYZE</entityTypeName>
+<Body><![CDATA[
+LET CURRPOS = 1
+LET STARTPOS = 1
+WHILE CURRPOS LE BUFFERLEN + 1
+DO
+	IF CURRPOS > BUFFERLEN
+		LET CTYPE = 0			'' virtual space to end line
+	ELSE
+		LET THISCHAR = ACHAR.F(BUFFER, CURRPOS)
+		IF THISCHAR > 127
+			LET ACHAR.F(BUFFER, CURRPOS) = .CH.SPC
+			LET THISCHAR = ACHAR.F(BUFFER, CURRPOS)
+		ENDIF
+		IF CURRSTATE NE 4 		'' string
+		 AND (THISCHAR GT 96 AND THISCHAR LT 123)
+			LET ACHAR.F(BUFFER, CURRPOS) = THISCHAR - 32	'' lower to upper
+			LET THISCHAR = ACHAR.F(BUFFER, CURRPOS)
+		ENDIF
+		LET CTYPE = CHARTYPE(THISCHAR + 1)
+	ENDIF
+	LET NXTSTATE = NEXTSTATE(CURRSTATE+1, CTYPE+1)
+	LET TOKENTYPE = TOKENFORM(CURRSTATE+1)
+	LET ACTN = ACTION(CURRSTATE+1, CTYPE+1)
+	IF ACTN = 0								'' space: advance scan
+		STARTPOS = STARTPOS+1
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 1								'' maintain start and continue scan
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 2								'' make token; start new token search
+		CALL MAKETOKEN(BUFFER, STARTPOS, CURRPOS-1, TOKENTYPE, SEEKDICT)
+		LET STARTPOS = CURRPOS
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 3								'' as above..
+		CALL MAKETOKEN(BUFFER, STARTPOS, CURRPOS-1, TOKENTYPE, SEEKDICT)
+		LET STARTPOS = CURRPOS + 1			'' .. but discard space
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 4								'' punctuation..
+		IF STARTPOS < CURRPOS				'' ..token in progress?
+			CALL MAKETOKEN(BUFFER, STARTPOS, CURRPOS-1, TOKENTYPE, SEEKDICT)
+		ENDIF
+		CALL MAKETOKEN(BUFFER, CURRPOS, CURRPOS, .TKN.PUNCT, SEEKDICT)
+		LET STARTPOS = CURRPOS + 1
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 5								'' quoted string completion - strip quotes 
+		CALL MAKETOKEN(BUFFER, STARTPOS+1, CURRPOS-1, .TKN.QSTR, SEEKDICT)
+		LET STARTPOS = CURRPOS + 1
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 6								'' exponentiation operator - double asterisk
+		CALL MAKETOKEN(BUFFER, STARTPOS, CURRPOS, .TKN.PUNCT, SEEKDICT)
+		LET STARTPOS = CURRPOS + 1
+		GO TO 'CONT'
+	ENDIF
+	IF ACTN = 7								'' double apostrophe - discard comment
+		LET STARTPOS = CURRPOS + 1
+		GO TO 'CONT'
+	ENDIF
+  'CONT'
+	LET CURRPOS = CURRPOS + 1
+	LET CURRSTATE = NXTSTATE
+LOOP
+RETURN
+]]></Body>
+<attrDef parameter="Y">
+<attrName>BUFFER</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>BUFFERLEN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SEEKDICT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>STARTPOS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>CURRPOS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>CTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>THISCHAR</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>CURRSTATE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>NXTSTATE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACTN</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TOKENTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>INITLEX</entityTypeName>
+<Body><![CDATA[
+RESERVE CHARTYPE AS 128
+RESERVE NEXTSTATE AS 14 BY 8
+RESERVE ACTION AS 14 BY 8
+RESERVE TOKENFORM AS 14
+OPEN 5 FOR INPUT, NAME IS "..\\sysdata\\lexer.dat"
+USE 5 FOR INPUT
+FOR I = 1 TO 128
+DO
+	READ CHARTYPE(I)
+LOOP
+FOR I = 1 TO 14
+DO
+	FOR J = 1 TO 8
+	DO
+		READ NEXTSTATE(I, J)
+	LOOP
+	READ AS /
+LOOP
+FOR I = 1 TO 14
+DO
+	FOR J = 1 TO 8
+	DO
+		READ ACTION(I, J)
+	LOOP
+LOOP
+READ AS /
+FOR I = 1 TO 14
+DO
+	READ TOKENFORM(I)
+LOOP
+CLOSE 5
+
+OPEN 6 FOR OUTPUT, NAME IS "..\\sysdata\\vlexer.dat"	'' verify lex tables read correctly
+USE 6 FOR OUTPUT
+
+FOR I = 0 TO 7
+DO
+	FOR J = 1 TO 16
+	DO
+		WRITE CHARTYPE(I * 16 + J) AS I 1, S 2
+	LOOP
+	WRITE AS /
+LOOP
+WRITE AS /
+FOR I = 1 TO 14
+DO
+	FOR J = 1 TO 8
+	DO
+		WRITE NEXTSTATE(I, J) AS I 2, S 2
+	LOOP
+	WRITE AS /
+LOOP
+WRITE AS /
+FOR I = 1 TO 14
+DO
+	FOR J = 1 TO 8
+	DO
+		WRITE ACTION(I, J) AS I 1, S 2
+	LOOP
+	WRITE AS /
+LOOP
+WRITE AS /
+FOR I = 1 TO 14
+DO
+	WRITE TOKENFORM(I) AS I 1, S 2
+LOOP
+WRITE AS /
+CLOSE 6
+
+RESERVE F.DICT AS 128
+RETURN
+]]></Body>
+<attrDef embedded="Y">
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>J</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+</ENTITIES>
+
+<SYSTEM>
+<entityType ID="0">
+<entityTypeName>SYSTEM</entityTypeName>
+<attrDef scripted="Y">
+<attrName>TOKEN</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_TOKENLIST</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_TOKENLIST</attrName>
+<attrTypeName>TOKEN</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>CHARTYPE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef subscripts="2">
+<attrName>NEXTSTATE</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef subscripts="2">
+<attrName>ACTION</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef subscripts="1">
+<attrName>TOKENFORM</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
+</SYSTEM>
+
+<SUBST>
+<d2m term="_TKN_PUNCT">
+<substxt><![CDATA[0]]></substxt>
+</d2m>
+<d2m term="_TKN_INT">
+<substxt><![CDATA[1]]></substxt>
+</d2m>
+<d2m term="_TKN_NMBR">
+<substxt><![CDATA[2]]></substxt>
+</d2m>
+<d2m term="_TKN_IDENT">
+<substxt><![CDATA[3]]></substxt>
+</d2m>
+<d2m term="_TKN_QSTR">
+<substxt><![CDATA[4]]></substxt>
+</d2m>
+<d2m term="_CH_SPC">
+<substxt><![CDATA[32]]></substxt>
+</d2m>
+<d2m term="_CH_USCORE">
+<substxt><![CDATA[95]]></substxt>
+</d2m>
+<d2m term="_CH_PERIOD">
+<substxt><![CDATA[46]]></substxt>
+</d2m>
+</SUBST>
+
+</EASE-Database>
