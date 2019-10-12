@@ -35,10 +35,9 @@ int comopen(TCHAR* server) {
 		hints.ai_protocol = IPPROTO_TCP;
 
 		// convert server name/ip_address from TCHAR to PCSTR
-		unsigned len;
-		wcstombs_s(&len, nullptr, 0, server, _TRUNCATE);
-		char *pmb = (char *)malloc(len);
-		wcstombs_s(&len, pmb, len, server, _TRUNCATE);
+		size_t chars = _tcsclen(server) + 1;
+		char *pmb = (char *)malloc(chars);
+		wcstombs_s(&chars, pmb, chars, server, _TRUNCATE);
 
 		// Resolve the server address and port
 		iResult = getaddrinfo(pmb, DEFAULT_PORT, &hints, &result);
