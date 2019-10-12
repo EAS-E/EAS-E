@@ -110,3 +110,4 @@ void E_PFLAST_R(void* E1, void* E2);
 void E_FLAST_R(void* E1, void* E2);
 void E_PFFIRST_R(void* E1, void* E2);
 void E_FFIRST_R(void* E1, void* E2);
+void easeSets_init();

@@ -1,0 +1,1529 @@
+<?xml version="1.0"?>
+<EASE-Database ID="1" noHdr="Y" genname="easeSets">
+<ENTITIES>
+
+<entityType ID="8" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_INSTH</entityTypeName>
+<attrDef>
+<attrName>SSID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_MSHIPS</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_XPMSHIPS</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="9" isSystemDefined="Y" isHidden="Y" isPersistent="Y">
+<entityTypeName>E_PINSTH</entityTypeName>
+<attrDef>
+<attrName>SSID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_XMSHIPS</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_PMSHIPS</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="10"  isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_CARD</entityTypeName>
+<attrDef>
+<attrName>SSID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUMMY1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUMMY2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>P_MEMBERS</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_MEMBERS</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_MSHIPS</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMBER</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>OWNRSET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="11"  isSystemDefined="Y" isHidden="Y" isPersistent="Y">
+<entityTypeName>E_PCARD</entityTypeName>
+<attrDef>
+<attrName>SSID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUMMY1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUMMY2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>P_PMEMBERS</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_PMEMBERS</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>S_PMSHIPS</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PMEMBER</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>POWNRSET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="12"  isSystemDefined="Y" isSetType="Y" isHidden="Y">
+<entityTypeName>E_SET</entityTypeName>
+<attrDef>
+<attrName>SSID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUMMY1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUMMY2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_MEMBERS</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_MEMBERS</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>MCOUNT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SETNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="13"  isSystemDefined="Y" isSetType="Y" isHidden="Y" isPersistent="Y">
+<entityTypeName>E_PSET</entityTypeName>
+<attrDef>
+<attrName>SSID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTID</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUMMY1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>DUMMY2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>F_PMEMBERS</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>L_PMEMBERS</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>PMCOUNT</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PSETNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_FFIRST_R</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+IF SET = 0
+ RETURN
+ENDIF
+LET ENTITY = E2
+IF ENTITY = 0
+ RETURN
+ENDIF
+LET MCOUNT(SET) = MCOUNT(SET) + 1
+CREATE A E_CARD CALLED MEMCARD
+LET OWNRSET(MEMCARD) = SET
+LET MEMBER(MEMCARD) = ENTITY
+IF F_MEMBERS(SET) NE 0
+ LET P_MEMBERS(F_MEMBERS(SET)) = MEMCARD
+ LET S_MEMBERS(MEMCARD) = F_MEMBERS(SET)
+ELSE
+ LET L_MEMBERS(SET) = MEMCARD
+ENDIF
+LET F_MEMBERS(SET) = MEMCARD
+LET S_MSHIPS(MEMCARD) = F_MSHIPS(ENTITY)
+LET F_MSHIPS(ENTITY) = MEMCARD
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_PFFIRST_R</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+LET ENTITY = E2
+IF SET = 0 OR ENTITY = 0 
+ RETURN
+ENDIF
+LET PMCOUNT(SET) = PMCOUNT(SET) + 1
+CREATE A E_PCARD CALLED MEMCARD
+LET POWNRSET(MEMCARD) = SET
+LET PMEMBER(MEMCARD) = ENTITY
+LET ACARD = F_PMEMBERS(SET)
+IF F_PMEMBERS(SET) NE 0
+ LET P_PMEMBERS(ACARD) = MEMCARD
+ LET S_PMEMBERS(MEMCARD) = F_PMEMBERS(SET)
+ELSE
+ LET L_PMEMBERS(SET) = MEMCARD
+ENDIF
+LET F_PMEMBERS(SET) = MEMCARD
+LET S_PMSHIPS(MEMCARD) = F_PMSHIPS(ENTITY)
+LET F_PMSHIPS(ENTITY) = MEMCARD
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_FLAST_R</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+LET ENTITY = E2
+IF SET = 0 OR ENTITY = 0 
+ RETURN
+ENDIF
+LET MCOUNT(SET) = MCOUNT(SET) + 1
+CREATE A E_CARD CALLED MEMCARD
+LET MEMBER(MEMCARD) = ENTITY
+LET OWNRSET(MEMCARD) = SET
+IF L_MEMBERS(SET) NE 0
+ LET S_MEMBERS(L_MEMBERS(SET)) = MEMCARD
+ LET P_MEMBERS(MEMCARD) = L_MEMBERS(SET)
+ELSE
+ LET F_MEMBERS(SET) = MEMCARD
+ENDIF
+LET L_MEMBERS(SET) = MEMCARD
+LET S_MSHIPS(MEMCARD) = F_MSHIPS(ENTITY)
+LET F_MSHIPS(ENTITY) = MEMCARD
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_PFLAST_R</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+LET ENTITY = E2
+IF SET = 0 OR ENTITY = 0 
+ RETURN
+ENDIF
+LET PMCOUNT(SET) = PMCOUNT(SET) + 1
+CREATE A E_PCARD CALLED MEMCARD
+LET PMEMBER(MEMCARD) = ENTITY
+LET POWNRSET(MEMCARD) = SET
+IF L_PMEMBERS(SET) NE 0
+ LET S_PMEMBERS(L_PMEMBERS(SET)) = MEMCARD
+ LET P_PMEMBERS(MEMCARD) = L_PMEMBERS(SET)
+ELSE
+ LET F_PMEMBERS(SET) = MEMCARD
+ENDIF
+LET L_PMEMBERS(SET) = MEMCARD
+LET S_PMSHIPS(MEMCARD) = F_PMSHIPS(ENTITY)
+LET F_PMSHIPS(ENTITY) = MEMCARD
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_FBEFOR_R</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+LET ENTITY = E2
+IF SET = 0 OR ENTITY = 0 
+ RETURN
+ENDIF
+LET TARGET = E3
+IF TARGET  = 0
+ RETURN
+ENDIF
+IF TARGET = MEMBER(F.MEMBERS(SET))
+ CALL E_FFIRST_R(SET, ENTITY)
+ RETURN
+ENDIF
+LET MCOUNT(SET) = MCOUNT(SET) + 1
+CREATE A E_CARD CALLED MEMCARD
+LET MEMBER(MEMCARD) = ENTITY
+LET OWNRSET(MEMCARD) = SET
+LET ACARD = F_MSHIPS(TARGET)
+WHILE ACARD NE 0
+DO
+ IF OWNRSET(ACARD) EQ SET
+  LEAVE
+ ENDIF
+ LET ACARD = S_MSHIPS(ACARD)
+LOOP
+LET S_MEMBERS(P_MEMBERS(ACARD)) = MEMCARD
+LET S.MEMBERS(MEMCARD) = ACARD
+LET P.MEMBERS(ACARD) = MEMCARD
+LET S_MSHIPS(MEMCARD) = F_MSHIPS(ENTITY)
+LET F_MSHIPS(ENTITY) = MEMCARD
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E3</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TARGET</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_PFBEFOR_R</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+LET ENTITY = E2
+IF SET = 0 OR ENTITY = 0 
+ RETURN
+ENDIF
+LET TARGET = E3
+IF TARGET  = 0
+ RETURN
+ENDIF
+IF TARGET = PMEMBER(F.PMEMBERS(SET))
+ CALL E_PFFIRST_R(SET, ENTITY)
+ RETURN
+ENDIF
+LET PMCOUNT(SET) = PMCOUNT(SET) + 1
+CREATE A E_PCARD CALLED MEMCARD
+LET PMEMBER(MEMCARD) = ENTITY
+LET POWNRSET(MEMCARD) = SET
+LET ACARD = F_PMSHIPS(TARGET)
+WHILE ACARD NE 0
+DO
+ IF POWNRSET(ACARD) EQ SET
+  LEAVE
+ ENDIF
+ LET ACARD = S_PMSHIPS(ACARD)
+LOOP
+LET S_PMEMBERS(P_PMEMBERS(ACARD)) = MEMCARD
+LET P.PMEMBERS(MEMCARD) = P.PMEMBERS(ACARD)
+LET S.PMEMBERS(MEMCARD) = ACARD
+LET P.PMEMBERS(ACARD) = MEMCARD
+LET S_PMSHIPS(MEMCARD) = F_PMSHIPS(ENTITY)
+LET F_PMSHIPS(ENTITY) = MEMCARD
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E3</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TARGET</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_FAFTER_R</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+LET ENTITY = E2
+IF SET = 0 OR ENTITY = 0 
+ RETURN
+ENDIF
+LET TARGET = E3
+IF TARGET  = 0
+ RETURN
+ENDIF
+IF TARGET = MEMBER(L.MEMBERS(SET))
+ CALL E_FLAST_R(SET, ENTITY)
+ RETURN
+ENDIF
+LET MCOUNT(SET) = MCOUNT(SET) + 1
+CREATE A E_CARD CALLED MEMCARD
+LET MEMBER(MEMCARD) = ENTITY
+LET OWNRSET(MEMCARD) = SET
+LET ACARD = F_MSHIPS(TARGET)
+WHILE ACARD NE 0
+DO
+ IF OWNRSET(ACARD) EQ SET
+  LEAVE
+ ENDIF
+ LET ACARD = S_MSHIPS(ACARD)
+LOOP
+LET P.MEMBERS(S.MEMBERS(ACARD)) = MEMCARD
+LET S.MEMBERS(MEMCARD) = S.MEMBERS(ACARD)
+LET P.MEMBERS(MEMCARD) = ACARD
+LET S.MEMBERS(ACARD) = MEMCARD
+LET S_MSHIPS(MEMCARD) = F_MSHIPS(ENTITY)
+LET F_MSHIPS(ENTITY) = MEMCARD
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E3</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TARGET</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_PFAFTER_R</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+LET ENTITY = E2
+IF SET = 0 OR ENTITY = 0 
+ RETURN
+ENDIF
+LET TARGET = E3
+IF TARGET  = 0
+ RETURN
+ENDIF
+IF TARGET = PMEMBER(L.PMEMBERS(SET))
+ CALL E_PFLAST_R(SET, ENTITY)
+ RETURN
+ENDIF
+LET PMCOUNT(SET) = PMCOUNT(SET) + 1
+CREATE A E_PCARD CALLED MEMCARD
+LET PMEMBER(MEMCARD) = ENTITY
+LET POWNRSET(MEMCARD) = SET
+LET ACARD = F_PMSHIPS(TARGET)
+WHILE ACARD NE 0
+DO
+ IF POWNRSET(ACARD) EQ SET
+  LEAVE
+ ENDIF
+ LET ACARD = S_PMSHIPS(ACARD)
+LOOP
+LET P.PMEMBERS(S.PMEMBERS(ACARD)) = MEMCARD
+LET S.PMEMBERS(MEMCARD) = S.PMEMBERS(ACARD)
+LET P.PMEMBERS(MEMCARD) = ACARD
+LET S.PMEMBERS(ACARD) = MEMCARD
+LET S_PMSHIPS(MEMCARD) = F_PMSHIPS(ENTITY)
+LET F_PMSHIPS(ENTITY) = MEMCARD
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E3</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>TARGET</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>M_EASSET_F</entityTypeName>
+<Body><![CDATA[
+LET ENT = E
+IF ENT EQ 0
+'' LET ERR.F = 1000
+RETURN WITH 0
+ENDIF
+LET MEMCARD = F.MSHIPS(ENT)
+WHILE MEMCARD NE 0
+DO
+ IF SETNAME(OWNRSET(MEMCARD)) EQ SNAME
+  LEAVE
+  LET MEMCARD = S_MSHIPS(MEMCARD)
+ ENDIF
+LOOP
+IF MEMCARD NE 0
+ RETURN WITH 1
+ELSE
+ RETURN WITH 0
+ENDIF
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>M</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENT</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>M_PEASSET_F</entityTypeName>
+<Body><![CDATA[
+LET ENT = E
+IF ENT EQ 0
+'' LET ERR.F = 1000
+RETURN WITH 0
+ENDIF
+LET MEMCARD = F.PMSHIPS(ENT)
+WHILE MEMCARD NE 0
+DO
+ IF PSETNAME(POWNRSET(MEMCARD)) EQ SNAME
+  LEAVE
+  LET MEMCARD = S_PMSHIPS(MEMCARD)
+ ENDIF
+LOOP
+IF MEMCARD NE 0
+ RETURN WITH 1
+ELSE
+ RETURN WITH 0
+ENDIF
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>M</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENT</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>N_EASSET_F</entityTypeName>
+<Body><![CDATA[
+LET SET = S
+IF SET NE 0
+ RETURN WITH MCOUNT(SET)
+ENDIF
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>C</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>S</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>N_PEASSET_F</entityTypeName>
+<Body><![CDATA[
+LET SET = S
+IF SET NE 0
+ RETURN WITH PMCOUNT(SET)
+ENDIF
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>C</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>S</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>F_EASSET_F</entityTypeName>
+<Body><![CDATA[
+LET SET = S
+IF S NE 0
+ LET MEMCARD = F.MEMBERS(SET)
+ENDIF
+IF MEMCARD NE 0
+ RETURN WITH MEMBER(MEMCARD)
+ENDIF
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>C</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>S</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>F_PEASSET_F</entityTypeName>
+<Body><![CDATA[
+LET SET = S
+IF S NE 0
+ LET MEMCARD = F.PMEMBERS(SET)
+ENDIF
+IF MEMCARD NE 0
+ RETURN WITH PMEMBER(MEMCARD)
+ENDIF
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>C</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>S</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>L_EASSET_F</entityTypeName>
+<Body><![CDATA[
+LET SET = S
+IF S NE 0
+ LET MEMCARD = L.MEMBERS(SET)
+ENDIF
+IF MEMCARD NE 0
+ RETURN WITH MEMBER(MEMCARD)
+ENDIF
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>C</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>S</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>L_PEASSET_F</entityTypeName>
+<Body><![CDATA[
+LET SET = S
+IF S NE 0
+ LET MEMCARD = L.PMEMBERS(SET)
+ENDIF
+IF MEMCARD NE 0
+ RETURN WITH PMEMBER(MEMCARD)
+ENDIF
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>C</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>S</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>P_EASSET_F</entityTypeName>
+<Body><![CDATA[
+LET ENT = E
+IF ENT EQ 0
+'' LET ERR.F = 1000
+RETURN WITH 0
+ENDIF
+LET MEMCARD = F.MSHIPS(ENT)
+WHILE MEMCARD NE 0
+DO
+ IF SETNAME(OWNRSET(MEMCARD)) EQ SNAME
+  LEAVE
+  LET MEMCARD = S_MSHIPS(MEMCARD)
+ ENDIF
+LOOP
+LET MEMCARD = P_MEMBERS(MEMCARD)
+IF MEMCARD NE 0
+ RETURN WITH MEMBER(MEMCARD)
+ELSE
+ RETURN WITH 0
+ENDIF
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>C</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENT</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>P_PEASSET_F</entityTypeName>
+<Body><![CDATA[
+LET ENT = E
+IF ENT EQ 0
+'' LET ERR.F = 1000
+RETURN WITH 0
+ENDIF
+LET MEMCARD = F.PMSHIPS(ENT)
+WHILE MEMCARD NE 0
+DO
+ IF PSETNAME(POWNRSET(MEMCARD)) EQ SNAME
+  LEAVE
+  LET MEMCARD = S_PMSHIPS(MEMCARD)
+ ENDIF
+LOOP
+LET MEMCARD = P_PMEMBERS(MEMCARD)
+IF MEMCARD NE 0
+ RETURN WITH PMEMBER(MEMCARD)
+ELSE
+ RETURN WITH 0
+ENDIF
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>C</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENT</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>S_EASSET_F</entityTypeName>
+<Body><![CDATA[
+LET ENT = E
+IF ENT EQ 0
+'' LET ERR.F = 1000
+RETURN WITH 0
+ENDIF
+LET MEMCARD = F.MSHIPS(ENT)
+WHILE MEMCARD NE 0
+DO
+ IF SETNAME(OWNRSET(MEMCARD)) EQ SNAME
+  LEAVE
+  LET MEMCARD = S_MSHIPS(MEMCARD)
+ ENDIF
+LOOP
+IF MEMCARD NE 0
+ LET MEMCARD = S_MEMBERS(MEMCARD)
+ENDIF
+IF MEMCARD NE 0
+ RETURN WITH MEMBER(MEMCARD)
+ELSE
+ RETURN WITH 0
+ENDIF
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>C</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENT</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>S_PEASSET_F</entityTypeName>
+<Body><![CDATA[
+LET ENT = E
+IF ENT EQ 0
+'' LET ERR.F = 1000
+RETURN WITH 0
+ENDIF
+LET MEMCARD = F.PMSHIPS(ENT)
+WHILE MEMCARD NE 0
+DO
+ IF PSETNAME(POWNRSET(MEMCARD)) EQ SNAME
+  LEAVE
+  LET MEMCARD = S_PMSHIPS(MEMCARD)
+ ENDIF
+LOOP
+IF MEMCARD NE 0
+ LET MEMCARD = S_PMEMBERS(MEMCARD)
+ENDIF
+IF MEMCARD NE 0
+ LET ENT = PMEMBER(MEMCARD)
+ RETURN WITH PMEMBER(MEMCARD)
+ELSE
+ RETURN WITH 0
+ENDIF
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>C</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENT</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_RMVFRST_F</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+IF SET EQ 0
+ RETURN WITH 0
+ENDIF
+LET MEMCARD = F.MEMBERS(SET)
+IF MEMCARD NE 0
+ LET MCOUNT(SET) = MCOUNT(SET) - 1
+ IF S.MEMBERS(MEMCARD) = 0
+  LET F.MEMBERS(SET) = 0
+  LET L.MEMBERS(SET) = 0
+ ELSE
+  LET F.MEMBERS(SET) = S.MEMBERS(MEMCARD)
+  LET P.MEMBERS(F.MEMBERS(SET)) = 0
+ ENDIF
+ LET ENTITY = MEMBER(MEMCARD)
+
+ IF MEMCARD = F.MSHIPS(ENTITY)
+  LET F.MSHIPS(ENTITY) = S.MSHIPS(MEMCARD)
+ ELSE
+  LET ACARD = F_MSHIPS(ENTITY)
+  WHILE S.MSHIPS(ACARD) NE MEMCARD
+  DO
+   LET ACARD = S_MSHIPS(ACARD)
+  LOOP
+  LET S_MSHIPS(ACARD) = S.MSHIPS(MEMCARD)
+ ENDIF
+ DESTROY E_CARD CALLED MEMCARD
+ RETURN WITH ENTITY
+ENDIF
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_PRMVFRST_F</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+IF SET EQ 0
+ RETURN WITH 0
+ENDIF
+LET MEMCARD = F.PMEMBERS(SET)
+IF MEMCARD NE 0
+ LET PMCOUNT(SET) = PMCOUNT(SET) - 1
+ IF S.PMEMBERS(MEMCARD) = 0
+  LET F.PMEMBERS(SET) = 0
+  LET L.PMEMBERS(SET) = 0
+ ELSE
+  LET F.PMEMBERS(SET) = S.PMEMBERS(MEMCARD)
+  LET P.PMEMBERS(F.PMEMBERS(SET)) = 0
+ ENDIF
+ LET ENTITY = PMEMBER(MEMCARD)
+
+ IF MEMCARD = F.PMSHIPS(ENTITY)
+  LET F.PMSHIPS(ENTITY) = S.PMSHIPS(MEMCARD)
+ ELSE
+  LET ACARD = F_PMSHIPS(ENTITY)
+  WHILE S.PMSHIPS(ACARD) NE MEMCARD
+  DO
+   LET ACARD = S_PMSHIPS(ACARD)
+  LOOP
+  LET S_PMSHIPS(ACARD) = S.PMSHIPS(MEMCARD)
+ ENDIF
+ DESTROY E_PCARD CALLED MEMCARD
+ RETURN WITH ENTITY
+ENDIF
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_RMVLAST_F</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+IF SET EQ 0
+ RETURN WITH 0
+ENDIF
+LET MEMCARD = L.MEMBERS(SET)
+IF MEMCARD NE 0
+ LET MCOUNT(SET) = MCOUNT(SET) - 1
+ IF P.MEMBERS(MEMCARD) = 0
+  LET F.MEMBERS(SET) = 0
+  LET L.MEMBERS(SET) = 0
+ ELSE
+  LET L.MEMBERS(SET) = P.MEMBERS(MEMCARD)
+  LET S.MEMBERS(L.MEMBERS(SET)) = 0
+ ENDIF
+ LET ENTITY = MEMBER(MEMCARD)
+
+ IF MEMCARD = F.MSHIPS(ENTITY)
+  LET F.MSHIPS(ENTITY) = S.MSHIPS(MEMCARD)
+ ELSE
+  LET ACARD = F_MSHIPS(ENTITY)
+  WHILE S.MSHIPS(ACARD) NE MEMCARD
+  DO
+   LET ACARD = S_MSHIPS(ACARD)
+  LOOP
+  LET S_MSHIPS(ACARD) = S.MSHIPS(MEMCARD)
+ ENDIF
+ DESTROY E_CARD CALLED MEMCARD
+ RETURN WITH ENTITY
+ENDIF
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+</entityType>
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_PRMVLAST_F</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+IF SET EQ 0
+ RETURN WITH 0
+ENDIF
+LET MEMCARD = L.PMEMBERS(SET)
+IF MEMCARD NE 0
+ LET PMCOUNT(SET) = PMCOUNT(SET) - 1
+ IF P.PMEMBERS(MEMCARD) = 0
+  LET F.PMEMBERS(SET) = 0
+  LET L.PMEMBERS(SET) = 0
+ ELSE
+  LET L.PMEMBERS(SET) = P.PMEMBERS(MEMCARD)
+  LET S.PMEMBERS(L.PMEMBERS(SET)) = 0
+ ENDIF
+ LET ENTITY = PMEMBER(MEMCARD)
+
+ IF MEMCARD = F.PMSHIPS(ENTITY)
+  LET F.PMSHIPS(ENTITY) = S.PMSHIPS(MEMCARD)
+ ELSE
+  LET ACARD = F_PMSHIPS(ENTITY)
+  WHILE S.PMSHIPS(ACARD) NE MEMCARD
+  DO
+   LET ACARD = S_PMSHIPS(ACARD)
+  LOOP
+  LET S_PMSHIPS(ACARD) = S.PMSHIPS(MEMCARD)
+ ENDIF
+ DESTROY E_PCARD CALLED MEMCARD
+ RETURN WITH ENTITY
+ENDIF
+RETURN WITH 0
+END
+]]></Body>
+<attrDef returntype="Y">
+<attrName>E</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_RMVSPCFC_R</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+LET ENTITY = E2
+IF ENTITY EQ 0 OR SET EQ 0
+ RETURN
+ENDIF
+IF ENTITY = MEMBER(F.MEMBERS(SET))
+ LET ENTITY = E_RMVFRST_F(SET)
+ RETURN
+ENDIF
+
+IF ENTITY = MEMBER(L.MEMBERS(SET))
+ LET ENTITY = E_RMVLAST_F(SET)
+ RETURN
+ENDIF
+
+LET MEMCARD = F.MSHIPS(ENTITY)
+WHILE MEMCARD NE 0
+DO
+IF OWNRSET(MEMCARD) = SET
+ LEAVE
+ENDIF
+LET ACARD = MEMCARD
+LET MEMCARD = S_MSHIPS(MEMCARD)
+LOOP
+
+IF MEMCARD EQ 0
+'' LET ERR.F = 1001
+ RETURN
+ENDIF
+
+LET MCOUNT(SET) = MCOUNT(SET) - 1
+IF ACARD = 0
+ LET F.MSHIPS(ENTITY) = S.MSHIPS(MEMCARD)
+ELSE
+  LET S.MSHIPS(ACARD) = S.MSHIPS(MEMCARD)
+ENDIF
+
+LET ACARD = P.MEMBERS(MEMCARD)
+LET S.MEMBERS(ACARD) = S.MEMBERS(MEMCARD)
+LET ACARD = S.MEMBERS(MEMCARD)
+LET P.MEMBERS(ACARD) = P.MEMBERS(MEMCARD)
+DESTROY E_CARD CALLED MEMCARD
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_CARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_SET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_INSTH</attrTypeName>
+</attrDef>
+</entityType>
+
+
+<entityType ID="0" isProcedure="Y" isSystemDefined="Y" isHidden="Y">
+<entityTypeName>E_PRMVSPCFC_R</entityTypeName>
+<Body><![CDATA[
+LET SET = E1
+LET ENTITY = E2
+IF ENTITY EQ 0 OR SET EQ 0
+ RETURN
+ENDIF
+
+IF ENTITY = PMEMBER(F.PMEMBERS(SET))
+ LET ENTITY = E_PRMVFRST_F(SET)
+ RETURN
+ENDIF
+
+IF ENTITY = PMEMBER(L.PMEMBERS(SET))
+ LET ENTITY = E_PRMVLAST_F(SET)
+ RETURN
+ENDIF
+
+LET MEMCARD = F.PMSHIPS(ENTITY)
+WHILE MEMCARD NE 0
+DO
+IF POWNRSET(MEMCARD) = SET
+ LEAVE
+ENDIF
+LET ACARD = MEMCARD
+LET MEMCARD = S_PMSHIPS(MEMCARD)
+LOOP
+
+IF MEMCARD EQ 0
+'' LET ERR.F = 1001
+ RETURN
+ENDIF
+
+LET PMCOUNT(SET) = PMCOUNT(SET) - 1
+IF ACARD = 0
+ LET F.PMSHIPS(ENTITY) = S.PMSHIPS(MEMCARD)
+ELSE
+  LET S.PMSHIPS(ACARD) = S.PMSHIPS(MEMCARD)
+ENDIF
+
+LET ACARD = P.PMEMBERS(MEMCARD)
+LET S.PMEMBERS(ACARD) = S.PMEMBERS(MEMCARD)
+LET ACARD = S.PMEMBERS(MEMCARD)
+LET P.PMEMBERS(ACARD) = P.PMEMBERS(MEMCARD)
+DESTROY E_PCARD CALLED MEMCARD
+END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>E1</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>E2</attrName>
+<attrTypeName>Reference</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>MEMCARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ACARD</attrName>
+<attrTypeName>E_PCARD</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>SET</attrName>
+<attrTypeName>E_PSET</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ENTITY</attrName>
+<attrTypeName>E_PINSTH</attrTypeName>
+</attrDef>
+</entityType>
+
+</ENTITIES>
+</EASE-Database>
+
