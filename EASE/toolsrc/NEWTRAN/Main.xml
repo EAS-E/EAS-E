@@ -5,6 +5,16 @@
 <entityType ID="101" isProcedure="Y">
 <entityTypeName>EASECOMPILE</entityTypeName>
 <Body><![CDATA[
+OPEN 97 FOR OUTPUT, NAME IS "Xlogtrans.txt"
+USE 97 FOR OUTPUT
+IF WOPENERR.V NE 0
+	RETURN WITH -3
+ENDIF
+WRITE AS "logging translate...", /, /
+IF INITERRS(SYSDIR) NE 0
+	CLOSE 97
+	RETURN WITH -1
+ENDIF
 RESERVE LOGICOPS AS 6		'' do this somewhere else... **********
 LET LOGICOPS(1) = " == "
 LET LOGICOPS(2) = " != "
@@ -12,8 +22,7 @@ LET LOGICOPS(3) = " <= "
 LET LOGICOPS(4) = " >= "
 LET LOGICOPS(5) = " < "
 LET LOGICOPS(6) = " > "
-CALL INITLEX
-CALL INITERRS
+CALL INITLEX(SYSDIR)
 RESERVE CTLSTATES AS 2 BY 4
 '' state 2 = collecting control phrases; state table used by parser
 '' stmt types: 1 executable; 2 control; 3 declaration; 4 DO/FIND
@@ -25,18 +34,19 @@ LET CTLSTATES(2, 1) = 4
 LET CTLSTATES(2, 2) = 2
 LET CTLSTATES(2, 3) = 2
 LET CTLSTATES(2, 4) = 1
-CALL READSYNTAX("..\\sysdata\\syntaxrules.txt")
+CALL READSYNTAX(CONCAT.F(SYSDIR, "\\syntaxrules.txt"))
 '' CALL LISTSYNTAX
-CALL READSCRIPTS("..\\sysdata\\scriptrules.txt")
+CALL READSCRIPTS(CONCAT.F(SYSDIR, "\\scriptrules.txt"))
 '' CALL READSOURCE
 
-CALL READXML("..\\sysdata\\easetypes.xml", 0)
-CALL READXML("..\\sysdata\\easelibsys.xml", 0)
+CALL READXML(CONCAT.F(SYSDIR, "\\easetypes.xml"), 0)
+CALL READXML(CONCAT.F(SYSDIR, "\\easelibsys.xml"), 0)
 
 OPEN 5 FOR INPUT, NAME IS CONCAT.F(PROJDIR, "\\project.eas")
 USE 5 FOR INPUT
 IF ROPENERR.V NE 0
-	RETURN WITH -1
+	CLOSE 97
+	RETURN WITH -2
 ENDIF
 LET EOF.V = 1
 READ GENDIR AS T RRECLEN.V, /
@@ -51,10 +61,10 @@ LOOP
 CLOSE 5
 OPEN 98 FOR OUTPUT, NAME IS CONCAT.F(GENDIR, "XLISTING.txt")
 CALL FIXUPSCHEMAS
-CALL LISTENTITIES
 CALL TRANSLATEPROCS
 ''CALL LISTING
 CLOSE 98
+CLOSE 97
 IF F.ERRORRECS NE 0
 	OPEN 99 FOR OUTPUT, NAME IS CONCAT.F(GENDIR, "XERRORS.txt")
 	USE 99 FOR OUTPUT
@@ -90,6 +100,10 @@ END
 <attrName>PROJDIR</attrName>
 <attrTypeName>Text</attrTypeName>
 </attrDef>
+<attrDef parameter="Y">
+<attrName>SYSDIR</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
 <attrDef>
 <attrName>ALINE</attrName>
 <attrTypeName>Text</attrTypeName>
@@ -111,7 +125,7 @@ END
 <entityType ID="101" isProcedure="Y">
 <entityTypeName>LISTSYNTAX</entityTypeName>
 <Body><![CDATA[
-OPEN 6 FOR OUTPUT, NAME IS "..\\sysdata\\listrules.txt"
+OPEN 6 FOR OUTPUT, NAME IS "listrules.txt"
 USE 6 FOR OUTPUT
 FOR I = 1 TO 128
 DO
@@ -153,7 +167,7 @@ LOOP
 <entityType ID="0" isProcedure="Y">
 <entityTypeName>READSOURCE</entityTypeName>
 <Body><![CDATA[
-OPEN 5 FOR INPUT, NAME IS "..\\sysdata\\source.txt"
+OPEN 5 FOR INPUT, NAME IS "source.txt"
 USE 5 FOR INPUT
 LET EOF.V = 1
 WHILE EOF.V NE 2
@@ -532,14 +546,13 @@ LET ASCHEMA = F.SCHEMAS
 WHILE ASCHEMA NE 0
 DO
   IF NOGEN(ASCHEMA) EQ 0
-
     LET FILENAME = CONCAT.F(GENNAME(ASCHEMA), ".cpp")
- 	OPEN 6 FOR OUTPUT, NAME IS CONCAT.F(GENDIR, FILENAME)
+	LET FILENAME = CONCAT.F(GENDIR, FILENAME)
+	WRITE FILENAME AS "Generating ", T *, / USING 97
+ 	OPEN 6 FOR OUTPUT, NAME IS FILENAME
 	USE 6 FOR OUTPUT
-	CALL GENPROCINCL(ASCHEMA)
-''	CALL GENADDTYPES
-''	CALL GENINIT
 
+	CALL GENPROCINCL(ASCHEMA)
 	LET APROC = F.PROCS(ASCHEMA)
 	WHILE APROC NE 0
 	DO
@@ -665,8 +678,13 @@ RETURN END
 <entityType ID="0" isProcedure="Y">
 <entityTypeName>INITERRS</entityTypeName>
 <Body><![CDATA[
-OPEN 1 FOR INPUT, NAME IS "..\\sysdata\\easeerrs.txt"
+WRITE CONCAT.F(SYSDIR, "\\easeerrs.txt") AS "Opening ", T *, / USING 97
+OPEN 1 FOR INPUT, NAME IS CONCAT.F(SYSDIR, "\\easeerrs.txt")
 USE 1 FOR INPUT
+IF ROPENERR.V NE 0
+	WRITE AS "Open failed", / USING 97
+	RETURN WITH 1
+ENDIF
 LET EOF.V = 1
 READ N
 READ AS /
@@ -677,8 +695,17 @@ DO
 	READ ERRMSGS(I) AS T RRECLEN.V, /
 LOOP
 CLOSE 1
-RETURN END
+RETURN WITH 0
+END
 ]]></Body>
+<attrDef returntype="Y">
+<attrName>SUCCESS</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>SYSDIR</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
 <attrDef>
 <attrName>N</attrName>
 <attrTypeName>Integer</attrTypeName>
@@ -692,13 +719,11 @@ RETURN END
 <entityType ID="0" isProcedure="Y">
 <entityTypeName>MAIN</entityTypeName>
 <Body><![CDATA[
-MAIN
-IF PROJECTDIR NE 0
-	CALL EASECOMPILE(PROJECTDIR)
-ENDIF
+'' in this project, this exists only so that easinit() will be generated
 RETURN END
 ]]></Body>
 </entityType>
+
 
 </ENTITIES>
 

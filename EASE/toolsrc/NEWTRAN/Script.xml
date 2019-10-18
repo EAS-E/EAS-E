@@ -251,7 +251,7 @@ DO
 			CREATE A TOKEN CALLED ATOKEN
 			LET SCRIPTED(ATOKEN) = SCRIPTLEVEL
 			LET LEXEME(ATOKEN) = ITOT_F(IPTRS(SCRIPTCODE(AELEM)))
-		write lexeme(atoken) as t *, s 2 using 97
+''		write lexeme(atoken) as t *, s 2
 			LET TOKENTYPE(ATOKEN) = TKNFORM(AELEM)
 			LET DICTREF(ATOKEN) = FINDDICTENTRY_F(LEXEME(ATOKEN))
 			CALL FILETOKEN(ATOKEN)
@@ -260,7 +260,7 @@ DO
 	ENDIF
 	LET AELEM = S.SCRIPTELEMS(AELEM)
 LOOP
-write as / using 97
+'' write as /
 RETURN	
 ]]></Body>
 <attrDef embedded="Y" parameter="Y">

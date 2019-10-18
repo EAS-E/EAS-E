@@ -286,6 +286,10 @@
 <attrName>UIB_R</attrName>
 <attrTypeName>UIB_R</attrTypeName>
 </attrDef>
+<attrDef>
+<attrName>UIB_W</attrName>
+<attrTypeName>UIB_W</attrTypeName>
+</attrDef>
 <attrDef embedded="Y">
 <attrName>E_FOUND_V</attrName>
 <attrTypeName>Integer</attrTypeName>

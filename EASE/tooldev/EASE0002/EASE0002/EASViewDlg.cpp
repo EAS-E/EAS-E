@@ -32,6 +32,7 @@ void EASViewDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 }
 
+
 BOOL FillEntityTree(CTreeCtrl* entityTree);
 HTREEITEM firstVis;
 

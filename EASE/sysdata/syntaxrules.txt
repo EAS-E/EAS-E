@@ -123,12 +123,6 @@ END <"END"&> !
 ERASE <"ERASE"&> <VAR #1> ! 
 PRINTN <"PRINT"&> < @INT #1  "ONE" #1 > <"LINE"& "LINES"& > ( WITHEXPS ) <"THUS"&> !
 WITHEXPS~ <"WITH"&> <EXPLST> ! 
-INFER <"INFER"> <@IDENT> <"|"> <"-"> <@IDENT> !
-PROP <"PROPOSITION"> <@IDENT> <INFOP> <@IDENT> !
-INFOP~ < IMPLY INFAND INFOR > !
-IMPLY~ <"="> <"^"> !
-INFAND~ <"/"> <"\"> !
-INFOR~ <"\"> <"/"> ! 
 FIND 4 <"FIND"&> <FNDLIST FNDCASE> (QFOUND) !
 QFOUND~ <"IF"&> <"FOUND" "NONE"> !
 FNDCASE~ <"THE"&> <"FIRST"&> <"CASE"&> !

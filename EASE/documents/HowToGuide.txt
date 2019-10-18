@@ -1,31 +1,69 @@
-Note: This guide assumes some knowledge of EAS-E concepts.
+
+Introduction:
+
+EAS-E arose from Dr. Harry Markowitz's work in compter simulation of manufacturing systems.
+EAS-E models the subject matter of system of interest in terms of entities acted on by events.
+Entities represent "things" of interest and are characterized by their attributes.
+An attribute value references an entity type: a number, a text, or any defined entity type.
+Entities can be structured using sets which they may own, or to which they may belong.
+A set is ordered grouping of like entity instances, FIFO, LIFO or ranked by attribute values.
+[ FIFO: first-in-first-out - a queue; LIFO: Last-in-last-out - a stack ]
+A structure of entities may represent the state of a modeled system at a point in time.
+Entities can be created, destroyed, added to or removed from sets by programmed logic.
+In a simulation context, such logic may be triggered by the execution of event routines.
+Events are ordered in a time sequence; they may create new, or cancel existing events.
+
+Note: at this time, event management is not supported in this implementation.
+
+In all but the very earliest incarnations of the EAS-E vision, projects were text-based. 
+All definitions of data structures (entity types, sets, etc.) were declared in a PREAMBLE.
+The PREAMBLE was the first section of code to be processed by an EAS-E translator.
+The PREAMBLE was followed by procedural code which defined operations performed on the data.
+All data definitions were in one scope - uniformly visible across all procedural code.
+
+The EAS-E realization presented here is designed to use a GUI for data structure definition.
+Dialog are presented for the definition of entity types, set ownership/membership and so forth.
+A dialog is also presented for editing procedural code.
+On a 'save' command the GUI outputs XML file(s) containing entity definitions and coded routines.
+An EAS-E project may be composed of more than one such XML file - for size or re-use reasons.
+
+The translator reads all the files in the project, constructing the 'PREAMBLE-like' definitions.
+It then translates the procedures which will execute in the context of the defined structures.
+Again, there is uniform visibility, regardless of where an entity definition originated.
+
+Editing and translating EAS-E:
 
 Subdirectory EASE/tools contains two executables: EASEdevelop and EASEtranslate.
 
-The first provides a GUI which supports definition of entities and procedures.
-Project->Open offers a folder selection of examples (see config.dat).
-Output is saved in XML file(s), then 'translated' to C source code.
-Running tools/EASEtranslate on the selected folder accomplishes this.
-(EASEtranslate is silent - just wait for it to complete; it notifies of any errors.)
-A listing file and possible error file are generated in the target folder.
-
-Config.dat specifies the initial folder for project selection; this can be edited.
-It also specifies a link to a folder for system data.
-
-At this time, these C files are intended to be built in VisualStudio projects.
-Projects corresponding to the examples projects are located in EASE/VSprojects.
+The first provides a protype GUI which supports definition of entities and procedures.
+Project->Open offers a folder selection of examples, or the ability to create a new one.
+/tools/Config.dat specifies the initial folder for project selection; this can be edited.
+It also specifies a path for system data - be sure this matches your installation.
 
 A project.eas file exists in each EAS-E source folder.
 The first line specifies the target folder for the generated C files.
 The remaining line(s) list the XML file(s) which constitute the project.
+Selecting a project folder will open it, displaying its entities in tabular form.
+There are options to edit/create/delete entity types and to save the edited project.
+
+Output from EASEdevelop is saved in XML file(s), to be 'translated' to C source code.
+Running tools/EASEtranslate on the selected folder accomplishes this translation.
+(EASEtranslate is silent - just wait for it to complete; it notifies of any errors.)
+A listing file and possible error file are generated in the target folder.
+
+At this time, these C files are intended to be built in VisualStudio projects.
+Projects corresponding to the examples projects are located in EASE/VSprojects.
 
 As delivered, each VS source code folder includes duplicated library .h and .cpp files.
-Running the included linklib.bat file will establish symbolic links to the master copies.
+( VS source code - .h/.cpp - is found in ...VSprojects/<projectname>/<projectname> )
+Running the linklib.bat file in each will establish symbolic links to the master copies.
 
 Selecting Project->New in EASEdevelop creates a folder for the new project.
 This will contain a basic XML file, .eas project file and a default folder for C code.
 Edit the .eas file as needed to add project .XML files or change the target folder.
-A suitable VS project must be created for a new project - this is non-trivial.
+A suitable VS project must then be created for a new project - this is non-trivial.
+Generated C files can be copied to the VS project source folders for building.
+Or, the .eas project file can be edited to specify that folder as the target.
 
 
 

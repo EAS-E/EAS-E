@@ -113,10 +113,11 @@ BOOL CDevTRANApp::InitInstance()
 
 	CStdioFile projfile;
 
-/*
-	was having some difficulty establishing 'current directory'...
+
 	TCHAR buff[128];
 	GetCurrentDirectory(127, buff);
+	
+	/*	was having some difficulty establishing 'current directory'...
 	if (projfile.Open((LPCTSTR)(_T("C:\\EASEprojects\\dir.txt")), CFile::modeCreate | CFile::modeWrite)) {
 		projfile.WriteString(buff);
 		projfile.Close();
@@ -128,7 +129,11 @@ BOOL CDevTRANApp::InitInstance()
 		projfile.ReadString(SysdataDirectory);
 		projfile.Close();
 	}
-
+	else {
+		CString dir = buff;
+		AfxMessageBox(_T("Cannot open config.dat in ") + dir, MB_OK, 0);
+		return FALSE;
+	}
 	CDevTRANApp::OnFileOpenproject();		// bring up project selection dialog
 
 	return TRUE;
@@ -202,9 +207,14 @@ void CDevTRANApp::OnFileOpenproject()
 	easinit();
 	errs = EASECOMPILE(E_TXTLIT_F(ProjectsDirectory.GetBuffer()), E_TXTLIT_F(SysdataDirectory.GetBuffer()));
 
-	if (errs < 0)
-		AfxMessageBox(_T("Not a valid EASE project selection"), MB_OK, 0);
-
+	if (errs < 0) {
+		if (errs == -1)
+			AfxMessageBox(_T("Cannot access sysdata - check path in config.dat"), MB_OK, 0);
+		if (errs == -2)
+			AfxMessageBox(_T("Not a valid EASE project selection"), MB_OK, 0);
+		if (errs == -3)
+			AfxMessageBox(_T("Cannot open output - check permissions"), MB_OK, 0);
+	}
 	if (errs > 0)
 		AfxMessageBox(_T("Compilation errors - see listing"), MB_OK, 0);
 

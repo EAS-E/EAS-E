@@ -30,16 +30,8 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedEditDefn();
 	afx_msg void OnBnClickedNewEntityType();
-	afx_msg void OnEnKillfocusVwdescr();
-	afx_msg void OnTvnSelchangedTree2(NMHDR *pNMHDR, LRESULT *pResult);
-//	afx_msg void OnBnClickedEditSysAttrs();
-	afx_msg void OnBnClickedBrowseInstances();
 	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnBnClickedBrowseset();
-	afx_msg void OnBnClickedBnvwfileremove();
-	afx_msg void OnBnClickedBnvwcreatdest();
 	afx_msg void OnBnClickedBnvwdeltype();
-	afx_msg void OnBnClickedBnvwsearch();
 	afx_msg void OnBnClickedButtonsave();
 	afx_msg void OnBnClickedBtnnewent();
 	afx_msg void OnBnClickedBtnnewset();

@@ -239,7 +239,7 @@ RESERVE CHARTYPE AS 128
 RESERVE NEXTSTATE AS 14 BY 8
 RESERVE ACTION AS 14 BY 8
 RESERVE TOKENFORM AS 14
-OPEN 5 FOR INPUT, NAME IS "..\\sysdata\\lexer.dat"
+OPEN 5 FOR INPUT, NAME IS CONCAT.F(SYSDIR, "\\lexer.dat")
 USE 5 FOR INPUT
 FOR I = 1 TO 128
 DO
@@ -267,7 +267,7 @@ DO
 LOOP
 CLOSE 5
 
-OPEN 6 FOR OUTPUT, NAME IS "..\\sysdata\\vlexer.dat"	'' verify lex tables read correctly
+OPEN 6 FOR OUTPUT, NAME IS CONCAT.F(SYSDIR, "\\vlexer.dat")	'' verify lex tables read correctly
 USE 6 FOR OUTPUT
 
 FOR I = 0 TO 7
@@ -307,6 +307,10 @@ CLOSE 6
 RESERVE F.DICT AS 128
 RETURN
 ]]></Body>
+<attrDef parameter="Y">
+<attrName>SYSDIR</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
 <attrDef embedded="Y">
 <attrName>I</attrName>
 <attrTypeName>Integer</attrTypeName>

@@ -818,7 +818,7 @@ WRITE AS " = "
 LET I = USESUBS(AUSE)
 LET SUBNODE = S.NODES(F.SUBNODES(ANODE))
 IF SUBNODE NE 0
-	IF MATCHNUM(SUBNODE) = 1	'' not 'star'
+	IF MATCHNUM(F.SUBNODES(SUBNODE)) = 1	'' an expression, not 'star'
 		LET I = I - 1			'' ..this is not last dimension
 	ENDIF
 ENDIF

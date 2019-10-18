@@ -3,59 +3,90 @@
 <ENTITIES>
 <entityType ID="1">
 <entityTypeName>MACHINEGROUP</entityTypeName>
+<Descr><![CDATA[This is a simplistic representation of the resources configured in the jobshop.
+The jobshop consists of several machine types, grouped by capabilty.
+Each group has one or more machines of that type.]]></Descr>
 <attrDef embedded="Y">
 <attrName>SETUPARR_PTR</attrName>
 <attrTypeName>Reference</attrTypeName>
+<Descr><![CDATA[This attribute is used only to demonstrate the use of array pointers as attributes.
+It plays no useful part in the application.]]></Descr>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>COUNT</attrName>
+<attrTypeName>Integer</attrTypeName>
+<Descr><![CDATA[The number of machines of this type that exist in this facility.]]></Descr>
 </attrDef>
 <setOwnDef dbId="4000">INBUFFER</setOwnDef>
 </entityType>
 <entityType ID="2">
 <entityTypeName>JOB</entityTypeName>
+<Descr><![CDATA[Each instance represents a request for some processing steps in order
+In this example, selection of jobs to work on is prioritized by two attribute values.]]></Descr>
 <attrDef>
 <attrName>JOBNAME</attrName>
 <attrTypeName>Text</attrTypeName>
+<Descr><![CDATA[An abitrary name
+In a more evolved model this might denote a class of job with pre-defined steps.]]></Descr>
 </attrDef>
 <attrDef embedded="Y">
 <attrName>PRIORITY</attrName>
 <attrTypeName>Integer</attrTypeName>
+<Descr><![CDATA[A value denoting relative urgency]]></Descr>
 </attrDef>
 <attrDef embedded="Y">
 <attrName>VALUE</attrName>
 <attrTypeName>Integer</attrTypeName>
+<Descr><![CDATA[For use in prioritizing the processing order of jobs.]]></Descr>
 </attrDef>
 <setOwnDef dbId="4000">ROUTING</setOwnDef>
 <setBelongDef dbId="0">INBUFFER</setBelongDef>
 </entityType>
 <entityType ID="3">
 <entityTypeName>JOBSTEP</entityTypeName>
+<Descr><![CDATA[Each represents a particular operation which must be performed in sequence.]]></Descr>
 <attrDef>
 <attrName>STEPNAME</attrName>
 <attrTypeName>Text</attrTypeName>
+<Descr><![CDATA[See the description in jobstep.]]></Descr>
 </attrDef>
 <setBelongDef dbId="4000">ROUTING</setBelongDef>
 </entityType>
 <entityType ID="4">
 <entityTypeName>TASK</entityTypeName>
+<Descr><![CDATA[Very similar to a jobstep.
+In this example, used to show querying an anonymous instance for its type.]]></Descr>
 <attrDef>
 <attrName>STEPNAME</attrName>
 <attrTypeName>Text</attrTypeName>
+<Descr><![CDATA[See the description in jobstep]]></Descr>
 </attrDef>
 <attrDef>
 <attrName>DURATION</attrName>
 <attrTypeName>Integer</attrTypeName>
+<Descr><![CDATA[A possible attribute of a task or jobstep; not used in this trivial example.]]></Descr>
 </attrDef>
 <setBelongDef dbId="4000">ROUTING</setBelongDef>
 </entityType>
 <entityType ID="0" isProcedure="Y">
-<entityTypeName>TESTENTRY</entityTypeName>
-<Body><![CDATA[
-ROUTINE TESTENTRY
-DEFINE MG1 AS A MACHINEGROUP REFERENCE VARIABLE
-DEFINE MYJOB AS A JOB REFERENCE VARIABLE
-DEFINE I,J AS INTEGER VARIABLES
+<entityTypeName>MYJOBSHOP</entityTypeName>
+<Descr><![CDATA[The bulk of the example exists in this subroutine.
+It conffigures the facility, reads job requests and files themv for processing.
+
+Then, it simply runs some tests on manipulating the set of jobs
+ - it evolved as a test mule during evolution of the EAS-E implementation.]]></Descr>
+<Body><![CDATA[ROUTINE MYJOBSHOP
+DEFINE MG1 AS A MACHINEGROUP REFERENCE VARIABLE  '' a local variable of type MACHINEGROUP
+DEFINE MYJOB AS A JOB REFERENCE VARIABLE  '' a local  variable of type JOB
+DEFINE I, J AS INTEGER VARIABLES
 DEFINE NAME AS TEXT VARIABLE
 
-LET MG1 = GETMACHINE.F(1)  '' function call
+LET N.MACHINEGROUP = 5
+RESERVE JOBSHOP(*) AS N.MACHINEGROUP   '' number of types of machine
+FOR I = 1 TO N.MACHINEGROUP
+   LET JOBSHOP(1) = GETMACHINES.F(I, 3)  '' example of a function call - set up a machine group; for now, assume 3 of each type
+
+LET MG1 = JOBSHOP(1)  '' for now, this exanple will just work with a single machine type - yes, it does not make sense...
 
 OPEN 6 FOR OUTPUT, FILENAME IS "jobs.txt"
 USE 6 FOR OUTPUT
@@ -63,10 +94,10 @@ WRITE AS "Testing RANKED set filing by PRIORITY, then VALUE", /
 
 OPEN 5 FOR INPUT, FILENAME IS "jobdata.txt"
 USE 5 FOR INPUT
-IF ROPENERR.V(UIB.R) EQ 0
+IF ROPENERR.V  EQ 0  '' check success of OPEN
   LET EOF.V = 1
 ENDIF
-WHILE EOF.V NE 2
+WHILE EOF.V NE 2  '' monitor end-of-file condition
 DO
   READ NAME AS T *
   CALL MAKEJOB GIVEN NAME, 0, 0 YIELDING JOB
@@ -110,7 +141,7 @@ DO
   WRITE AS /
 LOOP
 
-WRITE AS "Testing cascaded set attribute refs: 1st & 2nd step names of 1st, then 1st of 2nd job", /
+WRITE AS "Testing cascaded set attribute references: 1st & 2nd step names of 1st, then 1st of 2nd job", /
 
 WRITE STEPNAME(F.ROUTING(F.INBUFFER(MG1))) AS T *, /
 WRITE STEPNAME(S.ROUTING(F.ROUTING(F.INBUFFER(MG1)))) AS T *, /
@@ -137,7 +168,7 @@ DO
   WRITE JOBNAME(MYJOB) AS "Removed JOB called ", T *, /
   WHILE F.ROUTING(MYJOB) NE 0
   DO
-    IF F.ROUTING(MYJOB) IS A TASK
+    IF F.ROUTING(MYJOB) IS A TASK  '' qery the type of an instance against an expected type name
       WRITE DURATION(TASK) AS "Removing a TASK: duration ", I 4, /
       REMOVE FIRST TASK FROM ROUTING(MYJOB)
     ELSE
@@ -159,13 +190,24 @@ END
 </entityType>
 <entityType ID="0" isProcedure="Y">
 <entityTypeName>MAIN</entityTypeName>
-<Body><![CDATA[
-MAIN
+<Descr><![CDATA[An example of an EAS-E application.
+Loosely modeled on the concepts of a jobshop simulator.
+A jobshop receives requests for work items - jobs.
+Each job requires a number of steps be performed in order.
+Each jobstep requires the use of one or more resources.
+Different job types may specify different ordering of varios jobsteps.
+
+This simple example demonstrates:
+ - Entity instance creation and deletion
+ - Reading, writing values; setting attribute values
+ - Filing in, removing from sets of various disciplines.
+ - Navigating set structures - explicitly and implicitly
+ - Iteration using single and nested control phrases]]></Descr>
+<Body><![CDATA[MAIN
+
 DEFINE N AS AN INTEGER VARIABLE
 
-CALL TESTENTRY   '' run the test
-
-USE 1 FOR OUTPUT  '' no filename.. use console
+USE 1 FOR OUTPUT  '' no filename.. use the console
 WRITE AS "Testing console input/output: enter a (small) number", /
 USE 2 FOR INPUT
 READ N
@@ -175,53 +217,78 @@ DO
  LET N = N - 1
 LOOP
 
+CALL MYJOBSHOP   '' run the test example code
+
 WRITE AS "See the output file - jobs.txt - in the VSprojects/easeApp1/easeApp1 folder", /
 END
 ]]></Body>
 </entityType>
 <entityType ID="0" isProcedure="Y">
-<entityTypeName>GETMACHINE_F</entityTypeName>
-<Body><![CDATA[
-FUNCTION GETMACHINE.F GIVEN MACHTYPE RETURNING MACHINEGROUP REFERENCE
-DEFINE MACHTYPE AS INTEGER VARIABLE
+<entityTypeName>GETMACHINES_F</entityTypeName>
+<Descr><![CDATA[A simple example of the use of a function - which returns its value inline.
+This one simply creates an instance and returns its reference value.]]></Descr>
+<Body><![CDATA[FUNCTION GETMACHINES.F GIVEN MACHTYPE AND NUMBER  RETURNING MACHINEGROUP REFERENCE
+DEFINE MACHTYPE AS AN INTEGER VARIABLE
+DEFINE NUMBER AS AN INTEGER VARIABLE
 
-CREATE A MACHINEGROUP
+CREATE A MACHINEGROUP  '' this will update the SYSTEM variable MACHINEGROUP with the reference to the new instance.
+LET COUNT.. = NUMBER  '' implict subscripting  (.. is just a notation convention); the SYSTEM variable will be used as a subscript.
 RETURN WITH MACHINEGROUP
 END
 ]]></Body>
 </entityType>
 <entityType ID="0" isProcedure="Y">
 <entityTypeName>MAKEJOB</entityTypeName>
-<Body><![CDATA[
-ROUTINE MAKEJOB GIVEN NAME, IMPORTANCE AND PRICE YIELDING AJOB
+<Descr><![CDATA[A simple example of a subroutine.
+This one receives input argument values and returns a value.
+]]></Descr>
+<Body><![CDATA[ROUTINE MAKEJOB GIVEN NAME, IMPORTANCE AND PRICE YIELDING AJOB
 DEFINE NAME AS A TEXT VARIABLE
 DEFINE IMPORTANCE, PRICE AS INTEGER VARIABLES
 DEFINE AJOB AS A JOB REFERENCE VARIABLE
+
 CREATE A JOB CALLED AJOB
 LET JOBNAME(AJOB) = NAME
 LET PRIORITY(AJOB) = IMPORTANCE
 LET VALUE(AJOB) = PRICE
+
 RETURN
 END
 ]]></Body>
 </entityType>
 </ENTITIES>
 <SETS>
+<setDef discipline="L">
+<setName>ROUTING</setName>
+<Descr><![CDATA[A set in which jobstep defintions will be filed in order of required performance.]]></Descr>
+</setDef>
 <setDef discipline="R">
 <setName>INBUFFER</setName>
 <rankAttr>PRIORITY</rankAttr>
 <rankAttr>VALUE</rankAttr>
-</setDef>
-<setDef discipline="L">
-<setName>ROUTING</setName>
+<Descr><![CDATA[As job requests arrive - in this case, read from a file - they are ranked for processing.]]></Descr>
 </setDef>
 </SETS>
 <SYSTEM>
 <entityType ID="0">
 <entityTypeName>SYSTEM</entityTypeName>
+<Descr><![CDATA[The 'global' variables of an application are held as attributes of THE SYSTEM.
+THE SYSTEM holds a system-generated reference to each defined entity type.
+This attribute may be used by implicit subscripting and may not be deleted.
+THE SYSTEM may own sets but may not belong to any set,
+THE SYSTEM singleton entity instance cannot be deleted.]]></Descr>
 <attrDef subscripts="1">
 <attrName>JOBSHOP</attrName>
 <attrTypeName>MACHINEGROUP</attrTypeName>
+<Descr><![CDATA[An example of a 'global' variable; models the configuration of the jobshop.
+An array of the groups of each machine type in this jobshop.
+]]></Descr>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>N.MACHINEGROUP</attrName>
+<attrTypeName>Integer</attrTypeName>
+<Descr><![CDATA[The number of machine types in this facility.
+(For those in the know, shades of Perrmanent entities)]]></Descr>
 </attrDef>
 <attrDef scripted="Y">
 <attrName>MACHINEGROUP</attrName>

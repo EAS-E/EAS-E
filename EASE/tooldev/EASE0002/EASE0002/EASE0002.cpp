@@ -141,8 +141,8 @@ BOOL CEASE0002App::InitInstance()
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
 
-//	TCHAR buff[128];
-//	GetCurrentDirectory(127, buff);
+	TCHAR buff[128];
+	GetCurrentDirectory(127, buff);
 
 	CStdioFile projfile;
 
@@ -150,6 +150,11 @@ BOOL CEASE0002App::InitInstance()
 		projfile.ReadString(ProjectsDirectory);
 		projfile.ReadString(SysdataDirectory);
 		projfile.Close();
+	}
+	else {
+		CString dir = buff;
+		AfxMessageBox(_T("Cannot open config.dat in") + dir, MB_OK);
+		return FALSE;
 	}
 	ReadEASEschema(SysdataDirectory, _T("easetypes"), false);
 
