@@ -11,7 +11,7 @@ LEAVE/CYCLE not in DO/LOOP context
 No such Set defined
 No such Entity defined
 No such Procedure defined
-Invalid WITH in REIURN statement
+Invalid WITH in RETURN statement
 Missing WITH in RETURN statement
 Implicit subscript use of common attribute
 Explicit FIRST/LAST illegal for Ranked Set
