@@ -61,7 +61,8 @@ This .bat file can be copied from the /lib folder and edited as desired.
 Two files, easopts.h and libopts.h should be copied to the VS source folder and edited,
 
 Selecting Project->New in EASEdevelop creates a folder for the new project.
-[Note: the ID value should chosen to be unique within all XML 
+[Note: the ID value should chosen to be unique within all XML files in a project;
+ ideally it should be GUIID - but too cumbersome at this early stage: make it 4 digits]
 This will contain a basic XML file, .eas project file and a default folder for C code.
 Edit the .eas file as needed to add project .XML files or change the target folder.
 
