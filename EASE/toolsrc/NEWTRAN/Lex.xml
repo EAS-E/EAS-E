@@ -266,8 +266,28 @@ DO
 	READ TOKENFORM(I)
 LOOP
 CLOSE 5
+''CALL PRINTLEX
+RESERVE F.DICT AS 128	'' why here...
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>SYSDIR</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>I</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+<attrDef embedded="Y">
+<attrName>J</attrName>
+<attrTypeName>Integer</attrTypeName>
+</attrDef>
+</entityType>
 
-OPEN 6 FOR OUTPUT, NAME IS CONCAT.F(SYSDIR, "\\vlexer.dat")	'' verify lex tables read correctly
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>PRINTLEX</entityTypeName>
+<Body><![CDATA[
+OPEN 6 FOR OUTPUT, NAME IS "vlexer.dat"	'' to verify lex tables read correctly
 USE 6 FOR OUTPUT
 
 FOR I = 0 TO 7
@@ -303,14 +323,8 @@ DO
 LOOP
 WRITE AS /
 CLOSE 6
-
-RESERVE F.DICT AS 128
 RETURN
 ]]></Body>
-<attrDef parameter="Y">
-<attrName>SYSDIR</attrName>
-<attrTypeName>Text</attrTypeName>
-</attrDef>
 <attrDef embedded="Y">
 <attrName>I</attrName>
 <attrTypeName>Integer</attrTypeName>
@@ -380,6 +394,9 @@ RETURN
 </d2m>
 <d2m term="_CH_PERIOD">
 <substxt><![CDATA[46]]></substxt>
+</d2m>
+<d2m term="_CH_SPACE">
+<substxt><![CDATA[32]]></substxt>
 </d2m>
 </SUBST>
 

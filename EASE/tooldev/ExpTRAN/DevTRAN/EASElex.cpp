@@ -34,6 +34,101 @@ goto retlbl;
 retlbl:
        return rval;
 }
+void PRINTLEX() {
+int I= 0;
+int J= 0;
+       OPENO_R(6, E_TXTLIT_F(_T("vlexer.dat")));
+       USE_R(6, 2);
+       I = 0;
+       goto test0001;
+next0001:
+       I = I+1;
+test0001:
+       if (I > 7) {
+       goto done0001;
+       }
+       J = 1;
+       goto test0002;
+next0002:
+       J = J+1;
+test0002:
+       if (J > 16) {
+       goto done0002;
+       }
+       WTI_R(EASElex->CHARTYPE[I*16+J], 1);
+       WTS_R(2);
+       goto next0002;
+done0002:
+       WTL_R();
+       goto next0001;
+done0001:
+       WTL_R();
+       I = 1;
+       goto test0003;
+next0003:
+       I = I+1;
+test0003:
+       if (I > 14) {
+       goto done0003;
+       }
+       J = 1;
+       goto test0004;
+next0004:
+       J = J+1;
+test0004:
+       if (J > 8) {
+       goto done0004;
+       }
+       WTI_R(EASElex->NEXTSTATE[I][J], 2);
+       WTS_R(2);
+       goto next0004;
+done0004:
+       WTL_R();
+       goto next0003;
+done0003:
+       WTL_R();
+       I = 1;
+       goto test0005;
+next0005:
+       I = I+1;
+test0005:
+       if (I > 14) {
+       goto done0005;
+       }
+       J = 1;
+       goto test0006;
+next0006:
+       J = J+1;
+test0006:
+       if (J > 8) {
+       goto done0006;
+       }
+       WTI_R(EASElex->ACTION[I][J], 1);
+       WTS_R(2);
+       goto next0006;
+done0006:
+       WTL_R();
+       goto next0005;
+done0005:
+       WTL_R();
+       I = 1;
+       goto test0007;
+next0007:
+       I = I+1;
+test0007:
+       if (I > 14) {
+       goto done0007;
+       }
+       WTI_R(EASElex->TOKENFORM[I], 1);
+       WTS_R(2);
+       goto next0007;
+done0007:
+       WTL_R();
+       CLOSE_R(6);
+       goto retlbl;
+retlbl:
+       return;
+}
 void INITLEX(Etxt* SYSDIR) {
 int I= 0;
 int J= 0;
@@ -149,94 +244,6 @@ test0008:
        goto next0008;
 done0008:
        CLOSE_R(5);
-       OPENO_R(6, CONCAT_F(SYSDIR, E_TXTLIT_F(_T("\\vlexer.dat"))));
-       USE_R(6, 2);
-       I = 0;
-       goto test0009;
-next0009:
-       I = I+1;
-test0009:
-       if (I > 7) {
-       goto done0009;
-       }
-       J = 1;
-       goto test0010;
-next0010:
-       J = J+1;
-test0010:
-       if (J > 16) {
-       goto done0010;
-       }
-       WTI_R(EASElex->CHARTYPE[I*16+J], 1);
-       WTS_R(2);
-       goto next0010;
-done0010:
-       WTL_R();
-       goto next0009;
-done0009:
-       WTL_R();
-       I = 1;
-       goto test0011;
-next0011:
-       I = I+1;
-test0011:
-       if (I > 14) {
-       goto done0011;
-       }
-       J = 1;
-       goto test0012;
-next0012:
-       J = J+1;
-test0012:
-       if (J > 8) {
-       goto done0012;
-       }
-       WTI_R(EASElex->NEXTSTATE[I][J], 2);
-       WTS_R(2);
-       goto next0012;
-done0012:
-       WTL_R();
-       goto next0011;
-done0011:
-       WTL_R();
-       I = 1;
-       goto test0013;
-next0013:
-       I = I+1;
-test0013:
-       if (I > 14) {
-       goto done0013;
-       }
-       J = 1;
-       goto test0014;
-next0014:
-       J = J+1;
-test0014:
-       if (J > 8) {
-       goto done0014;
-       }
-       WTI_R(EASElex->ACTION[I][J], 1);
-       WTS_R(2);
-       goto next0014;
-done0014:
-       WTL_R();
-       goto next0013;
-done0013:
-       WTL_R();
-       I = 1;
-       goto test0015;
-next0015:
-       I = I+1;
-test0015:
-       if (I > 14) {
-       goto done0015;
-       }
-       WTI_R(EASElex->TOKENFORM[I], 1);
-       WTS_R(2);
-       goto next0015;
-done0015:
-       WTL_R();
-       CLOSE_R(6);
        Dict->F_DICT = (DICTENTRY**)calloc(128 + 1, sizeof(DICTENTRY*));
        Dict->F_DICT[0] = (DICTENTRY*)(128);
        goto retlbl;

@@ -1,0 +1,96 @@
+Catalogued/verified:     1    9
+Catalogued/verified:     1   11
+Catalogued/verified:     1   13
+Catalogued/verified:  2000    2
+Catalogued/verified:  2000    3
+New instance:     1   13   37    1
+Fetching instance:     1   13   27  1   86
+Reading block   42 from offset  10752
+Reading  2 segments at  1 block   42
+Fetching instance:     1   11   48  1   84
+Reading block   34 from offset   8704
+Reading  2 segments at  1 block   34
+Fetching instance:  2000    2   13  1   82
+Reading block   43 from offset  11008
+Reading  2 segments at  1 block   43
+Fetching instance:     1   11   52  1  100
+Reading block   32 from offset   8192
+Reading  2 segments at  1 block   32
+Fetching instance:     1   13   30  1   82
+Reading block   40 from offset  10240
+Reading  2 segments at  3 block   40
+Fetching instance:     1   11   47  1   84
+Reading  2 segments at  3 block   34
+Fetching instance:  2000    3   35  1   50
+Reading block   45 from offset  11520
+Reading  1 segments at  2 block   45
+Fetching instance:     1   11   46  1  100
+Reading block   35 from offset   8960
+Reading  2 segments at  1 block   35
+Fetching instance:  2000    3   34  1   50
+Reading  1 segments at  3 block   45
+Fetching instance:     1   11   45  1  100
+Reading  2 segments at  3 block   35
+Fetching instance:  2000    3   33  1   50
+Reading  1 segments at  4 block   45
+Fetching instance:     1   11   44  1   84
+Reading block   36 from offset   9216
+Reading  2 segments at  1 block   36
+Fetching instance:  2000    3   32  1   50
+Reading block   46 from offset  11776
+Reading  1 segments at  1 block   46
+Fetching instance:  2000    2   14  1   82
+Reading  2 segments at  3 block   42
+Fetching instance:     1   11   39  1  100
+Reading block   38 from offset   9728
+Reading  2 segments at  3 block   38
+Fetching instance:     1   13   31  1   82
+Reading  2 segments at  1 block   40
+Fetching instance:     1   11   51  1   84
+Reading  2 segments at  3 block   32
+Fetching instance:  2000    3   38  1   50
+Reading block   44 from offset  11264
+Reading  1 segments at  3 block   44
+Fetching instance:     1   11   50  1  100
+Reading block   33 from offset   8448
+Reading  2 segments at  1 block   33
+Fetching instance:  2000    3   37  1   50
+Reading  1 segments at  4 block   44
+Fetching instance:     1   11   49  1   84
+Reading  2 segments at  3 block   33
+Fetching instance:  2000    3   36  1   50
+Reading  1 segments at  1 block   45
+Fetching instance:  2000    2   11  1   82
+Reading  2 segments at  1 block   44
+Fetching instance:     1   11   43  1   84
+Reading  2 segments at  3 block   36
+Fetching instance:     1   13   28  1   82
+Reading block   41 from offset  10496
+Reading  2 segments at  3 block   41
+Fetching instance:     1   11   38  1   84
+Reading block   39 from offset   9984
+Reading  2 segments at  1 block   39
+Fetching instance:  2000    3   28  1   46
+Reading block   47 from offset  12032
+Reading  1 segments at  1 block   47
+Fetching instance:     1   11   37  1   84
+Reading  2 segments at  3 block   39
+Fetching instance:  2000    3   27  1   46
+Reading  1 segments at  2 block   47
+Fetching instance:  2000    2   12  1   90
+Reading  2 segments at  3 block   43
+Fetching instance:     1   13   29  1   82
+Reading  2 segments at  1 block   41
+Fetching instance:     1   11   42  1   84
+Reading block   37 from offset   9472
+Reading  2 segments at  1 block   37
+Fetching instance:  2000    3   31  1   54
+Reading  1 segments at  2 block   46
+Fetching instance:     1   11   41  1  100
+Reading  2 segments at  3 block   37
+Fetching instance:  2000    3   30  1   54
+Reading  1 segments at  3 block   46
+Fetching instance:     1   11   40  1   84
+Reading  2 segments at  1 block   38
+Fetching instance:  2000    3   29  1   50
+Reading  1 segments at  4 block   46

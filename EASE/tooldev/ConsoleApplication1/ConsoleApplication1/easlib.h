@@ -36,10 +36,10 @@ struct Etxt {
 char* fetch(iRef* iref);
 
 void easinit();
+#ifdef EASsets
 void E_FRANK_R(void* E1, void* E2, int(fn)(void*, void*));
 void E_PFRANK_R(void* E1, void* E2, int(fn)(void*, void*));
-void E_DELSET_R(void* set);
-void E_PDELSET_R(void* set);
+#endif
 eInstHdr* E_CREATE_F(int subsysid, int entId, int size);
 iRef* E_PCREATE_F(int subsysid, int entId, int size);
 void E_DESTROY_R( void* ptr);
@@ -121,19 +121,7 @@ extern typeInfo* f_typeInfos;
 
 void easlib_init();
 
-//int XMLOPEN_F(Etxt* schema);
-//int XMLFINDELEM_F(Etxt* elem);
-//int XMLFINDCHILD_F(Etxt* elem);
-//void XMLINTO();
-//void XMLOUTOF();
-//int XMLLATTR_F(Etxt* attrname);	// return Logical (bool?) attribute value
-//int XMLIATTR_F(Etxt* attrname);	// return Integer attribute value
-//Etxt* XMLTATTR_F(Etxt* attrname);	// return Text attribute value
-//Etxt* XMLGETDATA_F();				// return Text value
-//Etxt* XMLGETCHILDDATA_F();		// return Text value
-
-// temporary helper fns for persistence
-//void txtasg(char* to, char* from);
+// temporary helper fns for persistence debugging
 //char* dref(char* eptr, int offset);
 //void* aref(char* eptr, int offset);
 //void* apref(char* eptr, int offset);

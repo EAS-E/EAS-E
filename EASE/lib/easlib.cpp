@@ -1216,7 +1216,7 @@ void addEType(Etxt* ename, int ssid, int entid, const int* map) {
 	typeInfo* info;
 	info = f_typeInfos;
 	while (info != NULL) {
-		if ((info->ssId == ssid) & (info->entId = entid)) return;
+		if ((info->ssId == ssid) & (info->entId == entid)) return;
 		info = info->s_typeInfo;
 	}
 	info = (typeInfo*)calloc(1, sizeof(typeInfo));

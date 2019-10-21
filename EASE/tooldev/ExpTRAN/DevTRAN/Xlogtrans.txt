@@ -1,4 +1,0 @@
-logging translate
-
-Opening C:\EASEgit\EASE\sysdata\\easeerrs.txt
-Generating c:\\EASEprojects\\VSProjects\\easeApp1\\easeApp1\\easeApp1.cpp

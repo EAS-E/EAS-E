@@ -134,7 +134,6 @@ int retrieveInstance(iRef* iref) {
 int deleteInstance(iRef* iref) {
 
 	bool success = false;
-	int dataLength;
 
 	snprintf(sendbuf, 9, "%s", "DELETEET");				// action - delete persistent instance data
 	snprintf((sendbuf + 8), 9, "%8d", iref->ssId);			// subsystem id
@@ -221,8 +220,9 @@ int ebuffpack(int* eptr, const int* mapptr) {
 		if (j == 5) {		// persistent pointer; overwrite with offset to copied values
 			iref = (iRef*)(*eptr);
 			if (iref) {
-				WTX_R(E_TXTLIT_F(_T("Iref at: ")));
-				WTI_R(varoffset, 4);
+				//WTX_R(E_TXTLIT_F(_T("Iref at: ")));
+				//WTI_R(varoffset, 4);
+				//WTL_R();
 				(*(buff + offset)) = varoffset;
 				memcpy(buff + varoffset, (char*)iref, 16);
 				varoffset = varoffset + 16;
@@ -236,7 +236,6 @@ int ebuffpack(int* eptr, const int* mapptr) {
 		eptr++;
 		i--;
 	}
-	WTL_R();
 
 	memcpy(sendbuf, buff, varoffset);
 	return varoffset;
@@ -329,13 +328,12 @@ int* ebuffunpack(const int* mapptr) {
 			if (varoffset < 0)
 				j = 6;
 			if (varoffset) {
-				WTX_R(E_TXTLIT_F(_T("Iref at: ")));
-				WTI_R(varoffset, 4);
-				WTL_R();
+				//WTX_R(E_TXTLIT_F(_T("Iref at: ")));
+				//WTI_R(varoffset, 4);
+				//WTL_R();
 				iref = (iRef*)calloc(1, sizeof(iRef));
 				memcpy(iref, buff + varoffset, 16);
 				iref->refcount = 1;
-				WTL_R();
 
 				iref = iRefMatch(iref);		// do we already know this iRef?
 				(*eptr) = (int)iref;
@@ -348,7 +346,7 @@ int* ebuffunpack(const int* mapptr) {
 		i--;
 	}
 	struct eInstHdr* e;
-	e = (struct eInstHdr*)entity; //debug
+	e = (struct eInstHdr*)entity; // for debug..
 	return entity;
 }
 

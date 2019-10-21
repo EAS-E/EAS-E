@@ -446,6 +446,8 @@ void OPENO_R(int unit, Etxt* filename) {
 		filename->refCount++;
 //		auib->file = _wfopen(filename->tValue, _T("w"));
 		ferr = _wfopen_s(&auib->file, filename->tValue, _T("w"));
+		if (ferr != 0)
+			auib->openerr = 1;
 		for (i = 0; i < 255; i++)
 			auib->buffer[i] = *(_T(" "));
 		E_TXTDEL_R(filename);
@@ -498,7 +500,6 @@ void USE_R(int unit, int inout) {
 		easlib->UIB_R->EOF_V = uib_r->eof;
 		easlib->UIB_R->ROPENERR_V = uib_r->openerr;
 		easlib->READ_V = uib_r->unit;
-		easlib->UIB_R->ROPENERR_V = uib_r->openerr;
 		if (uib_r->openerr != 0)
 			return;
 		if (uib_r->col == 0 & uib_r->eof != 2)
@@ -508,6 +509,7 @@ void USE_R(int unit, int inout) {
 		uib_w = finduibw(unit, true);	// kludge to allow write to console - see WTL_R
 		easlib->UIB_W = (UIB_W*)uib_w;
 		easlib->WRITE_V = uib_w->unit;
+		easlib->UIB_W->WOPENERR_V = uib_w->openerr;
 	}
 }
 
@@ -1214,7 +1216,7 @@ void addEType(Etxt* ename, int ssid, int entid, const int* map) {
 	typeInfo* info;
 	info = f_typeInfos;
 	while (info != NULL) {
-		if ((info->ssId == ssid) & (info->entId = entid)) return;
+		if ((info->ssId == ssid) & (info->entId == entid)) return;
 		info = info->s_typeInfo;
 	}
 	info = (typeInfo*)calloc(1, sizeof(typeInfo));

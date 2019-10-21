@@ -782,7 +782,7 @@ test0001:
        if (I > LEN) {
        goto done0001;
        }
-       if (ACHAR_F(ATTNAME, I) == 46) {
+       if (ACHAR_F(ATTNAME, I) == 46 | ACHAR_F(ATTNAME, I) == 32) {
        QACHAR_F(ATTNAME, I, 95);
        }
        goto next0001;
@@ -815,7 +815,7 @@ struct ENTITYTYPE* rval = 0;
        ETYPE->ISPERSISTENT = XMLLATTR_F(E_TXTLIT_F(_T("isPersistent")));
        XMLINTO();
        if (XMLFINDELEM_F(E_TXTLIT_F(_T("entityTypeName"))) != 0) {
-       E_TXTASG_R(&ETYPE->ETYPENAME, XMLGETDATA_F());
+       E_TXTASG_R(&ETYPE->ETYPENAME, FIXNAME_F(XMLGETDATA_F()));
        }
        if (ETYPE->ISPROC != 0) {
        if (XMLFINDELEM_F(E_TXTLIT_F(_T("Body"))) != 0) {

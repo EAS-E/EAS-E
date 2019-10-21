@@ -1,0 +1,36 @@
+Persistence in EAS-E
+
+The example EASEAPP2 (in VS, easeApp2) demonstrates the basics of persistence as implemented in this effort.
+Persistence means that selected entity and set instance data may endure beyond an application's execution.
+
+Persistent entity data is accessed through a level of indirection - an iRef (instance reference) structure.
+Persistent entity instance data is saved by a server application which can be local or remote.
+An iRef may hold the address of an in-memory instance - it also holds data needed to retrieve an instance.
+An application can choose to 'commit' its instances at any time - generally, before it terminates.
+When this happens, entity data is streamed to the server using mapping information built by the translator.
+The server allocates data space in a file and associates this with instance identification data.
+
+Any subsequent application execution can pass identifcation data to the server and the instance is returned.
+EAS-E provides two new I/O format specifications, WITE/READ AS P, to save and retrieve iRef data.
+
+The server provided here is a simple single-threaded model with no data locking.
+The emphasis of this effort was to explore the code generation and mechanisms to support seamless access.
+
+Running the example.
+The server is ConsoleApplication1 in /tooldev; it must be executing - output "THE SERVER IS RUNNING..".
+
+The VS project easeApp2 creads a file, localdata.txt, at startup and connects to the server.
+The first line should specify the server's IP address - or the name "localhost".
+
+If there is no second line, the application will create entities, file them in sets and then commit them.
+It rewrites the localdata.txt file, adding the iRef data for the persistent INBUFFER set and terminates.
+
+If easeApp2 is then rerun, it then reads the INBUFFER iRef data from the localdata.txt file.
+In this case, the application does not re-create the entities, rather it reviews the set contents.
+As the application traverses the set and explores its content, instances are seamlessly retrieved.
+
+The server can be shut down and restarted between executions of client applications.
+
+
+
+

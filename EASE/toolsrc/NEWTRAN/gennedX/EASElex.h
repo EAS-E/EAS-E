@@ -24,6 +24,7 @@ struct DICTENTRY* DICTREF;
 void EASElex_sets();
 void d_TOKEN(struct TOKEN*& EPTR);
 struct TOKEN* c_TOKEN();
+void PRINTLEX();
 void INITLEX(Etxt* SYSDIR);
 void ANALYZE(Etxt* BUFFER, int BUFFERLEN, int SEEKDICT);
 void MAKETOKEN(Etxt* BUFF, int BEGIN, int END, int TTYPE, int SEEKDICT);

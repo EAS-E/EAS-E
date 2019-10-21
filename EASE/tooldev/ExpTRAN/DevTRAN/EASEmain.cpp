@@ -39,12 +39,6 @@ int N= 0;
 int I= 0;
 int rval = 0;
 E_TXTINC_R(SYSDIR);
-       easlib->E_SAVE_V = easlib->WRITE_V;
-       USE_R(97, 2);
-       WTX_R(E_TXTLIT_F(_T("Opening ")));
-       WTX_R(CONCAT_F(SYSDIR, E_TXTLIT_F(_T("\\easeerrs.txt"))));
-       WTL_R();
-       USE_R(easlib->E_SAVE_V, 2);
        OPENI_R(1, CONCAT_F(SYSDIR, E_TXTLIT_F(_T("\\easeerrs.txt"))));
        USE_R(1, 1);
        if (easlib->UIB_R->ROPENERR_V != 0) {
@@ -158,12 +152,6 @@ next0001:
        if (ASCHEMA->NOGEN == 0) {
        E_TXTASG_R(&FILENAME, CONCAT_F(ASCHEMA->GENNAME, E_TXTLIT_F(_T(".cpp"))));
        E_TXTASG_R(&FILENAME, CONCAT_F(EASEmain->GENDIR, FILENAME));
-       easlib->E_SAVE_V = easlib->WRITE_V;
-       USE_R(97, 2);
-       WTX_R(E_TXTLIT_F(_T("Generating ")));
-       WTX_R(FILENAME);
-       WTL_R();
-       USE_R(easlib->E_SAVE_V, 2);
        OPENO_R(6, FILENAME);
        USE_R(6, 2);
        GENPROCINCL(ASCHEMA);
@@ -580,17 +568,7 @@ int I_0003= 0;
 int rval = 0;
 E_TXTINC_R(PROJDIR);
 E_TXTINC_R(SYSDIR);
-       OPENO_R(97, E_TXTLIT_F(_T("Xlogtrans.txt")));
-       USE_R(97, 2);
-       if (easlib->UIB_W->WOPENERR_V != 0) {
-       rval = (int)-3;
-goto retlbl;
-       }
-       WTX_R(E_TXTLIT_F(_T("logging translate")));
-       WTL_R();
-       WTL_R();
        if (INITERRS(SYSDIR) != 0) {
-       CLOSE_R(97);
        rval = (int)-1;
 goto retlbl;
        }
@@ -634,7 +612,6 @@ done0001:
        OPENI_R(5, CONCAT_F(PROJDIR, E_TXTLIT_F(_T("\\project.eas"))));
        USE_R(5, 1);
        if (easlib->UIB_R->ROPENERR_V != 0) {
-       CLOSE_R(97);
        rval = (int)-2;
 goto retlbl;
        }

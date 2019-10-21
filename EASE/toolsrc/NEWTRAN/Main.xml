@@ -5,14 +5,15 @@
 <entityType ID="101" isProcedure="Y">
 <entityTypeName>EASECOMPILE</entityTypeName>
 <Body><![CDATA[
-OPEN 97 FOR OUTPUT, NAME IS "Xlogtrans.txt"
-USE 97 FOR OUTPUT
-IF WOPENERR.V NE 0
-	RETURN WITH -3
-ENDIF
-WRITE AS "logging translate...", /, /
+''OPEN 97 FOR OUTPUT, NAME IS "Xlogtrans.txt"
+''USE 97 FOR OUTPUT
+''IF WOPENERR.V NE 0
+''	RETURN WITH -3
+''ENDIF
+''WRITE AS "logging translate...", /, /
+
 IF INITERRS(SYSDIR) NE 0
-	CLOSE 97
+''	CLOSE 97
 	RETURN WITH -1
 ENDIF
 RESERVE LOGICOPS AS 6		'' do this somewhere else... **********
@@ -45,7 +46,7 @@ CALL READXML(CONCAT.F(SYSDIR, "\\easelibsys.xml"), 0)
 OPEN 5 FOR INPUT, NAME IS CONCAT.F(PROJDIR, "\\project.eas")
 USE 5 FOR INPUT
 IF ROPENERR.V NE 0
-	CLOSE 97
+''	CLOSE 97
 	RETURN WITH -2
 ENDIF
 LET EOF.V = 1
@@ -548,7 +549,7 @@ DO
   IF NOGEN(ASCHEMA) EQ 0
     LET FILENAME = CONCAT.F(GENNAME(ASCHEMA), ".cpp")
 	LET FILENAME = CONCAT.F(GENDIR, FILENAME)
-	WRITE FILENAME AS "Generating ", T *, / USING 97
+''	WRITE FILENAME AS "Generating ", T *, / USING 97
  	OPEN 6 FOR OUTPUT, NAME IS FILENAME
 	USE 6 FOR OUTPUT
 
@@ -678,7 +679,7 @@ RETURN END
 <entityType ID="0" isProcedure="Y">
 <entityTypeName>INITERRS</entityTypeName>
 <Body><![CDATA[
-WRITE CONCAT.F(SYSDIR, "\\easeerrs.txt") AS "Opening ", T *, / USING 97
+''WRITE CONCAT.F(SYSDIR, "\\easeerrs.txt") AS "Opening ", T *, / USING 97
 OPEN 1 FOR INPUT, NAME IS CONCAT.F(SYSDIR, "\\easeerrs.txt")
 USE 1 FOR INPUT
 IF ROPENERR.V NE 0

@@ -2,189 +2,21 @@ Persistent server connected: localhost
 Persistent entity types registered with: localhost
 Listing RANKED set contents:
 SEQ   PRI   VAL
-Iref at:   78
-
-Iref at:   94
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:   78
-
-Iref at:  112
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:  130
-
   1     4   100  RushJob
-Iref at:   78
-
-Iref at:   94
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:   66
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:  130
-
 drill
-Iref at:   66
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:  130
-
 turn
-Iref at:   66
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
 mill
-Iref at:   66
-
 grind
-Iref at:   78
-
-Iref at:  112
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:  130
-
   2     2   400  LastJob
-Iref at:   78
-
-Iref at:   94
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:   66
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:  130
-
 pack
-Iref at:   66
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
 paint
-Iref at:   66
-
 shape
-Iref at:   78
-
-Iref at:  112
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
   3     1   200  BigJob
-Iref at:   78
-
-Iref at:   94
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:   66
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
 dry
-Iref at:   66
-
 cut
-Iref at:   78
-
-Iref at:  120
-
   4     1   150  AnotherJob
-Iref at:   78
-
-Iref at:   94
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:   66
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
-Iref at:  130
-
 finish
-Iref at:   66
-
-Iref at:   82
-
-Iref at:   98
-
-Iref at:  114
-
 polish
-Iref at:   66
-
 start
 TOTAL JOBS:   4
 Testing FOR EACH in set 

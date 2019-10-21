@@ -57,14 +57,19 @@ Projects corresponding to the examples projects are located in EASE/VSprojects.
 As delivered, each VS source code folder includes duplicated library .h and .cpp files.
 ( VS source code - .h/.cpp - is found in ...VSprojects/<projectname>/<projectname> )
 Running the linklib.bat file in each will establish symbolic links to the master copies.
+This .bat file can be copied from the /lib folder and edited as desired.
+Two files, easopts.h and libopts.h should be copied to the VS source folder and edited,
 
 Selecting Project->New in EASEdevelop creates a folder for the new project.
+[Note: the ID value should chosen to be unique within all XML 
 This will contain a basic XML file, .eas project file and a default folder for C code.
 Edit the .eas file as needed to add project .XML files or change the target folder.
+
 A suitable VS project must then be created for a new project - this is non-trivial.
 Generated C files can be copied to the VS project source folders for building.
 Or, the .eas project file can be edited to specify that folder as the target.
-
+linklib.bat file should be copied from the /lib folder and edited to link desired libraries.
+Two files, easopts.h and libopts.h should be copied to the VS source folder and edited.
 
 
 
