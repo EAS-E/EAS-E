@@ -13,10 +13,16 @@
 #include <stdio.h>
 #include<process.h>
 
+/*
+	The message header format and other aspects of this communication protocol have a history.
+	The early effort here was allocated to an early collaborator on the project.
+	Out of collegial respect, this author accepted what was offered.
+	It seemed like the right thing to do, at the time; now, it has been somewhat revisited...
+*/
 
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
-// #pragma comment (lib, "Mswsock.lib")
+// #pragma comment (lib, "Mswsock.lib") ??
 
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27016"
@@ -56,11 +62,6 @@ void MyFunction(void* Arg)
 		int i = 0;
 		if (iResult > 0) {			// got some data...
 
-			//for (int i = 0; i < 36; i++)
-			//	printf("%c", recvbuf[i]);
-			//printf("\n");
-
-			// added extra char to hold terminating '\0' 
 			char actionName[9];
 			char actionEntitySSId[9];
 			char actionEntityTypeId[9];
@@ -75,7 +76,6 @@ void MyFunction(void* Arg)
 			int dataLength = 0;
 			char actionDataSave[512];
 
-//			printf("Received buffer size: %4d \n", iResult);
 
 			snprintf(actionName, 9, "%s", recvbuf);
 			printf("Request:  %s", actionName);
@@ -100,7 +100,6 @@ void MyFunction(void* Arg)
 			dataLength = atoi(actionDataLength);
 			printf(" data length %5d\n", dataLength);
 
-			//snprintf(actionDataSave, dataLength, recvbuf + 46);
 			dataLength = dataLength - 46;
 			for (int i = 0; i < dataLength; i++)
 				actionDataSave[i] = recvbuf[i + 46];
@@ -108,93 +107,56 @@ void MyFunction(void* Arg)
 
 			char actionResult = 'S';		// presumptive success result
 
-			int actionIndex = 0;
+			if (strcmp(actionName, ActionNames[0]) == 0) {				// new entity type
 
-			if (strcmp(actionName, ActionNames[0]) == 0) {					// new entity type
-
-				dataLength = 1;
 				if (REGETYPE_F(entitySSId, entityTypeId))
 					char actionResult = 'S';		// success result
+				dataLength = 1;
 
 			}
-			else if (strcmp(actionName, ActionNames[1]) == 0) {				// request new entity instance
-
-				dataLength = 1;
+			else if (strcmp(actionName, ActionNames[1]) == 0) {			// request new entity instance
 
 				CREETYPE(entitySSId, entityTypeId, entityId, dash);
 				printf("allocated slot: %6d dash: %6d\n", entityId, dash);
+				dataLength = 1;
 			}
 
-			else if (strcmp(actionName, ActionNames[2]) == 0) {				// fetch instance
+			else if (strcmp(actionName, ActionNames[2]) == 0) {			// fetch instance
 
 				dataLength = FETCHINST_F(entitySSId, entityTypeId, entityId, dash, actionDataSave);
 				for (int i = 0; i < dataLength; i++)
 					sendbuf[i + 46] = actionDataSave[i];
-				i = 1;
 			}
 
-			else if (strcmp(actionName, ActionNames[3]) == 0) {				// store/update instance
+			else if (strcmp(actionName, ActionNames[3]) == 0) {			// store/update instance
 
-//				printf(" update data length: \n", dataLength);
-				if (dataLength == 100)
-					i = 1;
-
-//				int result = Client->easeDataBase->saveEntityValue(entityTypeId, entityId, actionDataSave, dataLength + 28);
 				UPDATEINST_F(entitySSId, entityTypeId, entityId, dash, dataLength, actionDataSave);
 				dataLength = 1;
 			}
 
 			else if (strcmp(actionName, ActionNames[4]) == 0) {			// delete instance data.
 				dataLength = 1;
-				//int deleteSuccess = Client->easeDataBase->deleteEntity(entityTypeId, entityId);
-
-				////Client->easeDataBase->saveEntityValue(entityTypeId, entityId, recvbuf + 8, iResult - 8);
 			}
 
 			else if (strcmp(actionName, ActionNames[5]) == 0) {			// commit changed logical blocks
 				WRITELBLKS_F();
 				dataLength = 1;
 			}
-			//long entityIdToSave = 0;
+			int totalLength = commbuffhdr + dataLength;			// the only response with payload is "fetch"
+																// all others are simple 'S' reply..
+																// ..or data in hdr; datalength = 1 is a flag!
 
-			//sscanf_s(recvbuf, "%s %d %d %s", actionName, &actionEntityId, &actionDataLen, actionDataSave);
-
-			//printf("%s %s %s %d %s\n", actionName, actionEntityId, actionEntityType, dataLength, actionDataSave);
-
-			//char *toDataBase = (char *)malloc(sizeof(char)*iResult);
-
-			//sprintf_s(recvbuf, "%ld", nextEntityId);
-			//long nextEntityId = Client->easeDataBase->getNextEntityId();
-			//sprintf_s(sendBuffer, "%ld", nextEntityId);
-			// Echo the buffer back to the sender
-
-			int totalLength = commbuffhdr + dataLength;
-
-			//Prepare the action Header;
-
-			//snprintf(sendbuf, 9, "%s", actionName);
-
-			//snprintf((sendbuf + 8), 17, "%d", entityId);
-			//snprintf((sendbuf + 24), 7, "%s", actionEntityTypeId);
-			//snprintf((sendbuf + 30), 7, "%d", dataLength + 1);//Because we need to add null point
-
-			////if (pRecord != nullptr)
-			////	printf("data length %d %s\n", dataLength, pRecord->data);
-			snprintf(sendbuf, 9, "%s", ActionNames[6]);		// server reply
+			snprintf(sendbuf, 9, "%s", ActionNames[6]);			// server reply
 			snprintf((sendbuf + 8), 9, "%8d", entitySSId);		// subsystem id - integer
 			snprintf((sendbuf + 16), 9, "%8d", entityTypeId);	// entity-in-subsystem id - integer
 			snprintf((sendbuf + 24), 9, "%8d", entityId);		// instance id = slot number
 			snprintf((sendbuf + 32), 9, "%8d", dash);			// slot dash number
-			snprintf((sendbuf + 40), 6, "%5d", totalLength);	// message length - all header; no data payload
+			snprintf((sendbuf + 40), 6, "%5d", totalLength);	// message length
 
 			if (dataLength == 1)
 				snprintf((sendbuf), dataLength + 1, "%c\n", actionResult);
-			//else {
-			//	snprintf((sendbuf + 36), dataLength + 1, "%s", pRecord->data);
 
-			//}
-
-			if (true) {
+			if (true) { // ?? - this is all debug trace 
 				for (i = 0; i < totalLength; i++)
 					printf("%c", sendbuf[i]);
 				printf("\n");
@@ -225,8 +187,6 @@ void MyFunction(void* Arg)
 }
 
 
-
-//int __cdecl main(void)
 void LISTENERINIT_F() {
 
 	WSADATA wsaData;
@@ -290,7 +250,7 @@ void LISTENERINIT_F() {
 
 	printf("\n SERVER IS RUNNING ...");
 
-	iResult = 0;	// just a place to break...
+	iResult = 0;	// just a place to break if needed for debug...
 
 	while (1)
 	{

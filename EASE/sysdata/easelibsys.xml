@@ -155,9 +155,6 @@
 <entityTypeName>RDN_F</entityTypeName>
 </entityType>
 <entityType ID="36" isProcedure="Y">
-<entityTypeName>RDS_R</entityTypeName>
-</entityType>
-<entityType ID="36" isProcedure="Y">
 <entityTypeName>RDT_F</entityTypeName>
 </entityType>
 <entityType ID="36" isProcedure="Y">

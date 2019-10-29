@@ -131,9 +131,10 @@ retlbl:
 E_TXTDEL_R(NAME);
        return;
 }
-struct MACHINEGROUP* GETMACHINE_F(int MACHTYPE) {
+struct MACHINEGROUP* GETMACHINES_F(int MACHTYPE, int NUMBER) {
 struct MACHINEGROUP* rval = 0;
        easeApp1->MACHINEGROUP= c_MACHINEGROUP();
+       easeApp1->MACHINEGROUP->COUNT = NUMBER;
        rval = (struct MACHINEGROUP*)easeApp1->MACHINEGROUP;
 goto retlbl;
 retlbl:
@@ -143,11 +144,13 @@ retlbl:
 void easinit() {
 easeApp1_init();
 easlib_init();
+#ifdef EASsets
+easeSets_init();
+#endif
 }
 void main() {
 int N= 0;
        easinit();
-       TESTENTRY();
        USE_R(1, 2);
        WTX_R(E_TXTLIT_F(_T("Testing console input/output: enter a (small) number")));
        WTL_R();
@@ -162,11 +165,12 @@ next0001:
        N = N-1;
        goto next0001;
 done0001:
+       MYJOBSHOP();
        WTX_R(E_TXTLIT_F(_T("See the output file - jobs.txt - in the VSprojects/easeApp1/easeApp1 folder")));
        WTL_R();
        return;
 }
-void TESTENTRY() {
+void MYJOBSHOP() {
 struct MACHINEGROUP* MG1= 0;
 struct JOB* MYJOB= 0;
 int I= 0;
@@ -176,7 +180,21 @@ struct JOB* E_0001= 0;
 struct JOB* E_0002= 0;
 struct JOBSTEP* E_0003= 0;
 struct JOB* E_0004= 0;
-       MG1 = (struct MACHINEGROUP*)GETMACHINE_F(1);
+       easeApp1->N_MACHINEGROUP = 5;
+       easeApp1->JOBSHOP = (MACHINEGROUP**)calloc(easeApp1->N_MACHINEGROUP + 1, sizeof(MACHINEGROUP*));
+       easeApp1->JOBSHOP[0] = (MACHINEGROUP*)(easeApp1->N_MACHINEGROUP);
+       I = 1;
+       goto test0001;
+next0001:
+       I = I+1;
+test0001:
+       if (I > easeApp1->N_MACHINEGROUP) {
+       goto done0001;
+       }
+       easeApp1->JOBSHOP[1] = (struct MACHINEGROUP*)GETMACHINES_F(I, 3);
+       goto next0001;
+done0001:
+       MG1 = (struct MACHINEGROUP*)easeApp1->JOBSHOP[1];
        OPENO_R(6, E_TXTLIT_F(_T("jobs.txt")));
        USE_R(6, 2);
        WTX_R(E_TXTLIT_F(_T("Testing RANKED set filing by PRIORITY, then VALUE")));
@@ -186,9 +204,9 @@ struct JOB* E_0004= 0;
        if (easlib->UIB_R->ROPENERR_V == 0) {
        easlib->UIB_R->EOF_V = 1;
        }
-next0001:
+next0002:
        if ( !  ( easlib->UIB_R->EOF_V != 2 ) ) {
-       goto done0001;
+       goto done0002;
        }
        E_TXTASG_R(&NAME, RDS_F());
        MAKEJOB(NAME, 0, 0, easeApp1->JOB);
@@ -201,22 +219,22 @@ next0001:
        WTL_R();
        J = RDN_F();
        I = 1;
-       goto test0002;
-next0002:
+       goto test0003;
+next0003:
        I = I+1;
-test0002:
+test0003:
        if (I > J) {
-       goto done0002;
+       goto done0003;
        }
        easeApp1->JOBSTEP= c_JOBSTEP();
        E_TXTASG_R(&easeApp1->JOBSTEP->STEPNAME, RDX_F());
        E_FFIRST_R(easeApp1->JOB->ROUTING, easeApp1->JOBSTEP);
-       goto next0002;
-done0002:
+       goto next0003;
+done0003:
        E_FRANK_R(MG1->INBUFFER, easeApp1->JOB, X_INBUFFER);
        RDL_R();
-       goto next0001;
-done0001:
+       goto next0002;
+done0002:
        CLOSE_R(5);
        WTX_R(E_TXTLIT_F(_T("Listing RANKED set contents:")));
        WTL_R();
@@ -224,16 +242,16 @@ done0001:
        WTL_R();
        I = 1;
        easeApp1->JOB = (struct JOB*)((struct JOB*)F_EASSET_F(MG1->INBUFFER));
-       goto test0003;
-next0003:
+       goto test0004;
+next0004:
        easeApp1->JOB = (struct JOB*)E_0001;
-test0003:
+test0004:
        if (easeApp1->JOB == 0) {
-       goto done0003;
+       goto done0004;
        }
        E_0001 = (struct JOB*)((struct JOB*)S_EASSET_F(easeApp1->JOB, E_TXTLIT_F(_T("INBUFFER"))));
        if ( !  ( ((struct JOBSTEP*)F_EASSET_F(easeApp1->JOB->ROUTING)) != 0 ) ) {
-       goto done0003;
+       goto done0004;
        }
        easeApp1->TASK= c_TASK();
        easeApp1->TASK->DURATION = I*30;
@@ -245,42 +263,42 @@ test0003:
        WTX_R(easeApp1->JOB->JOBNAME);
        WTL_R();
        I = I+1;
-       goto next0003;
-done0003:
+       goto next0004;
+done0004:
        WTX_R(E_TXTLIT_F(_T("TOTAL JOBS: ")));
        WTI_R(N_EASSET_F(MG1->INBUFFER), 3);
        WTL_R();
        WTX_R(E_TXTLIT_F(_T("Testing FOR EACH in set ")));
        WTL_R();
        MYJOB = (struct JOB*)((struct JOB*)F_EASSET_F(MG1->INBUFFER));
-       goto test0004;
-next0004:
+       goto test0005;
+next0005:
        MYJOB = (struct JOB*)E_0002;
-test0004:
+test0005:
        if (MYJOB == 0) {
-       goto done0004;
+       goto done0005;
        }
        E_0002 = (struct JOB*)((struct JOB*)S_EASSET_F(MYJOB, E_TXTLIT_F(_T("INBUFFER"))));
        WTX_R(E_TXTLIT_F(_T("JOB: ")));
        WTX_R(MYJOB->JOBNAME);
        WTB_R(20);
        easeApp1->JOBSTEP = (struct JOBSTEP*)((struct JOBSTEP*)F_EASSET_F(MYJOB->ROUTING));
-       goto test0005;
-next0005:
+       goto test0006;
+next0006:
        easeApp1->JOBSTEP = (struct JOBSTEP*)E_0003;
-test0005:
+test0006:
        if (easeApp1->JOBSTEP == 0) {
-       goto done0005;
+       goto done0006;
        }
        E_0003 = (struct JOBSTEP*)((struct JOBSTEP*)S_EASSET_F(easeApp1->JOBSTEP, E_TXTLIT_F(_T("ROUTING"))));
        WTX_R(easeApp1->JOBSTEP->STEPNAME);
        WTS_R(2);
+       goto next0006;
+done0006:
+       WTL_R();
        goto next0005;
 done0005:
-       WTL_R();
-       goto next0004;
-done0004:
-       WTX_R(E_TXTLIT_F(_T("Testing cascaded set attribute refs: 1st & 2nd step names of 1st, then 1st of 2nd job")));
+       WTX_R(E_TXTLIT_F(_T("Testing cascaded set attribute references: 1st & 2nd step names of 1st, then 1st of 2nd job")));
        WTL_R();
        WTX_R(((struct JOBSTEP*)F_EASSET_F(((struct JOB*)F_EASSET_F(MG1->INBUFFER))->ROUTING))->STEPNAME);
        WTL_R();
@@ -291,22 +309,22 @@ done0004:
        WTX_R(E_TXTLIT_F(_T("Testing FIND - look for PRIORITY > 2 ")));
        WTL_R();
        MYJOB = (struct JOB*)((struct JOB*)F_EASSET_F(MG1->INBUFFER));
-       goto test0006;
-next0006:
+       goto test0007;
+next0007:
        MYJOB = (struct JOB*)E_0004;
-test0006:
+test0007:
        if (MYJOB == 0) {
-       goto done0006;
+       goto done0007;
        }
        E_0004 = (struct JOB*)((struct JOB*)S_EASSET_F(MYJOB, E_TXTLIT_F(_T("INBUFFER"))));
        if ( !  ( MYJOB->PRIORITY > 2 ) ) {
-       goto next0006;
+       goto next0007;
        }
        easlib->E_FOUND_V = 1;
-       goto skip0006;
-done0006:
+       goto skip0007;
+done0007:
        easlib->E_FOUND_V = 0;
-skip0006:
+skip0007:
        if (easlib->E_FOUND_V != 0) {
        WTX_R(E_TXTLIT_F(_T("JOB: ")));
        WTX_R(MYJOB->JOBNAME);
@@ -326,17 +344,17 @@ skip0006:
        WTX_R(E_TXTLIT_F(_T("INBUFFER set count is now = ")));
        WTI_R(N_EASSET_F(MG1->INBUFFER), 4);
        WTL_R();
-next0007:
+next0008:
        if ( !  ( N_EASSET_F(MG1->INBUFFER) != 0 ) ) {
-       goto done0007;
+       goto done0008;
        }
        MYJOB = (struct JOB*)E_RMVFRST_F(MG1->INBUFFER);
        WTX_R(E_TXTLIT_F(_T("Removed JOB called ")));
        WTX_R(MYJOB->JOBNAME);
        WTL_R();
-next0008:
+next0009:
        if ( !  ( ((struct JOBSTEP*)F_EASSET_F(MYJOB->ROUTING)) != 0 ) ) {
-       goto done0008;
+       goto done0009;
        }
        if (E_TXTEQL_F(E_TYPENAME_F(((struct JOBSTEP*)F_EASSET_F(MYJOB->ROUTING))), E_TXTLIT_F(_T("TASK")))) {
        WTX_R(E_TXTLIT_F(_T("Removing a TASK: duration ")));
@@ -351,11 +369,11 @@ next0008:
        WTL_R();
        d_JOBSTEP(easeApp1->JOBSTEP);
        }
+       goto next0009;
+done0009:
+       d_JOB(MYJOB);
        goto next0008;
 done0008:
-       d_JOB(MYJOB);
-       goto next0007;
-done0007:
        WTX_R(E_TXTLIT_F(_T("Testing PRINT THUS")));
        WTL_R();
        WTX_R(E_TXTLIT_F(_T("INBUFFER IS EMPTY - THERE ARE NO JOBS WAITING")));

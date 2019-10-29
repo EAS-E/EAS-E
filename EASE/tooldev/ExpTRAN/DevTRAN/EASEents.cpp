@@ -1032,7 +1032,7 @@ done0006:
        if (XMLIATTR_F(E_TXTLIT_F(_T("low"))) != 0) {
        RANKATTR->LO = 1;
        }
-       E_TXTASG_R(&RANKATTR->RATTRNAME, XMLGETDATA_F());
+       E_TXTASG_R(&RANKATTR->RATTRNAME, FIXNAME_F(XMLGETDATA_F()));
        goto next0005;
 done0005:
        XMLOUTOF();
@@ -1061,7 +1061,7 @@ next0007:
        E_TXTASG_R(&ATXT, XMLTATTR_F(E_TXTLIT_F(_T("term"))));
        DREF = (struct DICTENTRY*)FINDDICTENTRY_F(ATXT);
        if (XMLFINDCHILD_F(E_TXTLIT_F(_T("substxt"))) != 0) {
-       E_TXTASG_R(&ATXT, XMLGETCHILDDATA_F());
+       E_TXTASG_R(&ATXT, FIXNAME_F(XMLGETCHILDDATA_F()));
        ANALYZE(ATXT, LENGTH_F(ATXT), 1);
        DREF->F_SUBST = (struct TOKEN*)EASElex->F_TOKENLIST;
        DREF->L_SUBST = (struct TOKEN*)EASElex->L_TOKENLIST;

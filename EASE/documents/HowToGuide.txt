@@ -51,6 +51,9 @@ Running tools/EASEtranslate on the selected folder accomplishes this translation
 (EASEtranslate is silent - just wait for it to complete; it notifies of any errors.)
 A listing file and possible error file are generated in the target folder.
 
+Note: the procedure name chosen in EASEdevelop should match the name in source code.
+Note: an executable application must include a MAIN procedure.
+
 At this time, these C files are intended to be built in VisualStudio projects.
 Projects corresponding to the examples projects are located in EASE/VSprojects.
 
@@ -58,7 +61,10 @@ As delivered, each VS source code folder includes duplicated library .h and .cpp
 ( VS source code - .h/.cpp - is found in ...VSprojects/<projectname>/<projectname> )
 Running the linklib.bat file in each will establish symbolic links to the master copies.
 This .bat file can be copied from the /lib folder and edited as desired.
-Two files, easopts.h and libopts.h should be copied to the VS source folder and edited,
+Two files, easopts.h and libopts.h should be copied to the VS source folder and edited.
+
+Note: these project solutions were created using Visual Studio 2017, Community Edition.
+It may be necessary to re-target these solutions for a different version of Visual Studio.
 
 Selecting Project->New in EASEdevelop creates a folder for the new project.
 [Note: the ID value should chosen to be unique within all XML files in a project;
@@ -71,6 +77,9 @@ Generated C files can be copied to the VS project source folders for building.
 Or, the .eas project file can be edited to specify that folder as the target.
 linklib.bat file should be copied from the /lib folder and edited to link desired libraries.
 Two files, easopts.h and libopts.h should be copied to the VS source folder and edited.
+
+To augment the runtime library, easlib.cpp/.h can be edited to add routines.
+To make a routine visible to EASEtranslate, add a definition to easelibsys.xml in sysdata.
 
 
 

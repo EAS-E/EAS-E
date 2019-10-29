@@ -1256,6 +1256,12 @@ next0001:
        SYSETYPE = (struct ENTITYTYPE*)SYSETYPE->S_ETYPES;
        goto next0001;
 done0001:
+       WTX_R(E_TXTLIT_F(_T("#ifdef EASsets")));
+       WTL_R();
+       WTX_R(E_TXTLIT_F(_T("easeSets_init();")));
+       WTL_R();
+       WTX_R(E_TXTLIT_F(_T("#endif")));
+       WTL_R();
        WTX_R(E_TXTLIT_F(_T("}")));
        WTL_R();
        goto retlbl;
@@ -1328,7 +1334,7 @@ int FIRST= 0;
        WTX_R(E_TXTLIT_F(_T("main")));
        }
        else {
-       WTX_R(ETYPE->ETYPENAME);
+       WTX_R(APROC->PDICTREF->LEXEME);
        }
        GENARGLIST(ETYPE);
        WTX_R(E_TXTLIT_F(_T(" {")));

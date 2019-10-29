@@ -13,7 +13,7 @@ struct E_PSET* INBUFFER;
 void easeApp2_sets();
 void d_MACHINEGROUP(struct MACHINEGROUP*& EPTR);
 struct MACHINEGROUP* c_MACHINEGROUP();
-void TESTENTRY();
+void MYJOBSHOP();
 
 struct easeApp2_sys {
 struct eInstHdr hdr;

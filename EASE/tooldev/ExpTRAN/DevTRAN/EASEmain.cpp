@@ -618,6 +618,7 @@ goto retlbl;
        easlib->UIB_R->EOF_V = 1;
        E_TXTASG_R(&EASEmain->GENDIR, RDT_F(easlib->UIB_R->RRECLEN_V));
        RDL_R();
+       OPENO_R(98, CONCAT_F(EASEmain->GENDIR, E_TXTLIT_F(_T("XLISTING.txt"))));
 next0002:
        if ( !  ( easlib->UIB_R->EOF_V != 2 ) ) {
        goto done0002;
@@ -630,7 +631,6 @@ next0002:
        goto next0002;
 done0002:
        CLOSE_R(5);
-       OPENO_R(98, CONCAT_F(EASEmain->GENDIR, E_TXTLIT_F(_T("XLISTING.txt"))));
        FIXUPSCHEMAS();
        TRANSLATEPROCS();
        CLOSE_R(98);

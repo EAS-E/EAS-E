@@ -388,8 +388,10 @@ void EASViewDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 	} else {
 		eType = (entityTypeDef*)entTree->GetItemData(treeItem);
-		edit->SetWindowText(eType->entDescription);			// show entity description
-		m_lastEnt = eType;
+		if (eType) {
+			edit->SetWindowText(eType->entDescription);			// show entity description
+			m_lastEnt = eType;
+		}
 	}
 
 	pWnd = GetDlgItem(IDC_BUTTON1);							// edit definition

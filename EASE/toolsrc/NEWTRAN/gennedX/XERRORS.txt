@@ -1,0 +1,1 @@
+Error  1001 in procedure GENINIT line    9  Syntax error

@@ -715,15 +715,17 @@ DO
 		LET L.STMTS(APROC) = ASTMT
 
 		IF RULENAME(STMTRULE(ASTMT)) = "MAIN"
-			LET PDICTREF(APROC) = FINDDICTENTRY.F("MAIN")
+			CALL NAMECHECK(APROC, ASTMT)
 			CALL STMTDEFRTN(ASTMT)
 		ENDIF
 		
 		IF RULENAME(STMTRULE(ASTMT)) = "DCLRTN"
+			CALL NAMECHECK(APROC, ASTMT)
 			CALL STMTDEFRTN(ASTMT)
 		ENDIF
 
 		IF RULENAME(STMTRULE(ASTMT)) = "DCLFUNC"
+			CALL NAMECHECK(APROC, ASTMT)
 			CALL STMTDEFFUNC(ASTMT)
 		ENDIF
 
@@ -882,6 +884,50 @@ RETURN
 <attrTypeName>NODE</attrTypeName>
 </attrDef>
 </entityType>
+
+<entityType ID="0" isProcedure="Y">
+<entityTypeName>NAMECHECK</entityTypeName>
+<Body><![CDATA[
+LET PROCNAME = LEXEME(START(F.PARSENODES(ASTMT)))
+IF STMTNUM(ASTMT) NE 1
+	CALL EASERR(1021, PROCNAME)
+ENDIF	
+LET AUSE = FINDSPECUSE.F(FINDDICTENTRY.F(PROCNAME), .USE.PROC)
+IF AUSE NE 0
+	RETURN
+ENDIF
+CALL EASERR(-1019, PROCNAME)
+LET AUSE = FINDSPECUSE.F(PDICTREF(APROC), .USE.PROC)
+LET ETYPE = USEENTITY(AUSE)
+LET PDICTREF(APROC) = FINDDICTENTRY.F(PROCNAME)
+IF FINDSPECUSE.F(PDICTREF(APROC), .USE.PROC) EQ 0
+	LET AUSE = MAKEUSE.F(PDICTREF(APROC), .USE.PROC)
+	LET USEENTITY(AUSE) = ETYPE
+ENDIF
+RETURN END
+]]></Body>
+<attrDef parameter="Y">
+<attrName>APROC</attrName>
+<attrTypeName>EASEPROC</attrTypeName>
+</attrDef>
+<attrDef parameter="Y">
+<attrName>ASTMT</attrName>
+<attrTypeName>STMT</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>AUSE</attrName>
+<attrTypeName>DICTUSE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>ETYPE</attrName>
+<attrTypeName>ENTITYTYPE</attrTypeName>
+</attrDef>
+<attrDef>
+<attrName>PROCNAME</attrName>
+<attrTypeName>Text</attrTypeName>
+</attrDef>
+</entityType>
+
 
 <entityType ID="0" isProcedure="Y">
 <entityTypeName>SUBSTITUT</entityTypeName>

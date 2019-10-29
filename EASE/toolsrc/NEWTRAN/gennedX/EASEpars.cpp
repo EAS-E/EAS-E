@@ -328,6 +328,31 @@ done0001:
 retlbl:
        return;
 }
+void NAMECHECK(struct EASEPROC* APROC, struct STMT* ASTMT) {
+struct DICTUSE* AUSE= 0;
+struct ENTITYTYPE* ETYPE= 0;
+Etxt* PROCNAME= 0;
+       E_TXTASG_R(&PROCNAME, ASTMT->F_PARSENODES->START->LEXEME);
+       if (ASTMT->STMTNUM != 1) {
+       EASERR(1021, PROCNAME);
+       }
+       AUSE = (struct DICTUSE*)FINDSPECUSE_F(FINDDICTENTRY_F(PROCNAME), 3);
+       if (AUSE != 0) {
+       goto retlbl;
+       }
+       EASERR(-1019, PROCNAME);
+       AUSE = (struct DICTUSE*)FINDSPECUSE_F(APROC->PDICTREF, 3);
+       ETYPE = (struct ENTITYTYPE*)AUSE->USEENTITY;
+       APROC->PDICTREF = (struct DICTENTRY*)FINDDICTENTRY_F(PROCNAME);
+       if (FINDSPECUSE_F(APROC->PDICTREF, 3) == 0) {
+       AUSE = (struct DICTUSE*)MAKEUSE_F(APROC->PDICTREF, 3);
+       AUSE->USEENTITY = (struct ENTITYTYPE*)ETYPE;
+       }
+       goto retlbl;
+retlbl:
+E_TXTDEL_R(PROCNAME);
+       return;
+}
 void FILENODE(struct NODE* ANODE) {
        if (EASEpars->F_NODES == 0) {
        EASEpars->F_NODES = (struct NODE*)ANODE;
@@ -399,13 +424,15 @@ done0003:
        ASTMT->P_STMTS = (struct STMT*)APROC->L_STMTS;
        APROC->L_STMTS = (struct STMT*)ASTMT;
        if (E_TXTEQL_F(ASTMT->STMTRULE->RULENAME, E_TXTLIT_F(_T("MAIN")))) {
-       APROC->PDICTREF = (struct DICTENTRY*)FINDDICTENTRY_F(E_TXTLIT_F(_T("MAIN")));
+       NAMECHECK(APROC, ASTMT);
        STMTDEFRTN(ASTMT);
        }
        if (E_TXTEQL_F(ASTMT->STMTRULE->RULENAME, E_TXTLIT_F(_T("DCLRTN")))) {
+       NAMECHECK(APROC, ASTMT);
        STMTDEFRTN(ASTMT);
        }
        if (E_TXTEQL_F(ASTMT->STMTRULE->RULENAME, E_TXTLIT_F(_T("DCLFUNC")))) {
+       NAMECHECK(APROC, ASTMT);
        STMTDEFFUNC(ASTMT);
        }
        if (E_TXTEQL_F(ASTMT->STMTRULE->RULENAME, E_TXTLIT_F(_T("DEFVAR")))) {

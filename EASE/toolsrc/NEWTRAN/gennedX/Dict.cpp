@@ -162,6 +162,14 @@ retlbl:
 struct DICTUSE* MAKEUSE_F(struct DICTENTRY* DREF, int TYPE) {
 struct DICTUSE* DUSE= 0;
 struct DICTUSE* rval = 0;
+       if (TYPE == 2 | TYPE == 3) {
+       DUSE = (struct DICTUSE*)FINDSPECUSE_F(DREF, TYPE);
+       if (DUSE != 0) {
+       EASERR(-1020, DREF->LEXEME);
+       rval = (struct DICTUSE*)DUSE;
+goto retlbl;
+       }
+       }
        DUSE= c_DICTUSE();
        DUSE->USETYPE = TYPE;
        DUSE->S_USAGE = (struct DICTUSE*)DREF->F_USAGE;

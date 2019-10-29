@@ -96,6 +96,7 @@ void STMTDEFRTN(struct STMT* ASTMT);
 void STMTDEFVAR(struct STMT* ASTMT);
 void DESTROYNODES(struct NODE* ANODE);
 void SUBSTITUT(struct TOKEN* ATOKEN);
+void NAMECHECK(struct EASEPROC* APROC, struct STMT* ASTMT);
 void FILENODE(struct NODE* ANODE);
 void PARSE(struct EASEPROC* APROC);
 struct STMT* PARSESTMT_F();

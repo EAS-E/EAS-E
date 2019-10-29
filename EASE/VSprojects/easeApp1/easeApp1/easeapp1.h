@@ -29,6 +29,7 @@ struct E_SET* ROUTING;
 struct MACHINEGROUP {
 struct eInstHdr hdr;
 void* SETUPARR_PTR;
+int COUNT;
 struct E_SET* INBUFFER;
 };
 #define Z_MACHINEGROUP sizeof(MACHINEGROUP)
@@ -43,12 +44,13 @@ struct JOBSTEP* c_JOBSTEP();
 void d_TASK(struct TASK*& EPTR);
 struct TASK* c_TASK();
 void MAKEJOB(Etxt* NAME, int IMPORTANCE, int PRICE, struct JOB*& AJOB);
-struct MACHINEGROUP* GETMACHINE_F(int MACHTYPE);
-void TESTENTRY();
+struct MACHINEGROUP* GETMACHINES_F(int MACHTYPE, int NUMBER);
+void MYJOBSHOP();
 
 struct easeApp1_sys {
 struct eInstHdr hdr;
 struct MACHINEGROUP** JOBSHOP;
+int N_MACHINEGROUP;
 struct MACHINEGROUP* MACHINEGROUP;
 struct JOB* JOB;
 struct JOBSTEP* JOBSTEP;

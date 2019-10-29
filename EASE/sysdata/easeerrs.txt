@@ -1,4 +1,4 @@
-20
+22
 Syntax error
 Reference to undefined variable
 RESERVE target is not subscripted
@@ -17,3 +17,6 @@ Implicit subscript use of common attribute
 Explicit FIRST/LAST illegal for Ranked Set
 Attempted assignment to read-only attribute
 Missing SYSTEM variable for implicit subscript
+Procedure name mismatch
+Duplicate definition
+Pocedure definition statement out of place

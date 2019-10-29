@@ -47,10 +47,10 @@ easeSets_init();
 }
 void main() {
        easinit();
-       TESTENTRY();
+       MYJOBSHOP();
        return;
 }
-void TESTENTRY() {
+void MYJOBSHOP() {
 struct MACHINEGROUP* MG1= 0;
 struct JOB* JOB= 0;
 struct JOB* MYJOB= 0;
@@ -66,12 +66,16 @@ struct JOBSTEP* E_0006= 0;
 struct JOB* E_0007= 0;
        OPENO_R(6, E_TXTLIT_F(_T("jobs.txt")));
        USE_R(6, 2);
-       OPENI_R(5, E_TXTLIT_F(_T("localdata.txt")));
+       OPENI_R(5, E_TXTLIT_F(_T("hostdata.txt")));
        USE_R(5, 1);
        E_TXTASG_R(&SERVERNAME, RDX_F());
+       CLOSE_R(5);
        E_PCONNECT_R(SERVERNAME);
-       RDL_R();
-       if (easlib->UIB_R->EOF_V != 2) {
+       OPENI_R(5, E_TXTLIT_F(_T("localdata.txt")));
+       USE_R(5, 1);
+       if (easlib->UIB_R->ROPENERR_V == 0) {
+       WTX_R(E_TXTLIT_F(_T("Retrieving saved persistent reference data")));
+       WTL_R();
        MG1= c_MACHINEGROUP();
        easg((char*)&MG1->INBUFFER, (iRef*)RDP_F());
        RDL_R();
@@ -79,9 +83,11 @@ struct JOB* E_0007= 0;
        CLOSE_R(5);
        if (MG1 == 0) {
        MG1= c_MACHINEGROUP();
+       WTX_R(E_TXTLIT_F(_T("Creating and populating jobshop data")));
+       WTL_R();
        WTX_R(E_TXTLIT_F(_T("Testing RANKED set filing by PRIORITY, then VALUE")));
        WTL_R();
-       WTX_R(E_TXTLIT_F(_T("Reading job data... ")));
+       WTX_R(E_TXTLIT_F(_T("Reading job data from file jobdata.txt")));
        WTL_R();
        OPENI_R(5, E_TXTLIT_F(_T("jobdata.txt")));
        USE_R(5, 1);
@@ -119,6 +125,16 @@ done0002:
 done0001:
        CLOSE_R(5);
        E_RECORD_R();
+       OPENO_R(7, E_TXTLIT_F(_T("localdata.txt")));
+       easlib->E_SAVE_V = easlib->WRITE_V;
+       USE_R(7, 2);
+       WTP_R((struct E_PSET*)MG1->INBUFFER);
+       WTL_R();
+       USE_R(easlib->E_SAVE_V, 2);
+       CLOSE_R(7);
+       WTL_R();
+       WTX_R(E_TXTLIT_F(_T("!! iRef data saved in localdata.txt !!")));
+       WTL_R();
        }
        WTX_R(E_TXTLIT_F(_T("Listing RANKED set contents:")));
        WTL_R();
@@ -226,10 +242,10 @@ done0007:
        WTL_R();
        WTX_R((Etxt*)((struct JOBSTEP*)fetch((iRef*)F_PEASSET_F(((struct JOB*)fetch((iRef*)((struct JOB*)F_PEASSET_F(MG1->INBUFFER))))->ROUTING)))->STEPNAME);
        WTL_R();
-/*       WTX_R((Etxt*)((struct JOBSTEP*)fetch((iRef*)S_PEASSET_F((iRef*)F_PEASSET_F(((struct JOB*)fetch((iRef*)((struct JOB*)F_PEASSET_F(MG1->INBUFFER))))->ROUTING), E_TXTLIT_F(_T("ROUTING")))))->STEPNAME);
+       WTX_R((Etxt*)((struct JOBSTEP*)fetch((iRef*)S_PEASSET_F((iRef*)F_PEASSET_F(((struct JOB*)fetch((iRef*)((struct JOB*)F_PEASSET_F(MG1->INBUFFER))))->ROUTING), E_TXTLIT_F(_T("ROUTING")))))->STEPNAME);
        WTL_R();
        WTX_R((Etxt*)((struct JOBSTEP*)fetch((iRef*)F_PEASSET_F(((struct JOB*)fetch((iRef*)S_PEASSET_F((iRef*)((struct JOB*)F_PEASSET_F(MG1->INBUFFER)), E_TXTLIT_F(_T("INBUFFER")))))->ROUTING)))->STEPNAME);
-       WTL_R(); */
+       WTL_R();
        WTX_R(E_TXTLIT_F(_T("Testing FIND - look for PRIORITY > 2 ")));
        WTL_R();
        easg((char*)&MYJOB, (iRef*)((struct JOB*)F_PEASSET_F(MG1->INBUFFER)));
@@ -290,13 +306,6 @@ done0010:
        WTX_R(E_TXTLIT_F(_T("INBUFFER IS EMPTY - THERE ARE NO JOBS WAITING")));
        WTL_R();
        E_PDISCONNECT_R(SERVERNAME);
-       CLOSE_R(6);
-       OPENO_R(6, E_TXTLIT_F(_T("localdata.txt")));
-       USE_R(6, 2);
-       WTX_R(SERVERNAME);
-       WTL_R();
-       WTP_R((struct E_PSET*)MG1->INBUFFER);
-       WTL_R();
        CLOSE_R(6);
        eunasg((char*)&JOB);
 eunasg((char*)&MYJOB);

@@ -3,15 +3,12 @@
 <ENTITIES>
 <entityType ID="1">
 <entityTypeName>MACHINEGROUP</entityTypeName>
-
 <setOwnDef dbId="4000">INBUFFER</setOwnDef>
-
 </entityType>
-
 <entityType ID="0" isProcedure="Y">
-<entityTypeName>TESTENTRY</entityTypeName>
+<entityTypeName>MYJOBSHOP</entityTypeName>
 <Body><![CDATA[
-ROUTINE TESTENTRY
+ROUTINE MYJOBSHOP
 DEFINE MG1 AS A MACHINEGROUP REFERENCE VARIABLE
 DEFINE JOB AND MYJOB AS JOB REFERENCE VARIABLES
 DEFINE I, J AS INTEGER VARIABLES
@@ -20,12 +17,16 @@ DEFINE SERVERNAME AS TEXT VARIABLE
 OPEN 6 FOR OUTPUT, FILENAME IS "jobs.txt"	'' for output listing
 USE 6 FOR OUTPUT
 
-OPEN 5 FOR INPUT, NAME IS "localdata.txt"
+OPEN 5 FOR INPUT, NAME IS "hostdata.txt"
 USE 5 FOR INPUT
 READ SERVERNAME
+CLOSE 5
 CONNECT PERSISTENT SERVER NAMED SERVERNAME
-READ AS /
-IF EOF.V NE 2
+
+OPEN 5 FOR INPUT, NAME IS "localdata.txt"
+USE 5 FOR INPUT
+IF ROPENERR.V EQ 0
+  WRITE AS "Retrieving saved persistent reference data.", /
   CREATE A MACHINEGROUP CALLED MG1
   READ INBUFFER(MG1) AS P, /		'' retrieve persistent reference
 ENDIF
@@ -33,10 +34,11 @@ CLOSE 5
 
 IF MG1 EQ 0
 CREATE A MACHINEGROUP CALLED MG1
+WRITE AS "Creating and populating jobshop data.", /
 
 WRITE AS "Testing RANKED set filing by PRIORITY, then VALUE", /
-WRITE AS "Reading job data... ", /
-OPEN 5 FOR INPUT, FILENAME IS "C:\\EASEprojects\\jobdata.txt"
+WRITE AS "Reading job data from file jobdata.txt.", /
+OPEN 5 FOR INPUT, FILENAME IS "jobdata.txt"
 USE 5 FOR INPUT
 LET EOF.V(UIB.R) = 1
 WHILE EOF.V.. NE 2
@@ -57,8 +59,15 @@ DO
   READ AS /
 LOOP
 CLOSE 5
+
 RECORD ALL PERSISTENT ENTITIES
-ENDIF
+
+OPEN 7 FOR OUTPUT, FILENAME IS "localdata.txt"
+WRITE INBUFFER(MG1) AS P, /	USING 7 '' save persistent reference
+CLOSE 7
+WRITE AS /, "!! iRef data saved in localdata.txt !!", /, /
+
+ENDIF	'' MG1 test
 
 WRITE AS "Listing RANKED set contents:", /
 WRITE AS "SEQ   PRI   VAL", /
@@ -134,28 +143,20 @@ PRINT 1 LINE THUS
 INBUFFER IS EMPTY - THERE ARE NO JOBS WAITING
 
 DISCONNECT SERVER NAMED SERVERNAME
-CLOSE 6
 
-OPEN 6 FOR OUTPUT, FILENAME IS "localdata.txt"
-USE 6 FOR OUTPUT
-WRITE SERVERNAME AS T *,/
-WRITE INBUFFER(MG1) AS P, /	'' save persistent reference
 CLOSE 6
 END
 ]]></Body>
 </entityType>
-
 <entityType ID="0" isProcedure="Y">
 <entityTypeName>MAIN</entityTypeName>
 <Body><![CDATA[
 MAIN
-CALL TESTENTRY
+CALL MYJOBSHOP
 END
 ]]></Body>
 </entityType>
-
 </ENTITIES>
-
 <SETS>
 <setDef discipline="R" isPersistent="Y">
 <setName>INBUFFER</setName>
@@ -163,7 +164,6 @@ END
 <rankAttr>VALUE</rankAttr>
 </setDef>
 </SETS>
-
 <SYSTEM>
 <entityType ID="0">
 <entityTypeName>SYSTEM</entityTypeName>

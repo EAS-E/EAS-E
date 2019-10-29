@@ -11,15 +11,19 @@ char actionEntityId[9];
 char actionSlotDash[9];
 int persistSlot = 0;
 int slotDash = 0;
+bool persistTrace = FALSE;	// TRUE for debug trace output to current listing file
+
 
 void E_PCONNECT_R(Etxt* server) {
 
 	typeInfo* info;
 
 	if (comopen(server->tValue) == 0) {
-		WTX_R(E_TXTLIT_F(_T("Persistent server connected: ")));
-		WTX_R(server);
-		WTL_R();
+		if (persistTrace) {
+			WTX_R(E_TXTLIT_F(_T("Persistent server connected: ")));
+			WTX_R(server);
+			WTL_R();
+		}
 		persistentServer = server;
 
 		info = f_typeInfos;
@@ -28,17 +32,22 @@ void E_PCONNECT_R(Etxt* server) {
 				registerType(info->ssId, info->entId);
 			info = info->s_typeInfo;
 		}
-		WTX_R(E_TXTLIT_F(_T("Persistent entity types registered with: ")));
-		WTX_R(server);
-		WTL_R();
+		if (persistTrace) {
+			WTX_R(E_TXTLIT_F(_T("Persistent entity types registered with: ")));
+			WTX_R(server);
+			WTL_R();
+		}
 	}
 }
 
 void E_PDISCONNECT_R(Etxt* server) {
+
 	comclose(server->tValue);
-	WTX_R(E_TXTLIT_F(_T("Persistent server disconnected: ")));
-	WTX_R(server);
-	WTL_R();
+	if (persistTrace) {
+		WTX_R(E_TXTLIT_F(_T("Persistent server disconnected: ")));
+		WTX_R(server);
+		WTL_R();
+	}
 }
 
 
@@ -220,9 +229,11 @@ int ebuffpack(int* eptr, const int* mapptr) {
 		if (j == 5) {		// persistent pointer; overwrite with offset to copied values
 			iref = (iRef*)(*eptr);
 			if (iref) {
-				//WTX_R(E_TXTLIT_F(_T("Iref at: ")));
-				//WTI_R(varoffset, 4);
-				//WTL_R();
+				if (persistTrace) {
+					WTX_R(E_TXTLIT_F(_T("Iref at: ")));
+					WTI_R(varoffset, 4);
+					WTL_R();
+				}
 				(*(buff + offset)) = varoffset;
 				memcpy(buff + varoffset, (char*)iref, 16);
 				varoffset = varoffset + 16;
@@ -328,9 +339,11 @@ int* ebuffunpack(const int* mapptr) {
 			if (varoffset < 0)
 				j = 6;
 			if (varoffset) {
-				//WTX_R(E_TXTLIT_F(_T("Iref at: ")));
-				//WTI_R(varoffset, 4);
-				//WTL_R();
+				if (persistTrace) {
+					WTX_R(E_TXTLIT_F(_T("Iref at: ")));
+					WTI_R(varoffset, 4);
+					WTL_R();
+				}
 				iref = (iRef*)calloc(1, sizeof(iRef));
 				memcpy(iref, buff + varoffset, 16);
 				iref->refcount = 1;
@@ -363,26 +376,26 @@ void E_RECORD_R() {
 	iRef* irefAttr;
 	int bufflen;
 
-	//	comopen(_T("192.168.1.65"));
-	//	comopen(_T("75.60.237.58"));
-	//	comopen(_T("localhost"));
-
-	WTX_R(E_TXTLIT_F(_T("Now recording persistent entity instances:")));
-	WTL_R();
-	WTX_R(E_TXTLIT_F(_T("iRef  ssid  slot   dash")));
-	WTL_R();
+	if (persistTrace) {
+		WTX_R(E_TXTLIT_F(_T("Now recording persistent entity instances:")));
+		WTL_R();
+		WTX_R(E_TXTLIT_F(_T("iRef  ssid  slot   dash")));
+		WTL_R();
+	}
 
 	info = f_typeInfos;
 	while (info) {
 		if (info->emap != 0) {
 			iref = info->f_irefs;
 			while (iref) {
-				WTX_R(info->ename);
-				WTS_R(2);
-				WTI_R(iref->persistId, 4);
-				WTS_R(2);
-				WTI_R(iref->dash, 2);
-				WTX_R(E_TXTLIT_F(_T(" > ")));
+				if (persistTrace) {
+					WTX_R(info->ename);
+					WTS_R(2);
+					WTI_R(iref->persistId, 4);
+					WTS_R(2);
+					WTI_R(iref->dash, 2);
+					WTX_R(E_TXTLIT_F(_T(" > ")));
+				}
 
 				mapptr = info->emap;
 				offset = *mapptr;
@@ -397,31 +410,37 @@ void E_RECORD_R() {
 				while (i) {
 					j = (*mapptr); // map value
 					if (j == 1) {
-						WTI_R(*eptr, 4);
-						WTS_R(4);
+						if (persistTrace) {
+							WTI_R(*eptr, 4);
+							WTS_R(4);
+						}
 					}
 					if (j == 3) {
-						WTS_R(2);
-						WTX_R((Etxt*)*eptr);
-						offset = offset + ((Etxt*)*eptr)->tLength + 4;
+						if (persistTrace) {
+							WTS_R(2);
+							WTX_R((Etxt*)*eptr);
+							offset = offset + ((Etxt*)*eptr)->tLength + 4;
+						}
 					}
 					if (j == 5) {
-						WTX_R(E_TXTLIT_F(_T(" iRef[")));
+						if (persistTrace)
+							WTX_R(E_TXTLIT_F(_T(" iRef[")));
 						irefAttr = (iRef*)*eptr;
-						if (irefAttr) {
+						offset = offset + 12;
+						if (persistTrace) {
 							WTI_R(irefAttr->ssId, 4);
 							WTI_R(irefAttr->typeId, 4);
 							WTI_R(irefAttr->persistId, 4);
 							WTI_R(irefAttr->dash, 2);
+							WTX_R(E_TXTLIT_F(_T("] ")));
 						}
-						WTX_R(E_TXTLIT_F(_T("] ")));
-						offset = offset + 12;
 					}
 					mapptr++;
 					eptr++;
 					i--;
 				}
-				WTL_R();
+				if (persistTrace)
+					WTL_R();
 
 				//if (iref->ssId > 0) {		// debug/test only - keep sets
 				//	eptr = (int*)iref->maddr;
@@ -434,8 +453,10 @@ void E_RECORD_R() {
 		}				
 		info = info->s_typeInfo;
 	}
-	WTX_R(E_TXTLIT_F(_T("End of recording")));
-	WTL_R();
+	if (persistTrace) {
+		WTX_R(E_TXTLIT_F(_T("End of recording")));
+		WTL_R();
+	}
 
 	commitChanges();
 

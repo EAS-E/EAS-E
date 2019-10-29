@@ -1,5 +1,4 @@
-Persistent server connected: localhost
-Persistent entity types registered with: localhost
+Retrieving saved persistent reference data
 Listing RANKED set contents:
 SEQ   PRI   VAL
   1     4   100  RushJob
@@ -31,6 +30,8 @@ BigJob   dry  cut  next job will be:  AnotherJob
 AnotherJob   finish  polish  start  
 Testing cascaded set attribute refs: 1st & 2nd step names of 1st, then 1st of 2nd job
 drill
+turn
+pack
 Testing FIND - look for PRIORITY > 2 
 JOB: RushJob has priority  4 - REMOVE specific
  removed - you won't see this name again
@@ -48,4 +49,3 @@ Cleared step polish
 Cleared step start
 Testing PRINT THUS
 INBUFFER IS EMPTY - THERE ARE NO JOBS WAITING
-Persistent server disconnected: localhost

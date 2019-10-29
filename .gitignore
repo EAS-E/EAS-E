@@ -332,3 +332,7 @@ ASALocalRun/
 #EASEdevelop
 *.bak
 Xlogtrans.txt
+Xlisting.txt
+pytpes.txt
+pblks.txt
+pdata.txt
