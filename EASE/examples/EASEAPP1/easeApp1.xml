@@ -168,7 +168,7 @@ DO
   WRITE JOBNAME(MYJOB) AS "Removed JOB called ", T *, /
   WHILE F.ROUTING(MYJOB) NE 0
   DO
-    IF F.ROUTING(MYJOB) IS A TASK  '' qery the type of an instance against an expected type name
+    IF F.ROUTING(MYJOB) IS A TASK  '' query the type of an instance against an expected type name
       WRITE DURATION(TASK) AS "Removing a TASK: duration ", I 4, /
       REMOVE FIRST TASK FROM ROUTING(MYJOB)
     ELSE

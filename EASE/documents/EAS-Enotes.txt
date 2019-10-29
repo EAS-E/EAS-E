@@ -1,0 +1,55 @@
+Some differences between this EAS-E implementation and its SIMSCRIPT forerunners.
+This list is not exhaustive, but may be helpful if used in conjunction with https://www.rand.org/pubs/reports/R460.html
+
+Level 1:
+
+PRINT n LINES THUS - only literal text is supported; no variable formatting; WRITE.. AS can substitute.
+
+ADD/SUBTRACT are not implemented; use arithmetic expressions.
+
+IF statement struture differs; folllow the pattern: IF - (ELSE/OTHERWISE - optional) - ALWAYS/REGARDLESS/ENDIF
+
+SKIP, START NEW, STOP are not supported.
+
+NORMALLY statement is nor supported; use explicit DEFINE statements.
+
+BACK FROM not supported in FOR statement.
+
+Function definition differs: FUNCTION name ( GIVEN arguments ) RETURNING type
+
+Level 2:
+
+ARRAY maximum dimensionality is 2.
+
+GO TO .. PER is not supported.
+
+LIST statement is not supported.
+
+DEFINE TO MEAN statement is not supported.
+
+Level 3:
+
+REPORT formatting is not supported.
+
+Level 4:
+
+PERMANENT and COMPOUND entity types not supported.  Arrays of entity pointers can be used.
+
+Attribute packing is nor supported.
+
+Level 5 - not implemented
+
+No simulation (Level 5) implementation 
+
+ACCUMULATE/TALLY not supported.
+
+Level 6:
+
+See the docment on persistence.
+
+Level 7:
+
+See the compiler notes on the use of syntax definition and scripting rules.
+ 
+
+
