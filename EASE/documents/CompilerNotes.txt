@@ -1,9 +1,10 @@
 Some notes on the workings of EASEtranslator.
+( Read the HowToGuide first, for some background )
 
 Note: the Visual Studio project for this is tooldev/EXPtran/Devtran
-- the executable from DEVtran?x64/Debug is renamed when copied to tools.
+- the executable from DEVtran/x64/Debug is renamed when copied to tools.
 
-An EAS-E project may be composed of more than one such XML file - for size or re-use reasons.
+An EAS-E project may be composed of more than one XML file - for size or re-use reasons.
 [ For reasons lost in history, each XML file is referred to as a 'schema' internally. ]
 
 The translator reads all the files in the project, constructing the 'PREAMBLE-like' definitions.

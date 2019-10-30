@@ -19,9 +19,9 @@ IF <"IF"&> < COND& ISA > !
 ISA~ < EXP #1> <"IS"&> <"A"& "AN"&> <@IDENT #2> !
 LOGICL~ < PARLOG LOGEXP > (TRUFALS) !
 PARLOG~ <"("> <COND&> <")"&> !
-LOGEXP~ <EXP> < EQ NE LE GE LT GT > <EXP> !
+LOGEXP~ <EXP> ("IS"&) < EQ NE LE GE LT GT > <EXP> !
 EQ~ < "EQ"& "="& EQTXT& > !
-EQTXT~ < "EQUAL"& "EQUALS"& > !
+EQTXT~ < "EQUAL"& "EQUALS"& > ("TO"&) !
 NE~ < "NE"& NE2& NETXT& > !
 NE2~ < "!"& > <"="& > !
 NETXT~ < "NOT"& > < EQTXT& > !
@@ -33,8 +33,8 @@ GE~ <"GE"& GE2&> !
 GE2~ <">"&> <"="&> !
 MORLOG~ <"AND" "OR"> < COND& > !
 TRUFALS~ <"IS"&> <"TRUE" "FALSE"> !
-ELSE <"ELSE"&> ! 
-ENDIF  <"ALWAYS"& "ENDIF"&> !
+ELSE <"ELSE"& "OTHERWISE"&> ! 
+ENDIF  <"ALWAYS"& "ENDIF"& "REGARDLESS"&> !
 WHILE 2 <"WHILE"&> <COND #1> !
 COND~ < LOGICL > (MORLOG)* !
 UNTIL 2 <"UNTIL"&> <COND #1> !

@@ -231,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\DevTRAN.ico" />
+    <Image Include="res\EASE.ico" />
     <Image Include="res\Toolbar.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

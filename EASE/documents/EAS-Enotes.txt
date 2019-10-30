@@ -5,9 +5,11 @@ Level 1:
 
 PRINT n LINES THUS - only literal text is supported; no variable formatting; WRITE.. AS can substitute.
 
-ADD/SUBTRACT are not implemented; use arithmetic expressions.
+ADD/SUBTRACT are not implemented; use arithmetic expressions. [ see Level 7 topic, below ]
 
 IF statement structure differs; follow the pattern: IF - (ELSE/OTHERWISE - optional) - ALWAYS/REGARDLESS/ENDIF
+
+Not all elaborations of equality/inequality syntax are supported [ see level 7 topic, below ]
 
 SKIP, START NEW, STOP are not supported.
 
@@ -31,13 +33,19 @@ Level 3:
 
 REPORT formatting is not supported.
 
+ALPHA variables are not supported; ACHAR.F(text, n) extracts/inserts characters in text variables (Right/Left usage)
+
 Level 4:
 
 PERMANENT and COMPOUND entity types not supported.  Arrays of entity pointers can be used.
 
-Attribute packing is nor supported.
+Attribute packing is not supported.
 
-Level 5 - not implemented
+A REFERENCE variable may be associated with an entity type, or may be anonymous (like void*).
+
+A new construct: 'IF variable IS A entity_type_name', provides for run-time type identification.
+
+Level 5: - not implemented
 
 No simulation (Level 5) implementation 
 
@@ -49,7 +57,21 @@ See the document on persistence.
 
 Level 7:
 
-See the compiler notes on the use of syntax definition and scripting rules.
- 
+See the compiler notes on the use of syntax definition and scripting rules to add capability.
+
+A simple exercise might be to elaborate the syntax patterns for equality/inequality tests.
+This would involve merely adding subrules to allow matching of "NOT/NO LESS THAN" for instance.
+
+Slightly more complex would be adding support for ADD .. TO, and SUBTRACT .. FROM statements.
+New syntax patterns would be matched by script rules which generate the equivalent expressions.
+Look at STMTSCRIPT to see how a parsed statement can drive scripting, with annotated NODE structures.
+
+These are the foundation of language extensibility.
+ACCUMULATE and TALLY, for example, generate statistics routine invocation on variable assignment.
+
+When working with parse trees, care must be taken that backtracking can be done safely.
+If a simple syntax pattern forms a subset of a more complex, a match of the complex one must be tried first.
+
+
 
 

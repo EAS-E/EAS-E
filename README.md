@@ -3,7 +3,7 @@ A partial implementation of Dr. Harry Markowitz's Entity-Attribute-Set-Event lan
 
 Markowitz originally realized the EAS-E concepts when evolving the discrete-event simulation language SIMSCRIPT. 
 Originally a public domain preprocessor to FORTRAN developed at RAND, it was developed into a compiler in its own right.
-This implementation closely, but not completely, follows the syntax of SIMSCRIPT II developed at RAND
+This implementation closely, but not completely, follows the syntax of SIMSCRIPT II developed at RAND.
 A manual for the RAND SIMSCRIPT II language can be downloaded from: https://www.rand.org/pubs/reports/R460.html
 This can serve as an introduction the the EAS-E concept. Note that this implementation is not complete.
 Refer to EAS-Enotes.txt for a discussion of some differences.

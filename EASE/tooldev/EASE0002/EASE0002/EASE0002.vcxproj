@@ -144,6 +144,7 @@
     <None Include="res\EASE0002.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\EASE.ico" />
     <Image Include="res\EASE0002.ico" />
     <Image Include="res\EASE0002Doc.ico" />
     <Image Include="res\Toolbar.bmp" />
