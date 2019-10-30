@@ -19,7 +19,7 @@ It also partially supports the Level 6 concept of seamless persistence of entity
 ( ACM Transactions on Database Systems, Vol. 8, No. 4, Dec. 1983, pp 515-542 ).
 
 It also offers an opportunity to explore the concepts of Level 7 - a Language-Writing-Language - by exposing both rule-based syntax definition and 'scripting' of complex language constructs into less complex realizations.
-( Markowitz, 1979: SIMSCRIPT, In Encylopedia of Computer Science and Technology, Vol. 13, Belzer, Holzman, Kent (eds.) Marcel Dekker, Inc. )
+( Markowitz, 1979: SIMSCRIPT, In Encyclopedia of Computer Science and Technology, Vol. 13, Belzer, Holzman, Kent (eds.) Marcel Dekker, Inc. )
 
 The website EAS-E.org offers some discussion of concepts and sample C++ implementation code.
 

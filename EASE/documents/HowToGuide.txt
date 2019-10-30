@@ -1,7 +1,7 @@
 
 Introduction:
 
-EAS-E arose from Dr. Harry Markowitz's work in compter simulation of manufacturing systems.
+EAS-E arose from Dr. Harry Markowitz's work in computer simulation of manufacturing systems.
 EAS-E models the subject matter of system of interest in terms of entities acted on by events.
 Entities represent "things" of interest and are characterized by their attributes.
 An attribute value references an entity type: a number, a text, or any defined entity type.
@@ -35,7 +35,7 @@ Editing and translating EAS-E:
 
 Subdirectory EASE/tools contains two executables: EASEdevelop and EASEtranslate.
 
-The first provides a protype GUI which supports definition of entities and procedures.
+The first provides a prototype GUI which supports definition of entities and procedures.
 Project->Open offers a folder selection of examples, or the ability to create a new one.
 /tools/Config.dat specifies the initial folder for project selection; this can be edited.
 It also specifies a path for system data - be sure this matches your installation.
@@ -54,7 +54,7 @@ A listing file and possible error file are generated in the target folder.
 Note: the procedure name chosen in EASEdevelop should match the name in source code.
 Note: an executable application must include a MAIN procedure.
 
-At this time, these C files are intended to be built in VisualStudio projects.
+At this time, these C files are intended to be built in Visual Studio projects.
 Projects corresponding to the examples projects are located in EASE/VSprojects.
 
 As delivered, each VS source code folder includes duplicated library .h and .cpp files.

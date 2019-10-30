@@ -7,7 +7,7 @@ PRINT n LINES THUS - only literal text is supported; no variable formatting; WRI
 
 ADD/SUBTRACT are not implemented; use arithmetic expressions.
 
-IF statement struture differs; folllow the pattern: IF - (ELSE/OTHERWISE - optional) - ALWAYS/REGARDLESS/ENDIF
+IF statement structure differs; follow the pattern: IF - (ELSE/OTHERWISE - optional) - ALWAYS/REGARDLESS/ENDIF
 
 SKIP, START NEW, STOP are not supported.
 
@@ -45,7 +45,7 @@ ACCUMULATE/TALLY not supported.
 
 Level 6:
 
-See the docment on persistence.
+See the document on persistence.
 
 Level 7:
 

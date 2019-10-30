@@ -7,11 +7,11 @@ An EAS-E project may be composed of more than one such XML file - for size or re
 [ For reasons lost in history, each XML file is referred to as a 'schema' internally. ]
 
 The translator reads all the files in the project, constructing the 'PREAMBLE-like' definitions.
-It then proceeds to translate the procedures which will ececute in the context of these.
+It then proceeds to translate the procedures which will execute in the context of these.
 Again, there is uniform visibility, regardless of where an entity definition originated.
 
 [ Note: The EAS-E translator code was hand-developed in XML without use of the GUI (EASEdevelop). 
-It defines local variables directly in XML - this preceeded the addition of syntax for such. ]
+It defines local variables directly in XML - this preceded the addition of syntax for such. ]
 
 Lexical analysis and parsing:
 Procedural source code lines are passed to ANALYZE ( a routine in Parser.xml ).
@@ -42,7 +42,7 @@ When all procedures have been parsed, code generation traverses the parse trees,
 Each 'schema' file produces one header file and one source file.
 
 Miscellaneous:
-At this time, the compiler does very lttle deletion of dynamically created entity instances.
+At this time, the compiler does very little deletion of dynamically created entity instances.
 Because of this, when running in Debug, it takes a long time to shut down.
 
 The attribute-based realization of the SET concept is replaced by a SET-entity realization.
