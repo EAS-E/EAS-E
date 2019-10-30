@@ -8,7 +8,7 @@ A manual for the RAND SIMSCRIPT II language can be downloaded from: https://www.
 This can serve as an introduction the the EAS-E concept. Note that this implementation is not complete.
 Refer to EAS-Enotes.txt for a discussion of some differences.
 
-The language evolved, as SIMSCRipt ii.5 to be a proprietary product of CACI of which Markowitz was co-founder.
+The language evolved, as SIMSCRIPT II.5, to be a proprietary product of CACI of which Markowitz was co-founder.
 
 At this time there is no simulation support - Events are not implemented.
 
@@ -25,3 +25,5 @@ The website EAS-E.org offers some discussion of concepts and sample C++ implemen
 
 Note: this software makes use of Markup.h/.cpp, a XML utility developed by First Objective Software, Inc.
 Please observe their copyright conditions for any commercial use.
+
+This implementation of EAS-E is the work of Dr. Alasdar Mullarney.
