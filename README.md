@@ -21,7 +21,7 @@ It also partially supports the Level 6 concept of seamless persistence of entity
 It also offers an opportunity to explore the concepts of Level 7 - a Language-Writing-Language - by exposing both rule-based syntax definition and 'scripting' of complex language constructs into less complex realizations.
 ( Markowitz, 1979: SIMSCRIPT, In Encyclopedia of Computer Science and Technology, Vol. 13, Belzer, Holzman, Kent (eds.) Marcel Dekker, Inc. )
 
-The website EAS-E.org offers some discussion of concepts and sample C++ implementation code.
+The website http://EAS-E.org offers some discussion of concepts and sample C++ implementation code.
 
 Note: this software makes use of Markup.h/.cpp, a XML utility developed by First Objective Software, Inc.
 Please observe their copyright conditions for any commercial use.
